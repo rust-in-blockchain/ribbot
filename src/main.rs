@@ -7,7 +7,7 @@ use reqwest::header::USER_AGENT;
 use reqwest::Method;
 use serde_json::value::Value;
 
-static RIB_AGENT: &'static str = "";
+static RIB_AGENT: &'static str = "ribbot";
 
 fn main() -> Result<(), reqwest::Error> {
     let client = Client::new();
