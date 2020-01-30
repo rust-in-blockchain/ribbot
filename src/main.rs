@@ -14,18 +14,12 @@ fn main() -> Result<(), reqwest::Error>{
 
     let client = Client::new();
     let repos = include_str!("github-repos.txt");
-    //println!("{}", repos);
-
     
     for repo in repos.lines()
     {
         println!("{}",repo);
-        let repourl = format!("https://api.github.com/repos/{}/pulls",repo);
-        // println!("{}",repourl);
-
-
-
-        let builder = client.request(Method::GET,  &repourl );//"https://api.github.com/repos/nervosnetwork/ckb/pulls");
+        let repourl = format!("https://api.github.com/repos/{}/pulls",repo); 
+        let builder = client.request(Method::GET,  &repourl );
         let builder = builder.header(USER_AGENT, RIB_AGENT);
         let body:Value = builder.send()?.json()?; 
         println!("body = {:#?}", body); 
