@@ -9,4 +9,5 @@ edition = "2018"
 [dependencies]
 reqwest = {version = "0.10.1", features = ["blocking","json"]}
 serde_json = "1.0.45"
+postgres = "0.17.0"
 
