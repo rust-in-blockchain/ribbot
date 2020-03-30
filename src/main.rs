@@ -11,7 +11,7 @@ use reqwest::header::USER_AGENT;
 use reqwest::Method;
 use std::{thread, time};
 use structopt::StructOpt;
-use chrono::{Date, DateTime, Local, Utc};
+use chrono::{Date, DateTime, Local, Utc, NaiveDate};
 
 static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain bot; Aimeedeer/ribbot; aimeedeer@gmail.com)";
 
@@ -24,9 +24,13 @@ struct Options {
 #[derive(StructOpt)]
 enum Command {
     Pulls {
-        #[structopt(parse(try_from_str))]
-        date: DateTime<Utc>,
+        #[structopt(parse(try_from_str = parse_naive_date))]
+        date: NaiveDate,
     },
+}
+
+fn parse_naive_date(s: &str) -> Result<NaiveDate> {
+    Ok(NaiveDate::parse_from_str(s, "%Y-%m-%d")?)
 }
 
 fn main() -> Result<()> {
@@ -40,7 +44,7 @@ fn main() -> Result<()> {
         let repourl = format!("https://api.github.com/repos/{}/pulls", repo);
         let builder = client.request(Method::GET, &repourl);
         let builder = builder.header(USER_AGENT, RIB_AGENT);
-        let body = builder.send()?.json()?;
+        let body = builder.send()?.text()?;
         println!("body = {:#?}", body);
 
         let one_second = time::Duration::from_millis(1000);
