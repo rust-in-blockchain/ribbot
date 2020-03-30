@@ -8,7 +8,7 @@ use reqwest::header::USER_AGENT;
 use reqwest::Method;
 use std::{thread, time};
 
-static RIB_AGENT: &'static str = "ribbot";
+static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain bot; Aimeedeer/ribbot; aimeedeer@gmail.com)";
 
 fn main() -> Result<(), reqwest::Error> {
     let client = Client::new();
