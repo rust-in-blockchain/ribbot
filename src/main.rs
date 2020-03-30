@@ -3,6 +3,7 @@
  *   All rights reserved.
  */
 
+use anyhow::Result;
 use reqwest::blocking::Client;
 use reqwest::header::USER_AGENT;
 use reqwest::Method;
@@ -10,7 +11,7 @@ use std::{thread, time};
 
 static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain bot; Aimeedeer/ribbot; aimeedeer@gmail.com)";
 
-fn main() -> Result<(), reqwest::Error> {
+fn main() -> Result<()> {
     let client = Client::new();
     let repos = include_str!("github-repos.txt");
 
