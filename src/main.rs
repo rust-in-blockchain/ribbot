@@ -5,6 +5,7 @@
 
 #![allow(unused)]
 
+use std::str::FromStr;
 use anyhow::Result;
 use reqwest::blocking::Client;
 use reqwest::header::USER_AGENT;
@@ -12,6 +13,7 @@ use reqwest::Method;
 use std::{thread, time};
 use structopt::StructOpt;
 use chrono::{Date, DateTime, Local, Utc, NaiveDate};
+use serde_json::Value;
 
 static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain bot; Aimeedeer/ribbot; aimeedeer@gmail.com)";
 
@@ -52,8 +54,9 @@ fn fetch_pulls(date: NaiveDate) -> Result<()> {
         let builder = client.request(Method::GET, &repourl);
         let builder = builder.header(USER_AGENT, RIB_AGENT);
         let body = builder.send()?.text()?;
+        let body = Value::from_str(&body)?;
         println!("---");
-        println!("{}", body);
+        println!("{:#?}", body);
         println!("---");
 
         return Ok(());
