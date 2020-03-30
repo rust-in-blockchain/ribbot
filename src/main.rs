@@ -68,7 +68,7 @@ fn fetch_pulls(config: &Config, since: NaiveDate) -> Result<()> {
     let client = Client::new();
 
     for project in &config.projects {
-        let pulls = get_merged_pulls(&client, project, since)?;
+        let pulls = get_sorted_merged_pulls_with_comments(&client, project, since)?;
         print_pull_candidates(project, &pulls);
     }
 
@@ -88,6 +88,29 @@ struct GhPull {
 #[derive(Deserialize, Debug)]
 struct GhUser {
     login: String,
+}
+
+#[derive(Deserialize, Debug)]
+struct GhPullWithComments {
+    pull: GhPull,
+    comments: u64,
+}
+
+fn get_sorted_merged_pulls_with_comments(client: &Client, project: &Project, since: NaiveDate) -> Result<Vec<GhPullWithComments>> {
+    let mut pulls = get_merged_pulls_with_comments(client, project, since)?;
+    pulls.sort_by_key(|pull| {
+        u64::max_value() - pull.comments
+    });
+    Ok(pulls)
+}
+
+fn get_merged_pulls_with_comments(client: &Client, project: &Project, since: NaiveDate) -> Result<Vec<GhPullWithComments>> {
+    get_merged_pulls(client, project, since)?.into_iter().map(|pull| {
+        Ok(GhPullWithComments {
+            pull,
+            comments: 0,
+        })
+    }).collect()
 }
 
 fn get_merged_pulls(client: &Client, project: &Project, since: NaiveDate) -> Result<Vec<GhPull>> {
@@ -154,14 +177,17 @@ fn get_merged_pulls(client: &Client, project: &Project, since: NaiveDate) -> Res
     Ok(all_pulls)
 }
 
-fn print_pull_candidates(project: &Project, pulls: &[GhPull]) -> Result<()> {
+fn print_pull_candidates(project: &Project, pulls: &[GhPullWithComments]) -> Result<()> {
     println!();
     println!("#### [**{}**]({})", project.name, project.url);
     println!();
     for pull in pulls {
+        let comments = pull.comments;
+        let pull = &pull.pull;
         println!("- PR: [{}]({}) by [@{}](https://github.com/{})",
                  pull.title, pull.html_url,
                  pull.user.login, pull.user.login);
+        println!("<!-- ^ comments: {}, merged_at: {:?} -->", comments, pull.merged_at);
     }
     println!();
 
