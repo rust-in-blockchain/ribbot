@@ -155,6 +155,16 @@ fn get_merged_pulls(client: &Client, project: &Project, since: NaiveDate) -> Res
 }
 
 fn print_pull_candidates(project: &Project, pulls: &[GhPull]) -> Result<()> {
+    println!();
+    println!("#### [**{}**]({})", project.name, project.url);
+    println!();
+    for pull in pulls {
+        println!("- PR: [{}]({}) by [@{}](https://github.com/{})",
+                 pull.title, pull.html_url,
+                 pull.user.login, pull.user.login);
+    }
+    println!();
+
     Ok(())
 }
 
