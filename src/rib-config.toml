@@ -1,0 +1,8 @@
+[[projects]]
+name = "Nervos"
+url = "https://github.com/nervosnetwork"
+pull_merged_repos = [
+  "nervosnetwork/ckb",
+  "nervosnetwork/ckb-vm",
+  "nervosnetwork/rfcs",
+]
