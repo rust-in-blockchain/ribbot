@@ -66,10 +66,9 @@ fn fetch_pulls(config: &Config, date: NaiveDate) -> Result<()> {
     let client = Client::new();
 
     for project in &config.projects {
-        println!("### [**{}**]({})", project.name, project.url);
-        println!();
+        println!("<!-- fetching pulls for project {} -->", project);
         for repo in &project.pull_merged_repos {
-            println!("<!-- fetching pulls for {} -->", repo);
+            println!("<!-- fetching pulls for repo {} -->", repo);
             let repourl = format!("https://api.github.com/repos/{}/pulls", repo);
             let builder = client.request(Method::GET, &repourl);
             let builder = builder.header(USER_AGENT, RIB_AGENT);
