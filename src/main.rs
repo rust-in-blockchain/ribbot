@@ -20,6 +20,7 @@ use reqwest::header;
 static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain bot; Aimeedeer/ribbot; aimeedeer@gmail.com)";
 static CONFIG: &'static str = include_str!("rib-config.toml");
 static DELAY_MS: u64 = 1000;
+static MAX_PAGES: usize = 5;
 
 #[derive(StructOpt)]
 struct Options {
@@ -67,38 +68,94 @@ fn fetch_pulls(config: &Config, since: NaiveDate) -> Result<()> {
     let client = Client::new();
 
     for project in &config.projects {
-        println!("<!-- fetching pulls for project {} -->", project.name);
-        for repo in &project.pull_merged_repos {
-            println!("<!-- fetching pulls for repo {} -->", repo);
-
-            let mut url = format!("https://api.github.com/repos/{}/pulls?state=closed&sort=popularity&direction=desc", repo);
-
-            for page in 1.. {
-                println!("<!-- fetching page {}: {} -->", page, url);
-
-                let builder = client.request(Method::GET, &url);
-                let builder = builder.header(USER_AGENT, RIB_AGENT);
-                let resp = builder.send()?;
-                let next = parse_next(&resp)?.map(ToString::to_string);
-                let body = resp.text()?;
-                let body = Value::from_str(&body)?;
-
-                /*println!("---");
-                println!("{:#?}", body);
-                println!("---");*/
-
-                if let Some(next) = next {
-                    url = next;
-                } else {
-                    break;
-                }
-
-                delay();
-            }
-        }
+        let pulls = get_merged_pulls(&client, project, since)?;
+        print_pull_candidates(project, &pulls);
     }
 
     return Ok(());
+}
+
+#[derive(Deserialize, Debug)]
+struct GhPull {
+    html_url: String,
+    state: String,
+    title: String,
+    user: GhUser,
+    merged_at: Option<DateTime<Utc>>,
+    review_comments_url: String,
+}
+
+#[derive(Deserialize, Debug)]
+struct GhUser {
+    login: String,
+}
+
+fn get_merged_pulls(client: &Client, project: &Project, since: NaiveDate) -> Result<Vec<GhPull>> {
+    let since = since.and_hms(0, 0, 0);
+    let since = DateTime::<Utc>::from_utc(since, Utc);
+
+    let mut all_pulls = vec![];
+    
+    println!("<!-- fetching pulls for project {} -->", project.name);
+    for repo in &project.pull_merged_repos {
+        println!("<!-- fetching pulls for repo {} -->", repo);
+
+        let mut url = format!("https://api.github.com/repos/{}/pulls?state=closed&sort=updated&direction=desc", repo);
+
+        for page in 1.. {
+            println!("<!-- fetching page {}: {} -->", page, url);
+
+            let builder = client.request(Method::GET, &url);
+            let builder = builder.header(USER_AGENT, RIB_AGENT);
+            let resp = builder.send()?;
+            let next = parse_next(&resp)?.map(ToString::to_string);
+            let body = resp.text()?;
+            let json_body = Value::from_str(&body)?;
+            //println!("{}", serde_json::to_string_pretty(&json_body[0])?);
+            let pulls: Vec<GhPull> = serde_json::from_str(&body)?;
+
+            //println!("{:#?}", pulls);
+
+            let mut any_outdated = false;
+            let pulls = pulls.into_iter().filter(|pr| {
+                if let Some(merged_at) = pr.merged_at.clone() {
+                    if merged_at < since {
+                        any_outdated = true;
+                        false
+                    } else {
+                        true
+                    }
+                } else {
+                    false
+                }
+            });
+
+            all_pulls.extend(pulls);
+            
+            if any_outdated {
+                break;
+            }
+
+            if let Some(next) = next {
+                url = next;
+            } else {
+                break;
+            }
+
+            if page >= MAX_PAGES {
+                println!("<!-- reached max pages -->");
+                break;
+            }
+
+            delay();
+        }
+    }
+
+    Ok(all_pulls)
+}
+
+fn print_pull_candidates(project: &Project, pulls: &[GhPull]) -> Result<()> {
+    Ok(())
 }
 
 fn parse_next(resp: &Response) -> Result<Option<&str>> {
