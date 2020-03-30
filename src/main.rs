@@ -106,9 +106,10 @@ fn get_sorted_merged_pulls_with_comments(client: &Client, project: &Project, sin
 
 fn get_merged_pulls_with_comments(client: &Client, project: &Project, since: NaiveDate) -> Result<Vec<GhPullWithComments>> {
     get_merged_pulls(client, project, since)?.into_iter().map(|pull| {
+        let comments = get_comment_count(client, &pull)?;
         Ok(GhPullWithComments {
             pull,
-            comments: 0,
+            comments,
         })
     }).collect()
 }
@@ -175,6 +176,10 @@ fn get_merged_pulls(client: &Client, project: &Project, since: NaiveDate) -> Res
     }
 
     Ok(all_pulls)
+}
+
+fn get_comment_count(client: &Client, pull: &GhPull) -> Result<u64> {
+    Ok(0)
 }
 
 fn print_pull_candidates(project: &Project, pulls: &[GhPullWithComments]) -> Result<()> {
