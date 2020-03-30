@@ -8,7 +8,7 @@
 use std::str::FromStr;
 use anyhow::{Result, Context, bail};
 use reqwest::blocking::{Client, Response};
-use reqwest::header::USER_AGENT;
+use reqwest::header::{USER_AGENT, HeaderMap};
 use reqwest::Method;
 use std::{thread, time};
 use structopt::StructOpt;
@@ -132,7 +132,7 @@ fn get_merged_pulls(client: &Client, project: &Project, since: NaiveDate) -> Res
             let builder = client.request(Method::GET, &url);
             let builder = builder.header(USER_AGENT, RIB_AGENT);
             let resp = builder.send()?;
-            let next = parse_next(&resp)?.map(ToString::to_string);
+            let next = parse_next(resp.headers())?.map(ToString::to_string);
             let body = resp.text()?;
             let json_body = Value::from_str(&body)?;
             //println!("{}", serde_json::to_string_pretty(&json_body[0])?);
@@ -199,8 +199,8 @@ fn print_pull_candidates(project: &Project, pulls: &[GhPullWithComments]) -> Res
     Ok(())
 }
 
-fn parse_next(resp: &Response) -> Result<Option<&str>> {
-    if let Some(link_header) = resp.headers().get(header::LINK) {
+fn parse_next(headers: &HeaderMap) -> Result<Option<&str>> {
+    if let Some(link_header) = headers.get(header::LINK) {
         let link_header = link_header.to_str()?;
         for entry in link_header.split(",") {
             if let Some((url, maybe_rel)) = split_2_trim(&entry, ';') {
