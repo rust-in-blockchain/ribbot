@@ -71,14 +71,15 @@ fn fetch_pulls(config: &Config, since: NaiveDate) -> Result<()> {
         for repo in &project.pull_merged_repos {
             println!("<!-- fetching pulls for repo {} -->", repo);
 
-            for page in 1.. {
-                println!("<!-- fetching page {} -->", page);
+            let mut url = format!("https://api.github.com/repos/{}/pulls?state=closed&sort=popularity&direction=desc", repo);
 
-                let repourl = format!("https://api.github.com/repos/{}/pulls?state=closed&sort=popularity&direction=desc", repo);
-                let builder = client.request(Method::GET, &repourl);
+            for page in 1.. {
+                println!("<!-- fetching page {}: {} -->", page, url);
+
+                let builder = client.request(Method::GET, &url);
                 let builder = builder.header(USER_AGENT, RIB_AGENT);
                 let resp = builder.send()?;
-                let next = parse_next(&resp)?;
+                let next = parse_next(&resp)?.map(ToString::to_string);
                 let body = resp.text()?;
                 let body = Value::from_str(&body)?;
 
@@ -86,7 +87,12 @@ fn fetch_pulls(config: &Config, since: NaiveDate) -> Result<()> {
                 println!("{:#?}", body);
                 println!("---");*/
 
-                return Ok(());
+                if let Some(next) = next {
+                    url = next;
+                } else {
+                    break;
+                }
+
                 delay();
             }
         }
@@ -95,12 +101,22 @@ fn fetch_pulls(config: &Config, since: NaiveDate) -> Result<()> {
     return Ok(());
 }
 
-fn parse_next(resp: &Response) -> Result<Option<String>> {
+fn parse_next(resp: &Response) -> Result<Option<&str>> {
     if let Some(link_header) = resp.headers().get(header::LINK) {
         let link_header = link_header.to_str()?;
         for entry in link_header.split(",") {
-            if let Some((url, rel)) = split_2_trim(&entry) {
-
+            if let Some((url, maybe_rel)) = split_2_trim(&entry, ';') {
+                if let Some((rel_word, rel_value)) = split_2_trim(maybe_rel, '=') {
+                    if rel_word == "rel" {
+                        if rel_value == "\"next\"" {
+                            return Ok(Some(parse_link_url(url)?));
+                        }
+                    } else {
+                        bail!("unexpected link rel word");
+                    }
+                } else {
+                    bail!("unexpected link rel pair");
+                }
             } else {
                 bail!("unexpected link header");
             }
@@ -112,8 +128,12 @@ fn parse_next(resp: &Response) -> Result<Option<String>> {
     }
 }
 
-fn split_2_trim(s: &str) -> Option<(&str, &str)> {
-    let mut elts = s.splitn(2, s);
+fn parse_link_url(s: &str) -> Result<&str> {
+    trim_ends(s, b'<', b'>')
+}
+
+fn split_2_trim(s: &str, at: char) -> Option<(&str, &str)> {
+    let mut elts = s.splitn(2, at);
     let one = elts.next();
     let two = elts.next();
     if let (Some(one), Some(two)) = (one, two) {
@@ -121,6 +141,14 @@ fn split_2_trim(s: &str) -> Option<(&str, &str)> {
     } else {
         None
     }
+}
+
+fn trim_ends(s: &str, front: u8, back: u8) -> Result<&str> {
+    let s = s.trim();
+    if s.len() < 2 || s.as_bytes()[0] != front || s.as_bytes()[s.len() - 1] != back {
+        bail!("bad trim");
+    }
+    Ok(&s[1 .. s.len() - 1 ])
 }
 
 fn parse_naive_date(s: &str) -> Result<NaiveDate> {
