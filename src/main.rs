@@ -186,7 +186,7 @@ fn do_gh_api_request(client: &Client, url: &str) -> Result<(String, HeaderMap)> 
     let resp = builder.send()?;
     let headers = resp.headers().clone();
     let body = resp.text()?;
-    let json_body = Value::from_str(&body)?;
+    //let json_body = Value::from_str(&body)?;
     //println!("{}", serde_json::to_string_pretty(&json_body[0])?);
 
     delay();
