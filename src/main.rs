@@ -29,27 +29,42 @@ enum Command {
     },
 }
 
-fn parse_naive_date(s: &str) -> Result<NaiveDate> {
-    Ok(NaiveDate::parse_from_str(s, "%Y-%m-%d")?)
-}
-
 fn main() -> Result<()> {
     let options = Options::from_args();
+
+    match options.cmd {
+        Command::Pulls { date } => {
+            fetch_pulls(date)?;
+        }
+    }
+
+    Ok(())
+}
+
+fn fetch_pulls(date: NaiveDate) -> Result<()> {
     
     let client = Client::new();
     let repos = include_str!("github-repos.txt");
 
     for repo in repos.lines() {
-        println!("{}", repo);
+        println!("<!-- fetching pulls for {} -->", repo);
         let repourl = format!("https://api.github.com/repos/{}/pulls", repo);
         let builder = client.request(Method::GET, &repourl);
         let builder = builder.header(USER_AGENT, RIB_AGENT);
         let body = builder.send()?.text()?;
-        println!("body = {:#?}", body);
+        println!("---");
+        println!("{}", body);
+        println!("---");
 
+        return Ok(());
         let one_second = time::Duration::from_millis(1000);
         thread::sleep(one_second);
     }
 
     return Ok(());
 }
+
+fn parse_naive_date(s: &str) -> Result<NaiveDate> {
+    Ok(NaiveDate::parse_from_str(s, "%Y-%m-%d")?)
+}
+
