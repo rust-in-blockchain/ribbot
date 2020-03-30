@@ -8,10 +8,17 @@ use reqwest::blocking::Client;
 use reqwest::header::USER_AGENT;
 use reqwest::Method;
 use std::{thread, time};
+use structopt::StructOpt
 
 static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain bot; Aimeedeer/ribbot; aimeedeer@gmail.com)";
 
+#[derive(StructOpt)]
+struct Options {
+}
+
 fn main() -> Result<()> {
+    let options = Options::from_args();
+    
     let client = Client::new();
     let repos = include_str!("github-repos.txt");
 
