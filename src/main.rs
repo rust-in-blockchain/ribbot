@@ -129,16 +129,12 @@ fn get_merged_pulls(client: &Client, project: &Project, since: NaiveDate) -> Res
         for page in 1.. {
             println!("<!-- fetching page {}: {} -->", page, url);
 
-            let builder = client.request(Method::GET, &url);
-            let builder = builder.header(USER_AGENT, RIB_AGENT);
-            let resp = builder.send()?;
-            let next = parse_next(resp.headers())?.map(ToString::to_string);
-            let body = resp.text()?;
-            let json_body = Value::from_str(&body)?;
-            //println!("{}", serde_json::to_string_pretty(&json_body[0])?);
-            let pulls: Vec<GhPull> = serde_json::from_str(&body)?;
+            let (body, headers) = do_gh_api_request(client, &url)?;
 
+            let pulls: Vec<GhPull> = serde_json::from_str(&body)?;
             //println!("{:#?}", pulls);
+
+            let next = parse_next(&headers)?.map(ToString::to_string);
 
             let mut any_outdated = false;
             let pulls = pulls.into_iter().filter(|pr| {
@@ -170,8 +166,6 @@ fn get_merged_pulls(client: &Client, project: &Project, since: NaiveDate) -> Res
                 println!("<!-- reached max pages -->");
                 break;
             }
-
-            delay();
         }
     }
 
@@ -180,6 +174,24 @@ fn get_merged_pulls(client: &Client, project: &Project, since: NaiveDate) -> Res
 
 fn get_comment_count(client: &Client, pull: &GhPull) -> Result<u64> {
     Ok(0)
+}
+
+fn do_gh_api_paged_request(client: &Client, url: &str) -> Result<Value> {
+    panic!()
+}
+
+fn do_gh_api_request(client: &Client, url: &str) -> Result<(String, HeaderMap)> {
+    let builder = client.request(Method::GET, url);
+    let builder = builder.header(USER_AGENT, RIB_AGENT);
+    let resp = builder.send()?;
+    let headers = resp.headers().clone();
+    let body = resp.text()?;
+    let json_body = Value::from_str(&body)?;
+    //println!("{}", serde_json::to_string_pretty(&json_body[0])?);
+
+    delay();
+
+    Ok((body, headers))
 }
 
 fn print_pull_candidates(project: &Project, pulls: &[GhPullWithComments]) -> Result<()> {
