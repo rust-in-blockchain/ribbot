@@ -93,13 +93,17 @@ struct GhUser {
 #[derive(Deserialize, Debug)]
 struct GhPullWithComments {
     pull: GhPull,
-    comments: u64,
+    comments: usize,
+}
+
+#[derive(Deserialize, Debug)]
+struct GhComments {
 }
 
 fn get_sorted_merged_pulls_with_comments(client: &Client, project: &Project, since: NaiveDate) -> Result<Vec<GhPullWithComments>> {
     let mut pulls = get_merged_pulls_with_comments(client, project, since)?;
     pulls.sort_by_key(|pull| {
-        u64::max_value() - pull.comments
+        usize::max_value() - pull.comments
     });
     Ok(pulls)
 }
@@ -159,8 +163,15 @@ fn get_merged_pulls(client: &Client, project: &Project, since: NaiveDate) -> Res
     Ok(all_pulls)
 }
 
-fn get_comment_count(client: &Client, pull: &GhPull) -> Result<u64> {
-    Ok(0)
+fn get_comment_count(client: &Client, pull: &GhPull) -> Result<usize> {
+    println!("<!-- fetching comments for {} -->", pull.html_url);
+
+    let comments = do_gh_api_paged_request(client, &pull.review_comments_url, |body| {
+        let comments: Vec<GhComments> = serde_json::from_str(&body)?;
+        Ok((comments, true))
+    })?;
+
+    Ok(comments.len())
 }
 
 fn do_gh_api_paged_request<T>(client: &Client, url: &str,
