@@ -5,6 +5,7 @@
 
 #![allow(unused)]
 
+use std::collections::HashMap;
 use std::str::FromStr;
 use anyhow::{Result, Context, bail};
 use reqwest::blocking::{Client, Response};
@@ -81,7 +82,8 @@ fn fetch_pulls(config: &Config, opts: PullCmdOpts) -> Result<()> {
         } else {
             get_sorted_merged_pulls_without_comments(&client, project, opts)?
         };
-        print_pull_candidates(project, &pulls);
+        let stats = make_pull_stats(project, &pulls)?;
+        print_pull_candidates(project, &pulls, stats, opts);
     }
 
     return Ok(());
@@ -95,11 +97,22 @@ struct GhPull {
     user: GhUser,
     merged_at: Option<DateTime<Utc>>,
     review_comments_url: String,
+    base: GhPullBase,
 }
 
 #[derive(Deserialize, Debug)]
 struct GhUser {
     login: String,
+}
+
+#[derive(Deserialize, Debug)]
+struct GhPullBase {
+    repo: GhRepo,
+}
+
+#[derive(Deserialize, Debug)]
+struct GhRepo {
+    html_url: String,
 }
 
 #[derive(Deserialize, Debug)]
@@ -258,10 +271,33 @@ fn do_gh_api_request(client: &Client, url: &str) -> Result<(String, HeaderMap)> 
     Ok((body, headers))
 }
 
-fn print_pull_candidates(project: &Project, pulls: &[GhPullWithComments]) -> Result<()> {
+fn print_pull_candidates(project: &Project, pulls: &[GhPullWithComments],
+                         stats: PullStats, opts: PullCmdOpts) -> Result<()> {
+    let stubname = make_stubname(project);
+    let begin = opts.begin.format("%Y-%m-%d").to_string();
+    let end = opts.end.format("%Y-%m-%d").to_string();
+
     println!();
     println!("#### [**{}**]({})", project.name, project.url);
     println!();
+
+    let total_merged_prs = stats.stats.iter().fold(0, |a, s| a + s.count);
+    print!("{} merged PRs (", total_merged_prs);
+    for (i, stat) in stats.stats.iter().enumerate() {
+        print!("[{}][{}-merged-pr-{}]", i + 1, stubname, i + 1);
+        if i < stats.stats.len() - 1 {
+            print!(", ");
+        }
+    }
+    println!(")");
+    println!();
+    for (i, stat) in stats.stats.iter().enumerate() {
+        let human_query=format!("{}/pulls?q=is%3Apr+is%3Aclosed+merged%3A{}..{}",
+                                stat.repo, begin, end);
+        println!("[{}-merged-pr-{}]: {}", stubname, i + 1, human_query);
+    }
+    println!();
+    
     for pull in pulls {
         let comments = pull.comments;
         let pull = &pull.pull;
@@ -332,4 +368,52 @@ fn parse_naive_date(s: &str) -> Result<NaiveDate> {
 fn delay() {
     let one_second = time::Duration::from_millis(DELAY_MS);
     thread::sleep(one_second);
+}
+
+struct PullStats {
+    stats: Vec<PullStat>,
+}
+
+struct PullStat {
+    repo: String,
+    count: usize,
+}
+
+fn make_pull_stats(project: &Project, pulls: &[GhPullWithComments]) -> Result<PullStats> {
+    let mut map = HashMap::new();
+
+    for pull in pulls {
+        let repo = &pull.pull.base.repo.html_url;
+        let counter = map.entry(repo).or_insert(0);
+        *counter += 1;
+    }
+
+    let mut stats = vec![];
+    for repo in &project.pull_merged_repos {
+        let repo = repo_name_to_url(repo);
+        let count = map.remove(&repo).unwrap_or(0);
+        stats.push(PullStat {
+            repo: repo.to_string(),
+            count,
+        });
+    }
+
+    for k in map.keys() {
+        println!("repo mismatch during stats: {}", k);
+    }
+
+    if !map.is_empty() {
+        bail!("repo mismatch during stats for {}", project.name);
+    }
+
+    Ok(PullStats { stats })
+}
+
+fn repo_name_to_url(repo: &str) -> String {
+    format!("https://github.com/{}", repo)
+}
+
+fn make_stubname(project: &Project) -> String {
+    let lower = project.name.to_ascii_lowercase();
+    lower.replace(" ", "_")
 }
