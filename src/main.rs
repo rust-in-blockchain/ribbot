@@ -80,8 +80,11 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
     let mut client = GhClient {
         client: Client::new(),
         limits: None,
+        calls: 0,
     };
 
+    let mut calls = 0;
+    
     for project in &config.projects {
         if let Some(ref only_project) = opts.only_project {
             if project.name != *only_project {
@@ -97,6 +100,10 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
         let pull_stats = make_pull_stats(project, &pulls)?;
         let issue_stats = make_issue_stats(project, &issues)?;
         print_project(project, &pulls, pull_stats, issue_stats, opts);
+
+        let new_calls = client.calls - calls;
+        calls = client.calls;
+        println!("<!-- total GitHub calls: {}, new GitHub calls: {} -->", calls, new_calls);
     }
 
     return Ok(());
@@ -350,6 +357,7 @@ fn do_gh_api_paged_request<T>(client: &mut GhClient, url: &str,
 struct GhClient {
     client: Client,
     limits: Option<RateLimitValues>,
+    calls: u64,
 }
 
 fn do_gh_api_request(client: &mut GhClient, url: &str, oauth_token: &Option<String>) -> Result<(String, HeaderMap)> {
@@ -371,6 +379,7 @@ fn do_gh_api_request(client: &mut GhClient, url: &str, oauth_token: &Option<Stri
 
         println!("<!-- {:?} -->", limits);
 
+        client.calls += 1;
         do_gh_rate_limit_bookkeeping(client, &headers)?;
 
         match status {
