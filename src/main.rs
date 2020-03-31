@@ -18,7 +18,7 @@ use serde_json::Value;
 use serde_derive::Deserialize;
 use reqwest::header;
 
-static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain bot; Aimeedeer/ribbot; aimeedeer@gmail.com)";
+static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain; Aimeedeer/ribbot; aimeedeer@gmail.com)";
 static CONFIG: &'static str = include_str!("rib-config.toml");
 static DELAY_MS: u64 = 10;
 static MAX_PAGES: usize = 10;
@@ -181,7 +181,11 @@ struct GhIssue {
     title: String,
     user: GhUser,
     updated_at: DateTime<Utc>,
+    pull_request: Option<GhIssuePull>,
 }
+
+#[derive(Deserialize, Debug)]
+struct GhIssuePull { }
 
 fn begin_and_end(opts: &PullCmdOpts) -> (DateTime<Utc>, DateTime<Utc>) {
     let begin = opts.begin.and_hms(0, 0, 0);
@@ -200,7 +204,7 @@ fn get_closed_issues(client: &mut GhClient, project: &Project, opts: &PullCmdOpt
     for repo in &project.repos {
         println!("<!-- fetching issues for repo {} -->", repo);
 
-        let since = begin.to_rfc3339_opts(SecondsFormat::Millis, false);
+        let since = begin.to_rfc3339_opts(SecondsFormat::Millis, true);
         let url = format!("https://api.github.com/repos/{}/issues?state=closed&sort=updated&direction=desc&since={}", repo, since);
         
         let new_issues = do_gh_api_paged_request(client, &url, &opts.oauth_token, |body| {
@@ -210,9 +214,14 @@ fn get_closed_issues(client: &mut GhClient, project: &Project, opts: &PullCmdOpt
             let mut any_outdated = false;
             let issues = issues.into_iter().filter(|pr| {
                 if pr.updated_at < begin {
+                    println!("<!-- discard too old: {} -->", pr.html_url);
                     any_outdated = true;
                     false
                 } else if pr.updated_at >= end {
+                    println!("<!-- discard too new: {} -->", pr.html_url);
+                    false
+                } else if pr.pull_request.is_some() {
+                    println!("<!-- discard issue is pull: {} -->", pr.html_url);
                     false
                 } else {
                     true
@@ -253,14 +262,17 @@ fn get_merged_pulls(client: &mut GhClient, project: &Project, opts: &PullCmdOpts
             let pulls = pulls.into_iter().filter(|pr| {
                 if let Some(merged_at) = pr.merged_at.clone() {
                     if merged_at < begin {
+                        println!("<!-- discard too old: {} -->", pr.html_url);
                         any_outdated = true;
                         false
                     } else if merged_at >= end {
+                        println!("<!-- discard too new: {} -->", pr.html_url);
                         false
                     } else {
                         true
                     }
                 } else {
+                    println!("<!-- discard unmerged: {} -->", pr.html_url);
                     false
                 }
             }).collect();
@@ -433,7 +445,10 @@ fn print_project(project: &Project, pulls: &[GhPullWithComments],
                  pull_stats: PullStats, issue_stats: PullStats, opts: &PullCmdOpts) -> Result<()> {
     let stubname = make_stubname(project);
     let begin = opts.begin.format("%Y-%m-%d").to_string();
-    let end = opts.end.format("%Y-%m-%d").to_string();
+    // The end-date used in the human-readable queries is inclusive, where ours is exclusive.
+    // Subtracting one will make the human-readable query links agree with our numbers.
+    let end = opts.end - chrono::Duration::days(1);
+    let end = end.format("%Y-%m-%d").to_string();
 
     println!();
     println!("#### [**{}**]({})", project.name, project.url);
@@ -465,7 +480,7 @@ fn print_project(project: &Project, pulls: &[GhPullWithComments],
         println!("[{}-merged-prs-{}]: {}", stubname, i + 1, human_query);
     }
     for (i, stat) in issue_stats.stats.iter().enumerate() {
-        let human_query=format!("{}/issues?q=is%3Apr+is%3Aclosed+closed%3A{}..{}",
+        let human_query=format!("{}/issues?q=is%3Aissue+is%3Aclosed+closed%3A{}..{}",
                                 stat.repo, begin, end);
         println!("[{}-closed_issues-{}]: {}", stubname, i + 1, human_query);
     }
