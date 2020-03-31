@@ -75,7 +75,9 @@ fn main() -> Result<()> {
 
 fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
     
-    let client = Client::new();
+    let mut client = GhClient {
+        client: Client::new(),
+    };
 
     for project in &config.projects {
         if let Some(ref only_project) = opts.only_project {
@@ -84,9 +86,9 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
             }
         }
         let pulls = if !opts.no_comments {
-            get_sorted_merged_pulls_with_comments(&client, project, opts)?
+            get_sorted_merged_pulls_with_comments(&mut client, project, opts)?
         } else {
-            get_sorted_merged_pulls_without_comments(&client, project, opts)?
+            get_sorted_merged_pulls_without_comments(&mut client, project, opts)?
         };
         let stats = make_pull_stats(project, &pulls)?;
         print_pull_candidates(project, &pulls, stats, opts);
@@ -131,7 +133,7 @@ struct GhPullWithComments {
 struct GhComments {
 }
 
-fn get_sorted_merged_pulls_with_comments(client: &Client, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
+fn get_sorted_merged_pulls_with_comments(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
     let mut pulls = get_merged_pulls_with_comments(client, project, opts)?;
     pulls.sort_by_key(|pull| {
         usize::max_value() - pull.comments
@@ -139,7 +141,7 @@ fn get_sorted_merged_pulls_with_comments(client: &Client, project: &Project, opt
     Ok(pulls)
 }
 
-fn get_sorted_merged_pulls_without_comments(client: &Client, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
+fn get_sorted_merged_pulls_without_comments(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
     let mut pulls = get_merged_pulls_without_comments(client, project, opts)?;
     pulls.sort_by_key(|pull| {
         usize::max_value() - pull.comments
@@ -147,7 +149,7 @@ fn get_sorted_merged_pulls_without_comments(client: &Client, project: &Project, 
     Ok(pulls)
 }
 
-fn get_merged_pulls_with_comments(client: &Client, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
+fn get_merged_pulls_with_comments(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
     get_merged_pulls(client, project, opts)?.into_iter().map(|pull| {
         let comments = get_comment_count(client, &pull)?;
         Ok(GhPullWithComments {
@@ -157,7 +159,7 @@ fn get_merged_pulls_with_comments(client: &Client, project: &Project, opts: &Pul
     }).collect()
 }
 
-fn get_merged_pulls_without_comments(client: &Client, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
+fn get_merged_pulls_without_comments(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
     get_merged_pulls(client, project, opts)?.into_iter().map(|pull| {
         let comments = 0;
         Ok(GhPullWithComments {
@@ -167,7 +169,7 @@ fn get_merged_pulls_without_comments(client: &Client, project: &Project, opts: &
     }).collect()
 }
 
-fn get_merged_pulls(client: &Client, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPull>> {
+fn get_merged_pulls(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPull>> {
     let begin = opts.begin.and_hms(0, 0, 0);
     let begin = DateTime::<Utc>::from_utc(begin, Utc);
     let end = opts.end.and_hms(0, 0, 0);
@@ -216,7 +218,7 @@ fn get_merged_pulls(client: &Client, project: &Project, opts: &PullCmdOpts) -> R
     Ok(all_pulls)
 }
 
-fn get_comment_count(client: &Client, pull: &GhPull) -> Result<usize> {
+fn get_comment_count(client: &mut GhClient, pull: &GhPull) -> Result<usize> {
     println!("<!-- fetching comments for {} -->", pull.html_url);
 
     let comments = do_gh_api_paged_request(client, &pull.review_comments_url, |body| {
@@ -227,7 +229,7 @@ fn get_comment_count(client: &Client, pull: &GhPull) -> Result<usize> {
     Ok(comments.len())
 }
 
-fn do_gh_api_paged_request<T>(client: &Client, url: &str,
+fn do_gh_api_paged_request<T>(client: &mut GhClient, url: &str,
                               f: impl Fn(String) -> Result<(Vec<T>, bool)>) -> Result<Vec<T>> {
     let mut url = url.to_string();
 
@@ -263,8 +265,12 @@ fn do_gh_api_paged_request<T>(client: &Client, url: &str,
     Ok(all_results)
 }
 
-fn do_gh_api_request(client: &Client, url: &str) -> Result<(String, HeaderMap)> {
-    let builder = client.request(Method::GET, url);
+struct GhClient {
+    client: Client,
+}
+
+fn do_gh_api_request(client: &mut GhClient, url: &str) -> Result<(String, HeaderMap)> {
+    let builder = client.client.request(Method::GET, url);
     let builder = builder.header(USER_AGENT, RIB_AGENT);
     let resp = builder.send()?;
     let headers = resp.headers().clone();
