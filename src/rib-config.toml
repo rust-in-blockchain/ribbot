@@ -2,17 +2,23 @@
 name = "CodeChain"
 url = "https://github.com/CodeChain-io"
 pull_merged_repos = [
-  "nervosnetwork/ckb",
-  "nervosnetwork/ckb-vm",
-  "nervosnetwork/rfcs",
+"CodeChain-io/codechain",
+"CodeChain-io/foundry",
+"CodeChain-io/rust-merkle-trie",
+"CodeChain-io/rust-codechain-primitives",
+"CodeChain-io/jsonrpc-filter",
+"CodeChain-io/rlp",
+"CodeChain-io/rust-codechain-db",
+"CodeChain-io/rust-codechain-crypto",
+"CodeChain-io/vrf-rs",
 ]
 
 [[projects]]
 name = "Nervos"
 url = "https://github.com/nervosnetwork"
 pull_merged_repos = [
-  "nervosnetwork/ckb",
-  "nervosnetwork/ckb-vm",
-  "nervosnetwork/rfcs",
+"nervosnetwork/ckb",
+"nervosnetwork/ckb-vm",
+"nervosnetwork/rfcs",
 ]
 
