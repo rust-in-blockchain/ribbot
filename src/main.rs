@@ -10,7 +10,7 @@ use std::str::FromStr;
 use anyhow::{Result, Context, bail};
 use reqwest::blocking::{Client, Response};
 use reqwest::header::{USER_AGENT, HeaderMap};
-use reqwest::Method;
+use reqwest::{Method, StatusCode};
 use std::{thread, time};
 use structopt::StructOpt;
 use chrono::{Date, DateTime, Local, Utc, NaiveDate};
@@ -270,17 +270,62 @@ struct GhClient {
 }
 
 fn do_gh_api_request(client: &mut GhClient, url: &str) -> Result<(String, HeaderMap)> {
-    let builder = client.client.request(Method::GET, url);
-    let builder = builder.header(USER_AGENT, RIB_AGENT);
-    let resp = builder.send()?;
-    let headers = resp.headers().clone();
-    let body = resp.text()?;
-    //let json_body = Value::from_str(&body)?;
-    //println!("{}", serde_json::to_string_pretty(&json_body[0])?);
+    do_gh_rate_limit(client);
 
-    delay();
+    loop {
 
-    Ok((body, headers))
+        let builder = client.client.request(Method::GET, url);
+        let builder = builder.header(USER_AGENT, RIB_AGENT);
+        let resp = builder.send()?;
+        let headers = resp.headers().clone();
+        let status = resp.status();
+        let limits = get_rate_limit_values(&headers)?;
+
+        match status {
+            StatusCode::OK => {
+                let body = resp.text()?;
+
+                //let json_body = Value::from_str(&body)?;
+                //println!("{}", serde_json::to_string_pretty(&json_body[0])?);
+
+                do_gh_rate_limit_bookkeeping(client, &headers);
+
+                return Ok((body, headers));
+            },
+            StatusCode::FORBIDDEN => {
+                // Probably rate limited
+                let rate_limited = limits.remaining == 0;
+                if rate_limited {
+                    panic!("todo - rate limited");
+                } else {
+                    println!("{:#?}", resp);
+                    bail!("unexpected forbidden status");
+                }
+            }
+            _ => {
+                println!("{:#?}", resp);
+                bail!("unexpected response");
+            }
+        }
+    }
+
+    unreachable!()
+}
+
+struct RateLimitValues {
+    limit: u64,
+    remaining: u64,
+    reset: DateTime<Utc>,
+}
+
+fn get_rate_limit_values(headers: &HeaderMap) -> Result<RateLimitValues> {
+    panic!()
+}
+
+fn do_gh_rate_limit(client: &mut GhClient) {
+}
+
+fn do_gh_rate_limit_bookkeeping(client: &mut GhClient, headers: &HeaderMap) {
 }
 
 fn print_pull_candidates(project: &Project, pulls: &[GhPullWithComments],
