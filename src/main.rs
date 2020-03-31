@@ -13,7 +13,7 @@ use reqwest::header::{USER_AGENT, HeaderMap};
 use reqwest::{Method, StatusCode};
 use std::{thread, time};
 use structopt::StructOpt;
-use chrono::{Date, DateTime, Local, Utc, NaiveDate, TimeZone};
+use chrono::{Date, DateTime, Local, Utc, NaiveDate, TimeZone, SecondsFormat};
 use serde_json::Value;
 use serde_derive::Deserialize;
 use reqwest::header;
@@ -93,8 +93,10 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
         } else {
             get_sorted_merged_pulls_without_comments(&mut client, project, opts)?
         };
-        let stats = make_pull_stats(project, &pulls)?;
-        print_project(project, &pulls, stats, opts);
+        let issues = get_closed_issues(&mut client, project, opts)?;
+        let pull_stats = make_pull_stats(project, &pulls)?;
+        let issue_stats = make_issue_stats(project, &issues)?;
+        print_project(project, &pulls, pull_stats, issue_stats, opts);
     }
 
     return Ok(());
@@ -172,11 +174,68 @@ fn get_merged_pulls_without_comments(client: &mut GhClient, project: &Project, o
     }).collect()
 }
 
-fn get_merged_pulls(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPull>> {
+#[derive(Deserialize, Debug)]
+struct GhIssue {
+    html_url: String,
+    state: String,
+    title: String,
+    user: GhUser,
+    updated_at: DateTime<Utc>,
+}
+
+fn begin_and_end(opts: &PullCmdOpts) -> (DateTime<Utc>, DateTime<Utc>) {
     let begin = opts.begin.and_hms(0, 0, 0);
     let begin = DateTime::<Utc>::from_utc(begin, Utc);
     let end = opts.end.and_hms(0, 0, 0);
     let end = DateTime::<Utc>::from_utc(end, Utc);
+    (begin, end)
+}
+
+fn get_closed_issues(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhIssue>> {
+    let (begin, end) = begin_and_end(opts);
+
+    let mut all_issues = vec![];
+
+    println!("<!-- fetching issues for project {} -->", project.name);
+    for repo in &project.repos {
+        println!("<!-- fetching issues for repo {} -->", repo);
+
+        let since = begin.to_rfc3339_opts(SecondsFormat::Millis, false);
+        let url = format!("https://api.github.com/repos/{}/issues?state=closed&sort=updated&direction=desc&since={}", repo, since);
+        
+        let new_issues = do_gh_api_paged_request(client, &url, &opts.oauth_token, |body| {
+            let issues: Vec<GhIssue> = serde_json::from_str(&body)?;
+            //println!("{:#?}", pulls);
+
+            let mut any_outdated = false;
+            let issues = issues.into_iter().filter(|pr| {
+                if pr.updated_at < begin {
+                    any_outdated = true;
+                    false
+                } else if pr.updated_at >= end {
+                    false
+                } else {
+                    true
+                }
+            }).collect();
+
+            let keep_going = if any_outdated {
+                false
+            } else {
+                true
+            };
+
+            Ok((issues, keep_going))
+        })?;
+
+        all_issues.extend(new_issues);
+    }
+
+    Ok(all_issues)
+}
+
+fn get_merged_pulls(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPull>> {
+    let (begin, end) = begin_and_end(opts);
 
     let mut all_pulls = vec![];
     
@@ -371,7 +430,7 @@ fn do_gh_rate_limit_bookkeeping(client: &mut GhClient, headers: &HeaderMap) -> R
 }
 
 fn print_project(project: &Project, pulls: &[GhPullWithComments],
-                 stats: PullStats, opts: &PullCmdOpts) -> Result<()> {
+                 pull_stats: PullStats, issue_stats: PullStats, opts: &PullCmdOpts) -> Result<()> {
     let stubname = make_stubname(project);
     let begin = opts.begin.format("%Y-%m-%d").to_string();
     let end = opts.end.format("%Y-%m-%d").to_string();
@@ -380,20 +439,35 @@ fn print_project(project: &Project, pulls: &[GhPullWithComments],
     println!("#### [**{}**]({})", project.name, project.url);
     println!();
 
-    let total_merged_prs = stats.stats.iter().fold(0, |a, s| a + s.count);
+    let total_merged_prs = pull_stats.stats.iter().fold(0, |a, s| a + s.count);
+    let total_closed_issues = issue_stats.stats.iter().fold(0, |a, s| a + s.count);
     print!("{} merged PRs (", total_merged_prs);
-    for (i, stat) in stats.stats.iter().enumerate() {
-        print!("[{}][{}-merged-pr-{}]", i + 1, stubname, i + 1);
-        if i < stats.stats.len() - 1 {
+    for (i, stat) in pull_stats.stats.iter().enumerate() {
+        print!("[{}][{}-merged-prs-{}]", i + 1, stubname, i + 1);
+        if i < pull_stats.stats.len() - 1 {
+            print!(", ");
+        }
+    }
+    print!("), ");
+    print!("{} closed issues (", total_closed_issues);
+    for (i, stat) in issue_stats.stats.iter().enumerate() {
+        print!("[{}][{}-closed_issues-{}]", i + 1, stubname, i + 1);
+        if i < issue_stats.stats.len() - 1 {
             print!(", ");
         }
     }
     println!(")");
+
     println!();
-    for (i, stat) in stats.stats.iter().enumerate() {
+    for (i, stat) in pull_stats.stats.iter().enumerate() {
         let human_query=format!("{}/pulls?q=is%3Apr+is%3Aclosed+merged%3A{}..{}",
                                 stat.repo, begin, end);
-        println!("[{}-merged-pr-{}]: {}", stubname, i + 1, human_query);
+        println!("[{}-merged-prs-{}]: {}", stubname, i + 1, human_query);
+    }
+    for (i, stat) in issue_stats.stats.iter().enumerate() {
+        let human_query=format!("{}/issues?q=is%3Apr+is%3Aclosed+closed%3A{}..{}",
+                                stat.repo, begin, end);
+        println!("[{}-closed_issues-{}]: {}", stubname, i + 1, human_query);
     }
     println!();
     
@@ -488,6 +562,46 @@ struct PullStat {
     count: usize,
 }
 
+fn make_issue_stats(project: &Project, issues: &[GhIssue]) -> Result<PullStats> {
+    let mut map = HashMap::new();
+
+    for issue in issues {
+        let repo = repo_from_issue(&issue.html_url);
+        let counter = map.entry(repo).or_insert(0);
+        *counter += 1;
+    }
+
+    let mut stats = vec![];
+    for repo in &project.repos {
+        let repo = repo_name_to_url(repo);
+        let count = map.remove(&repo).unwrap_or(0);
+        if count != 0 {
+            stats.push(PullStat {
+                repo: repo.to_string(),
+                count,
+            });
+        }
+    }
+
+    for k in map.keys() {
+        println!("repo mismatch during issue stats: {}", k);
+    }
+
+    if !map.is_empty() {
+        bail!("repo mismatch during issue stats for {}", project.name);
+    }
+
+    Ok(PullStats { stats })
+}
+
+fn repo_from_issue(issue: &str) -> String {
+    let parts = issue.split("/").collect::<Vec<_>>();
+    assert!(parts.len() > 2);
+    let new_parts_count = parts.len() - 2;
+    let parts = &parts[0..new_parts_count];
+    parts.join("/")
+}
+
 fn make_pull_stats(project: &Project, pulls: &[GhPullWithComments]) -> Result<PullStats> {
     let mut map = HashMap::new();
 
@@ -510,11 +624,11 @@ fn make_pull_stats(project: &Project, pulls: &[GhPullWithComments]) -> Result<Pu
     }
 
     for k in map.keys() {
-        println!("repo mismatch during stats: {}", k);
+        println!("repo mismatch during pull stats: {}", k);
     }
 
     if !map.is_empty() {
-        bail!("repo mismatch during stats for {}", project.name);
+        bail!("repo mismatch during pull stats for {}", project.name);
     }
 
     Ok(PullStats { stats })
