@@ -124,17 +124,11 @@ fn get_merged_pulls(client: &Client, project: &Project, since: NaiveDate) -> Res
     for repo in &project.pull_merged_repos {
         println!("<!-- fetching pulls for repo {} -->", repo);
 
-        let mut url = format!("https://api.github.com/repos/{}/pulls?state=closed&sort=updated&direction=desc", repo);
+        let url = format!("https://api.github.com/repos/{}/pulls?state=closed&sort=updated&direction=desc", repo);
 
-        for page in 1.. {
-            println!("<!-- fetching page {}: {} -->", page, url);
-
-            let (body, headers) = do_gh_api_request(client, &url)?;
-
+        let new_pulls = do_gh_api_paged_request(client, &url, |body| {
             let pulls: Vec<GhPull> = serde_json::from_str(&body)?;
             //println!("{:#?}", pulls);
-
-            let next = parse_next(&headers)?.map(ToString::to_string);
 
             let mut any_outdated = false;
             let pulls = pulls.into_iter().filter(|pr| {
@@ -148,25 +142,18 @@ fn get_merged_pulls(client: &Client, project: &Project, since: NaiveDate) -> Res
                 } else {
                     false
                 }
-            });
+            }).collect();
 
-            all_pulls.extend(pulls);
-            
-            if any_outdated {
-                break;
-            }
-
-            if let Some(next) = next {
-                url = next;
+            let keep_going = if any_outdated {
+                false
             } else {
-                break;
-            }
+                true
+            };
 
-            if page >= MAX_PAGES {
-                println!("<!-- reached max pages -->");
-                break;
-            }
-        }
+            Ok((pulls, keep_going))
+        })?;
+
+        all_pulls.extend(new_pulls);
     }
 
     Ok(all_pulls)
@@ -176,8 +163,40 @@ fn get_comment_count(client: &Client, pull: &GhPull) -> Result<u64> {
     Ok(0)
 }
 
-fn do_gh_api_paged_request(client: &Client, url: &str) -> Result<Value> {
-    panic!()
+fn do_gh_api_paged_request<T>(client: &Client, url: &str,
+                              f: impl Fn(String) -> Result<(Vec<T>, bool)>) -> Result<Vec<T>> {
+    let mut url = url.to_string();
+
+    let mut all_results = vec![];
+
+    for page in 1.. {
+        println!("<!-- fetching page {}: {} -->", page, url);
+
+        let (body, headers) = do_gh_api_request(client, &url)?;
+
+        let (new_results, keep_going) = f(body)?;
+
+        all_results.extend(new_results);
+
+        if !keep_going {
+            break;
+        }
+
+        let next = parse_next(&headers)?.map(ToString::to_string);
+
+        if let Some(next) = next {
+            url = next;
+        } else {
+            break;
+        }
+
+        if page >= MAX_PAGES {
+            println!("<!-- reached max pages -->");
+            break;
+        }
+    }
+
+    Ok(all_results)
 }
 
 fn do_gh_api_request(client: &Client, url: &str) -> Result<(String, HeaderMap)> {
