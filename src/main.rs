@@ -300,7 +300,8 @@ fn do_gh_api_request(client: &mut GhClient, url: &str) -> Result<(String, Header
                 // Probably rate limited
                 let rate_limited = limits.remaining == 0;
                 if rate_limited {
-                    panic!("todo - rate limited");
+                    do_gh_rate_limit_delay(&limits);
+                    continue;
                 } else {
                     println!("{:#?}", resp);
                     bail!("unexpected forbidden status");
@@ -343,13 +344,17 @@ fn get_rate_limit_values(headers: &HeaderMap) -> Result<RateLimitValues> {
 fn do_gh_rate_limit(client: &mut GhClient) -> Result<()> {
     if let Some(ref limits) = client.limits {
         if limits.remaining == 0 {
-            println!("<!-- rate limited, sleeping until {:?}", limits.reset_local);
-            delay_until(limits.reset);
+            do_gh_rate_limit_delay(&limits);
         }
     }
     
     Ok(())
 }
+
+fn do_gh_rate_limit_delay(limits: &RateLimitValues) {
+    println!("<!-- rate limited, sleeping until {:?}", limits.reset_local);
+    delay_until(limits.reset);
+}    
 
 fn do_gh_rate_limit_bookkeeping(client: &mut GhClient, headers: &HeaderMap) -> Result<()> {
     let limits = get_rate_limit_values(headers)?;
@@ -457,16 +462,13 @@ fn delay() {
 }
 
 fn delay_until(date: DateTime<Utc>) {
-    let sleep_dur = {
-        let now = Utc::now();
-        if now < date {
-            let wait_time = date - now;
-            wait_time.to_std().expect("duration conversion")
-        } else {
-            time::Duration::from_secs(5)
-        }
-    };
-    thread::sleep(sleep_dur);
+    let now = Utc::now();
+    if now < date {
+        let wait_time = date - now;
+        let wait_time = wait_time.to_std().expect("duration conversion");
+        thread::sleep(wait_time);
+    }
+    thread::sleep(time::Duration::from_secs(5));
 }
 
 struct PullStats {
