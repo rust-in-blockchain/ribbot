@@ -30,11 +30,11 @@ struct Options {
 
 #[derive(StructOpt)]
 enum Command {
-    Pulls(PullCmdOptions),
+    Pulls(PullCmdOpts),
 }
 
 #[derive(StructOpt)]
-struct PullCmdOptions {
+struct PullCmdOpts {
     #[structopt(long, parse(try_from_str = parse_naive_date))]
     since: NaiveDate,
     #[structopt(long)]
@@ -69,7 +69,7 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn fetch_pulls(config: &Config, opts: PullCmdOptions) -> Result<()> {
+fn fetch_pulls(config: &Config, opts: PullCmdOpts) -> Result<()> {
     
     let client = Client::new();
 
