@@ -77,6 +77,7 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
     
     let mut client = GhClient {
         client: Client::new(),
+        limits: None,
     };
 
     for project in &config.projects {
@@ -267,10 +268,11 @@ fn do_gh_api_paged_request<T>(client: &mut GhClient, url: &str,
 
 struct GhClient {
     client: Client,
+    limits: Option<RateLimitValues>,
 }
 
 fn do_gh_api_request(client: &mut GhClient, url: &str) -> Result<(String, HeaderMap)> {
-    do_gh_rate_limit(client);
+    do_gh_rate_limit(client)?;
 
     loop {
 
@@ -283,14 +285,14 @@ fn do_gh_api_request(client: &mut GhClient, url: &str) -> Result<(String, Header
 
         println!("<!-- {:?} -->", limits);
 
+        do_gh_rate_limit_bookkeeping(client, &headers)?;
+
         match status {
             StatusCode::OK => {
                 let body = resp.text()?;
 
                 //let json_body = Value::from_str(&body)?;
                 //println!("{}", serde_json::to_string_pretty(&json_body[0])?);
-
-                do_gh_rate_limit_bookkeeping(client, &headers);
 
                 return Ok((body, headers));
             },
@@ -338,10 +340,21 @@ fn get_rate_limit_values(headers: &HeaderMap) -> Result<RateLimitValues> {
     })
 }
 
-fn do_gh_rate_limit(client: &mut GhClient) {
+fn do_gh_rate_limit(client: &mut GhClient) -> Result<()> {
+    if let Some(ref limits) = client.limits {
+        if limits.remaining == 0 {
+            println!("<!-- rate limited, sleeping until {:?}", limits.reset_local);
+            delay_until(limits.reset);
+        }
+    }
+    
+    Ok(())
 }
 
-fn do_gh_rate_limit_bookkeeping(client: &mut GhClient, headers: &HeaderMap) {
+fn do_gh_rate_limit_bookkeeping(client: &mut GhClient, headers: &HeaderMap) -> Result<()> {
+    let limits = get_rate_limit_values(headers)?;
+    client.limits = Some(limits);
+    Ok(())
 }
 
 fn print_pull_candidates(project: &Project, pulls: &[GhPullWithComments],
@@ -441,6 +454,19 @@ fn parse_naive_date(s: &str) -> Result<NaiveDate> {
 fn delay() {
     let one_second = time::Duration::from_millis(DELAY_MS);
     thread::sleep(one_second);
+}
+
+fn delay_until(date: DateTime<Utc>) {
+    let sleep_dur = {
+        let now = Utc::now();
+        if now < date {
+            let wait_time = date - now;
+            wait_time.to_std().expect("duration conversion")
+        } else {
+            time::Duration::from_secs(5)
+        }
+    };
+    thread::sleep(sleep_dur);
 }
 
 struct PullStats {
