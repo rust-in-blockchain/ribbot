@@ -499,7 +499,9 @@ fn print_project(project: &Project, pulls: &[GhPullWithComments],
         println!("- PR: [{}]({}) by [@{}](https://github.com/{})",
                  pull.title, pull.html_url,
                  pull.user.login, pull.user.login);
-        //println!("<!-- ^ comments: {}, merged_at: {:?} -->", comments, pull.merged_at);
+        if comments > 0 {
+            println!("  <!-- ^ comments: {} -->", comments);
+        }
     }
     println!();
 
