@@ -14,6 +14,65 @@ repos = [
 ]
 
 [[projects]]
+name = "COMIT"
+url = "https://github.com/comit-network"
+repos = [
+"comit-network/comit-rs",
+"comit-network/create-comit-app",
+"comit-network/RFCs",
+]
+
+[[projects]]
+name = "Enigma"
+url = "https://github.com/enigmampc"
+repos = [
+"enigmampc/enigma-core",
+]
+
+[[projects]]
+name = "Golem"
+url = "https://github.com/golemfactory"
+repos = [
+"golemfactory/gwasm-runner",
+"golemfactory/golem",
+"golemfactory/mandelbrot",
+"golemfactory/sp-wasm",
+"golemfactory/gudot",
+"golemfactory/g-flite",
+"golemfactory/golem-client",
+"golemfactory/gMorph",
+"golemfactory/hello-gwasm-runner",
+]
+
+[[projects]]
+name = "Grin"
+url = "https://github.com/mimblewimble/grin"
+repos = [
+"mimblewimble/grin",
+]
+
+[[projects]]
+name = "Holochain"
+url = "https://github.com/holochain"
+repos = [
+"holochain/holochain-rust",
+]
+
+[[projects]]
+name = "Interledger"
+url = "https://github.com/interledger-rs"
+repos = [
+"interledger-rs/interledger-rs",
+]
+
+[[projects]]
+name = "Near"
+url = "https://github.com/nearprotocol"
+repos = [
+"nearprotocol/nearcore",
+]
+
+[[projects]]
 name = "Nervos"
 url = "https://github.com/nervosnetwork"
 repos = [
@@ -21,4 +80,45 @@ repos = [
 "nervosnetwork/ckb-vm",
 "nervosnetwork/rfcs",
 ]
+
+[[projects]]
+name = "Oasis"
+url = "https://github.com/oasislabs"
+repos = [
+"oasislabs/oasis-runtime",
+"oasislabs/oasis-rs",
+"oasislabs/tutorials",
+]
+
+[[projects]]
+name = "Parity"
+url = "https://github.com/paritytech"
+repos = [
+"paritytech/substrate",
+"paritytech/polkadot",
+"paritytech/wasmi",
+"paritytech/parity-bitcoin",
+"paritytech/parity-zcash",
+]
+
+[[projects]]
+name = "Solana"
+url = "https://github.com/solana-labs"
+repos = [
+"solana-labs/solana",
+]
+
+[[projects]]
+name = "Zcash"
+url = "https://github.com/zcash"
+repos = [
+"ZcashFoundation/zebra",
+"zcash/librustzcash",
+"zcash/zips",
+]
+
+
+
+
+
 

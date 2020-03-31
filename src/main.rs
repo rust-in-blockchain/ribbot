@@ -20,8 +20,8 @@ use reqwest::header;
 
 static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain bot; Aimeedeer/ribbot; aimeedeer@gmail.com)";
 static CONFIG: &'static str = include_str!("rib-config.toml");
-static DELAY_MS: u64 = 1000;
-static MAX_PAGES: usize = 5;
+static DELAY_MS: u64 = 100;
+static MAX_PAGES: usize = 10;
 
 #[derive(StructOpt)]
 struct Options {
@@ -398,10 +398,12 @@ fn make_pull_stats(project: &Project, pulls: &[GhPullWithComments]) -> Result<Pu
     for repo in &project.repos {
         let repo = repo_name_to_url(repo);
         let count = map.remove(&repo).unwrap_or(0);
-        stats.push(PullStat {
-            repo: repo.to_string(),
-            count,
-        });
+        if count != 0 {
+            stats.push(PullStat {
+                repo: repo.to_string(),
+                count,
+            });
+        }
     }
 
     for k in map.keys() {
