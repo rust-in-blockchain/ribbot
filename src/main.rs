@@ -44,6 +44,8 @@ struct PullCmdOpts {
     no_comments: bool,
     #[structopt(long)]
     only_project: Option<String>,
+    #[structopt(long)]
+    oauth_token: Option<String>,
 }
 
 
@@ -152,7 +154,7 @@ fn get_sorted_merged_pulls_without_comments(client: &mut GhClient, project: &Pro
 
 fn get_merged_pulls_with_comments(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
     get_merged_pulls(client, project, opts)?.into_iter().map(|pull| {
-        let comments = get_comment_count(client, &pull)?;
+        let comments = get_comment_count(client, &pull, opts)?;
         Ok(GhPullWithComments {
             pull,
             comments,
@@ -184,7 +186,7 @@ fn get_merged_pulls(client: &mut GhClient, project: &Project, opts: &PullCmdOpts
 
         let url = format!("https://api.github.com/repos/{}/pulls?state=closed&sort=updated&direction=desc", repo);
 
-        let new_pulls = do_gh_api_paged_request(client, &url, |body| {
+        let new_pulls = do_gh_api_paged_request(client, &url, &opts.oauth_token, |body| {
             let pulls: Vec<GhPull> = serde_json::from_str(&body)?;
             //println!("{:#?}", pulls);
 
@@ -219,10 +221,10 @@ fn get_merged_pulls(client: &mut GhClient, project: &Project, opts: &PullCmdOpts
     Ok(all_pulls)
 }
 
-fn get_comment_count(client: &mut GhClient, pull: &GhPull) -> Result<usize> {
+fn get_comment_count(client: &mut GhClient, pull: &GhPull, opts: &PullCmdOpts) -> Result<usize> {
     println!("<!-- fetching comments for {} -->", pull.html_url);
 
-    let comments = do_gh_api_paged_request(client, &pull.review_comments_url, |body| {
+    let comments = do_gh_api_paged_request(client, &pull.review_comments_url, &opts.oauth_token, |body| {
         let comments: Vec<GhComments> = serde_json::from_str(&body)?;
         Ok((comments, true))
     })?;
@@ -231,6 +233,7 @@ fn get_comment_count(client: &mut GhClient, pull: &GhPull) -> Result<usize> {
 }
 
 fn do_gh_api_paged_request<T>(client: &mut GhClient, url: &str,
+                              oauth_token: &Option<String>,
                               f: impl Fn(String) -> Result<(Vec<T>, bool)>) -> Result<Vec<T>> {
     let mut url = url.to_string();
 
@@ -239,7 +242,7 @@ fn do_gh_api_paged_request<T>(client: &mut GhClient, url: &str,
     for page in 1.. {
         println!("<!-- fetching page {}: {} -->", page, url);
 
-        let (body, headers) = do_gh_api_request(client, &url)?;
+        let (body, headers) = do_gh_api_request(client, &url, oauth_token)?;
 
         let (new_results, keep_going) = f(body)?;
 
@@ -271,13 +274,18 @@ struct GhClient {
     limits: Option<RateLimitValues>,
 }
 
-fn do_gh_api_request(client: &mut GhClient, url: &str) -> Result<(String, HeaderMap)> {
+fn do_gh_api_request(client: &mut GhClient, url: &str, oauth_token: &Option<String>) -> Result<(String, HeaderMap)> {
     do_gh_rate_limit(client)?;
 
     loop {
 
         let builder = client.client.request(Method::GET, url);
         let builder = builder.header(USER_AGENT, RIB_AGENT);
+        let builder = if let Some(ref oauth_token) = *oauth_token {
+            builder.header("Authorization", format!("token {}", oauth_token))
+        } else {
+            builder
+        };
         let resp = builder.send()?;
         let headers = resp.headers().clone();
         let status = resp.status();
