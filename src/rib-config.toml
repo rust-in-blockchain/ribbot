@@ -1,4 +1,13 @@
 [[projects]]
+name = "CodeChain"
+url = "https://github.com/CodeChain-io"
+pull_merged_repos = [
+  "nervosnetwork/ckb",
+  "nervosnetwork/ckb-vm",
+  "nervosnetwork/rfcs",
+]
+
+[[projects]]
 name = "Nervos"
 url = "https://github.com/nervosnetwork"
 pull_merged_repos = [
@@ -6,3 +15,4 @@ pull_merged_repos = [
   "nervosnetwork/ckb-vm",
   "nervosnetwork/rfcs",
 ]
+

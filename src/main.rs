@@ -34,7 +34,7 @@ enum Command {
     Pulls(PullCmdOpts),
 }
 
-#[derive(StructOpt, Copy, Clone)]
+#[derive(StructOpt, Clone)]
 struct PullCmdOpts {
     #[structopt(long, parse(try_from_str = parse_naive_date))]
     begin: NaiveDate,
@@ -42,6 +42,8 @@ struct PullCmdOpts {
     end: NaiveDate,
     #[structopt(long)]
     no_comments: bool,
+    #[structopt(long)]
+    only_project: Option<String>,
 }
 
 
@@ -65,18 +67,23 @@ fn main() -> Result<()> {
 
     match options.cmd {
         Command::Pulls(opts) => {
-            fetch_pulls(config, opts)?;
+            fetch_pulls(config, &opts)?;
         }
     }
 
     Ok(())
 }
 
-fn fetch_pulls(config: &Config, opts: PullCmdOpts) -> Result<()> {
+fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
     
     let client = Client::new();
 
     for project in &config.projects {
+        if let Some(ref only_project) = opts.only_project {
+            if project.name != *only_project {
+                continue;
+            }
+        }
         let pulls = if !opts.no_comments {
             get_sorted_merged_pulls_with_comments(&client, project, opts)?
         } else {
@@ -125,7 +132,7 @@ struct GhPullWithComments {
 struct GhComments {
 }
 
-fn get_sorted_merged_pulls_with_comments(client: &Client, project: &Project, opts: PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
+fn get_sorted_merged_pulls_with_comments(client: &Client, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
     let mut pulls = get_merged_pulls_with_comments(client, project, opts)?;
     pulls.sort_by_key(|pull| {
         usize::max_value() - pull.comments
@@ -133,7 +140,7 @@ fn get_sorted_merged_pulls_with_comments(client: &Client, project: &Project, opt
     Ok(pulls)
 }
 
-fn get_sorted_merged_pulls_without_comments(client: &Client, project: &Project, opts: PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
+fn get_sorted_merged_pulls_without_comments(client: &Client, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
     let mut pulls = get_merged_pulls_without_comments(client, project, opts)?;
     pulls.sort_by_key(|pull| {
         usize::max_value() - pull.comments
@@ -141,7 +148,7 @@ fn get_sorted_merged_pulls_without_comments(client: &Client, project: &Project, 
     Ok(pulls)
 }
 
-fn get_merged_pulls_with_comments(client: &Client, project: &Project, opts: PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
+fn get_merged_pulls_with_comments(client: &Client, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
     get_merged_pulls(client, project, opts)?.into_iter().map(|pull| {
         let comments = get_comment_count(client, &pull)?;
         Ok(GhPullWithComments {
@@ -151,7 +158,7 @@ fn get_merged_pulls_with_comments(client: &Client, project: &Project, opts: Pull
     }).collect()
 }
 
-fn get_merged_pulls_without_comments(client: &Client, project: &Project, opts: PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
+fn get_merged_pulls_without_comments(client: &Client, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
     get_merged_pulls(client, project, opts)?.into_iter().map(|pull| {
         let comments = 0;
         Ok(GhPullWithComments {
@@ -161,7 +168,7 @@ fn get_merged_pulls_without_comments(client: &Client, project: &Project, opts: P
     }).collect()
 }
 
-fn get_merged_pulls(client: &Client, project: &Project, opts: PullCmdOpts) -> Result<Vec<GhPull>> {
+fn get_merged_pulls(client: &Client, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPull>> {
     let begin = opts.begin.and_hms(0, 0, 0);
     let begin = DateTime::<Utc>::from_utc(begin, Utc);
     let end = opts.end.and_hms(0, 0, 0);
@@ -272,7 +279,7 @@ fn do_gh_api_request(client: &Client, url: &str) -> Result<(String, HeaderMap)> 
 }
 
 fn print_pull_candidates(project: &Project, pulls: &[GhPullWithComments],
-                         stats: PullStats, opts: PullCmdOpts) -> Result<()> {
+                         stats: PullStats, opts: &PullCmdOpts) -> Result<()> {
     let stubname = make_stubname(project);
     let begin = opts.begin.format("%Y-%m-%d").to_string();
     let end = opts.end.format("%Y-%m-%d").to_string();
@@ -304,7 +311,7 @@ fn print_pull_candidates(project: &Project, pulls: &[GhPullWithComments],
         println!("- PR: [{}]({}) by [@{}](https://github.com/{})",
                  pull.title, pull.html_url,
                  pull.user.login, pull.user.login);
-        println!("<!-- ^ comments: {}, merged_at: {:?} -->", comments, pull.merged_at);
+        //println!("<!-- ^ comments: {}, merged_at: {:?} -->", comments, pull.merged_at);
     }
     println!();
 
