@@ -36,7 +36,7 @@ enum Command {
 #[derive(StructOpt, Copy, Clone)]
 struct PullCmdOpts {
     #[structopt(long, parse(try_from_str = parse_naive_date))]
-    since: NaiveDate,
+    begin: NaiveDate,
     #[structopt(long)]
     no_comments: bool,
 }
@@ -147,8 +147,8 @@ fn get_merged_pulls_without_comments(client: &Client, project: &Project, opts: P
 }
 
 fn get_merged_pulls(client: &Client, project: &Project, opts: PullCmdOpts) -> Result<Vec<GhPull>> {
-    let since = opts.since.and_hms(0, 0, 0);
-    let since = DateTime::<Utc>::from_utc(since, Utc);
+    let begin = opts.begin.and_hms(0, 0, 0);
+    let begin = DateTime::<Utc>::from_utc(begin, Utc);
 
     let mut all_pulls = vec![];
     
@@ -165,7 +165,7 @@ fn get_merged_pulls(client: &Client, project: &Project, opts: PullCmdOpts) -> Re
             let mut any_outdated = false;
             let pulls = pulls.into_iter().filter(|pr| {
                 if let Some(merged_at) = pr.merged_at.clone() {
-                    if merged_at < since {
+                    if merged_at < begin {
                         any_outdated = true;
                         false
                     } else {
