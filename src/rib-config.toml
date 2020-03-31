@@ -1,7 +1,7 @@
 [[projects]]
 name = "CodeChain"
 url = "https://github.com/CodeChain-io"
-pull_merged_repos = [
+repos = [
 "CodeChain-io/codechain",
 "CodeChain-io/foundry",
 "CodeChain-io/rust-merkle-trie",
@@ -16,7 +16,7 @@ pull_merged_repos = [
 [[projects]]
 name = "Nervos"
 url = "https://github.com/nervosnetwork"
-pull_merged_repos = [
+repos = [
 "nervosnetwork/ckb",
 "nervosnetwork/ckb-vm",
 "nervosnetwork/rfcs",

@@ -56,8 +56,7 @@ struct Config {
 struct Project {
     name: String,
     url: String,
-    /// Repos for which we care about merged PRs
-    pull_merged_repos: Vec<String>,
+    repos: Vec<String>,
 }
 
 fn main() -> Result<()> {
@@ -177,7 +176,7 @@ fn get_merged_pulls(client: &Client, project: &Project, opts: &PullCmdOpts) -> R
     let mut all_pulls = vec![];
     
     println!("<!-- fetching pulls for project {} -->", project.name);
-    for repo in &project.pull_merged_repos {
+    for repo in &project.repos {
         println!("<!-- fetching pulls for repo {} -->", repo);
 
         let url = format!("https://api.github.com/repos/{}/pulls?state=closed&sort=updated&direction=desc", repo);
@@ -396,7 +395,7 @@ fn make_pull_stats(project: &Project, pulls: &[GhPullWithComments]) -> Result<Pu
     }
 
     let mut stats = vec![];
-    for repo in &project.pull_merged_repos {
+    for repo in &project.repos {
         let repo = repo_name_to_url(repo);
         let count = map.remove(&repo).unwrap_or(0);
         stats.push(PullStat {
