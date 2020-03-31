@@ -30,13 +30,17 @@ struct Options {
 
 #[derive(StructOpt)]
 enum Command {
-    Pulls {
-        #[structopt(long, parse(try_from_str = parse_naive_date))]
-        since: NaiveDate,
-        #[structopt(long)]
-        no_comments: bool,
-    },
+    Pulls(PullCmdOptions),
 }
+
+#[derive(StructOpt)]
+struct PullCmdOptions {
+    #[structopt(long, parse(try_from_str = parse_naive_date))]
+    since: NaiveDate,
+    #[structopt(long)]
+    no_comments: bool,
+}
+
 
 #[derive(Deserialize)]
 struct Config {
@@ -57,23 +61,23 @@ fn main() -> Result<()> {
         .context("parsing configuration")?;
 
     match options.cmd {
-        Command::Pulls { since, no_comments } => {
-            fetch_pulls(config, since, no_comments)?;
+        Command::Pulls(opts) => {
+            fetch_pulls(config, opts)?;
         }
     }
 
     Ok(())
 }
 
-fn fetch_pulls(config: &Config, since: NaiveDate, no_comments: bool) -> Result<()> {
+fn fetch_pulls(config: &Config, opts: PullCmdOptions) -> Result<()> {
     
     let client = Client::new();
 
     for project in &config.projects {
-        let pulls = if !no_comments {
-            get_sorted_merged_pulls_with_comments(&client, project, since)?
+        let pulls = if !opts.no_comments {
+            get_sorted_merged_pulls_with_comments(&client, project, opts.since)?
         } else {
-            get_sorted_merged_pulls_without_comments(&client, project, since)?
+            get_sorted_merged_pulls_without_comments(&client, project, opts.since)?
         };
         print_pull_candidates(project, &pulls);
     }
