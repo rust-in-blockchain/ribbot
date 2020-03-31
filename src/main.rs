@@ -20,7 +20,7 @@ use reqwest::header;
 
 static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain bot; Aimeedeer/ribbot; aimeedeer@gmail.com)";
 static CONFIG: &'static str = include_str!("rib-config.toml");
-static DELAY_MS: u64 = 100;
+static DELAY_MS: u64 = 10;
 static MAX_PAGES: usize = 10;
 
 #[derive(StructOpt)]
@@ -94,7 +94,7 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
             get_sorted_merged_pulls_without_comments(&mut client, project, opts)?
         };
         let stats = make_pull_stats(project, &pulls)?;
-        print_pull_candidates(project, &pulls, stats, opts);
+        print_project(project, &pulls, stats, opts);
     }
 
     return Ok(());
@@ -370,8 +370,8 @@ fn do_gh_rate_limit_bookkeeping(client: &mut GhClient, headers: &HeaderMap) -> R
     Ok(())
 }
 
-fn print_pull_candidates(project: &Project, pulls: &[GhPullWithComments],
-                         stats: PullStats, opts: &PullCmdOpts) -> Result<()> {
+fn print_project(project: &Project, pulls: &[GhPullWithComments],
+                 stats: PullStats, opts: &PullCmdOpts) -> Result<()> {
     let stubname = make_stubname(project);
     let begin = opts.begin.format("%Y-%m-%d").to_string();
     let end = opts.end.format("%Y-%m-%d").to_string();
