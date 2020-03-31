@@ -13,7 +13,7 @@ use reqwest::header::{USER_AGENT, HeaderMap};
 use reqwest::{Method, StatusCode};
 use std::{thread, time};
 use structopt::StructOpt;
-use chrono::{Date, DateTime, Local, Utc, NaiveDate};
+use chrono::{Date, DateTime, Local, Utc, NaiveDate, TimeZone};
 use serde_json::Value;
 use serde_derive::Deserialize;
 use reqwest::header;
@@ -281,6 +281,8 @@ fn do_gh_api_request(client: &mut GhClient, url: &str) -> Result<(String, Header
         let status = resp.status();
         let limits = get_rate_limit_values(&headers)?;
 
+        println!("<!-- {:?} -->", limits);
+
         match status {
             StatusCode::OK => {
                 let body = resp.text()?;
@@ -312,14 +314,28 @@ fn do_gh_api_request(client: &mut GhClient, url: &str) -> Result<(String, Header
     unreachable!()
 }
 
+#[derive(Debug)]
 struct RateLimitValues {
     limit: u64,
     remaining: u64,
     reset: DateTime<Utc>,
+    reset_local: DateTime<Local>,
 }
 
 fn get_rate_limit_values(headers: &HeaderMap) -> Result<RateLimitValues> {
-    panic!()
+    let limit: u64 = headers.get("X-RateLimit-Limit")
+        .expect("X-RateLimit-Limit").to_str()?.parse()?;
+    let remaining: u64 = headers.get("X-RateLimit-Remaining")
+        .expect("X-RateLimit-Remaining").to_str()?.parse()?;
+    let reset: u64 = headers.get("X-RateLimit-Reset")
+        .expect("X-RateLimit-Reset").to_str()?.parse()?;
+    // FIXME 'as' conversion
+    let reset = Utc.timestamp(reset as i64, 0);
+    let reset_local: DateTime<Local> = reset.into();
+
+    Ok(RateLimitValues {
+        limit, remaining, reset, reset_local
+    })
 }
 
 fn do_gh_rate_limit(client: &mut GhClient) {
