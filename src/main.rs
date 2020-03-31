@@ -108,6 +108,7 @@ struct GhPull {
     state: String,
     title: String,
     user: GhUser,
+    updated_at: DateTime<Utc>,
     merged_at: Option<DateTime<Utc>>,
     review_comments_url: String,
     base: GhPullBase,
@@ -181,6 +182,7 @@ struct GhIssue {
     title: String,
     user: GhUser,
     updated_at: DateTime<Utc>,
+    closed_at: Option<DateTime<Utc>>,
     pull_request: Option<GhIssuePull>,
 }
 
@@ -212,19 +214,24 @@ fn get_closed_issues(client: &mut GhClient, project: &Project, opts: &PullCmdOpt
             //println!("{:#?}", pulls);
 
             let mut any_outdated = false;
-            let issues = issues.into_iter().filter(|pr| {
-                if pr.updated_at < begin {
-                    println!("<!-- discard too old: {} -->", pr.html_url);
-                    any_outdated = true;
-                    false
-                } else if pr.updated_at >= end {
-                    println!("<!-- discard too new: {} -->", pr.html_url);
-                    false
-                } else if pr.pull_request.is_some() {
-                    println!("<!-- discard issue is pull: {} -->", pr.html_url);
-                    false
+            let issues = issues.into_iter().filter(|issue| {
+                if let Some(closed_at) = issue.closed_at.clone() {
+                    if closed_at < begin {
+                        println!("<!-- discard too old: {} -->", issue.html_url);
+                        any_outdated = true;
+                        false
+                    } else if closed_at >= end {
+                        println!("<!-- discard too new: {} -->", issue.html_url);
+                        false
+                    } else if issue.pull_request.is_some() {
+                        println!("<!-- discard issue is pull: {} -->", issue.html_url);
+                        false
+                    } else {
+                        true
+                    }
                 } else {
-                    true
+                    println!("<!-- discard unclosed: {} -->", issue.html_url);
+                    false
                 }
             }).collect();
 
