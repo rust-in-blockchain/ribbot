@@ -33,6 +33,8 @@ enum Command {
     Pulls {
         #[structopt(long, parse(try_from_str = parse_naive_date))]
         since: NaiveDate,
+        #[structopt(long)]
+        no_comments: bool,
     },
 }
 
@@ -55,20 +57,24 @@ fn main() -> Result<()> {
         .context("parsing configuration")?;
 
     match options.cmd {
-        Command::Pulls { since } => {
-            fetch_pulls(config, since)?;
+        Command::Pulls { since, no_comments } => {
+            fetch_pulls(config, since, no_comments)?;
         }
     }
 
     Ok(())
 }
 
-fn fetch_pulls(config: &Config, since: NaiveDate) -> Result<()> {
+fn fetch_pulls(config: &Config, since: NaiveDate, no_comments: bool) -> Result<()> {
     
     let client = Client::new();
 
     for project in &config.projects {
-        let pulls = get_sorted_merged_pulls_with_comments(&client, project, since)?;
+        let pulls = if !no_comments {
+            get_sorted_merged_pulls_with_comments(&client, project, since)?
+        } else {
+            get_sorted_merged_pulls_without_comments(&client, project, since)?
+        };
         print_pull_candidates(project, &pulls);
     }
 
@@ -108,9 +114,27 @@ fn get_sorted_merged_pulls_with_comments(client: &Client, project: &Project, sin
     Ok(pulls)
 }
 
+fn get_sorted_merged_pulls_without_comments(client: &Client, project: &Project, since: NaiveDate) -> Result<Vec<GhPullWithComments>> {
+    let mut pulls = get_merged_pulls_without_comments(client, project, since)?;
+    pulls.sort_by_key(|pull| {
+        usize::max_value() - pull.comments
+    });
+    Ok(pulls)
+}
+
 fn get_merged_pulls_with_comments(client: &Client, project: &Project, since: NaiveDate) -> Result<Vec<GhPullWithComments>> {
     get_merged_pulls(client, project, since)?.into_iter().map(|pull| {
         let comments = get_comment_count(client, &pull)?;
+        Ok(GhPullWithComments {
+            pull,
+            comments,
+        })
+    }).collect()
+}
+
+fn get_merged_pulls_without_comments(client: &Client, project: &Project, since: NaiveDate) -> Result<Vec<GhPullWithComments>> {
+    get_merged_pulls(client, project, since)?.into_iter().map(|pull| {
+        let comments = 0;
         Ok(GhPullWithComments {
             pull,
             comments,
