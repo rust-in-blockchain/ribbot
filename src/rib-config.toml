@@ -4,13 +4,11 @@ url = "https://github.com/CodeChain-io"
 repos = [
 "CodeChain-io/codechain",
 "CodeChain-io/foundry",
-"CodeChain-io/rust-merkle-trie",
-"CodeChain-io/rust-codechain-primitives",
-"CodeChain-io/jsonrpc-filter",
-"CodeChain-io/rlp",
-"CodeChain-io/rust-codechain-db",
-"CodeChain-io/rust-codechain-crypto",
-"CodeChain-io/vrf-rs",
+"CodeChain-io/foundry-rpc-js",
+"CodeChain-io/primitives-js",
+"CodeChain-io/keystore-js",
+"CodeChain-io/keystore-cli",
+"CodeChain-io/sandbox",
 ]
 
 [[projects]]
