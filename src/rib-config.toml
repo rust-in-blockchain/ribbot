@@ -5,10 +5,10 @@ repos = [
 "CodeChain-io/codechain",
 "CodeChain-io/foundry",
 "CodeChain-io/foundry-rpc-js",
-"CodeChain-io/primitives-js",
-"CodeChain-io/keystore-js",
-"CodeChain-io/keystore-cli",
-"CodeChain-io/sandbox",
+"CodeChain-io/foundry-primitives-js",
+"CodeChain-io/foundry-keystore-js",
+"CodeChain-io/foundry-keystore-cli",
+"CodeChain-io/foundry-sandbox",
 ]
 
 [[projects]]
@@ -61,6 +61,13 @@ name = "Interledger"
 url = "https://github.com/interledger-rs"
 repos = [
 "interledger-rs/interledger-rs",
+]
+
+[[projects]]
+name = "Libra"
+url = "https://github.com/libra"
+repos = [
+"https://github.com/libra/libra"
 ]
 
 [[projects]]

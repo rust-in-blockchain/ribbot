@@ -97,9 +97,11 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
             get_sorted_merged_pulls_without_comments(&mut client, project, opts)?
         };
         let issues = get_closed_issues(&mut client, project, opts)?;
+        let open_issues = get_open_issues(&mut client, project, opts)?;
         let pull_stats = make_pull_stats(project, &pulls)?;
         let issue_stats = make_issue_stats(project, &issues)?;
-        print_project(project, &pulls, pull_stats, issue_stats, opts);
+        let open_issue_statas = make_issue_stats(project, &open_issues)?;
+        print_project(project, &pulls, pull_stats, issue_stats, open_issue_statas, opts);
 
         let new_calls = client.calls - calls;
         calls = client.calls;
@@ -190,6 +192,7 @@ struct GhIssue {
     user: GhUser,
     updated_at: DateTime<Utc>,
     closed_at: Option<DateTime<Utc>>,
+    created_at: Option<DateTime<Utc>>,
     pull_request: Option<GhIssuePull>,
 }
 
@@ -255,6 +258,61 @@ fn get_closed_issues(client: &mut GhClient, project: &Project, opts: &PullCmdOpt
     }
 
     Ok(all_issues)
+}
+
+fn get_open_issues(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhIssue>> {
+    let (begin, end) = begin_and_end(opts);
+
+    let mut all_open_issues = vec![];
+
+    println!("<!-- fetching open issues for project {} -->", project.name);
+    for repo in &project.repos {
+        println!("<!-- fetching open issues for repo {} -->", repo);
+
+        let since = begin.to_rfc3339_opts(SecondsFormat::Millis, true);
+        let url = format!("https://api.github.com/repos/{}/issues?state=open&sort=updated&direction=desc&since={}", repo, since);
+        
+        let new_issues = do_gh_api_paged_request(client, &url, &opts.oauth_token, |body| {
+            let issues: Vec<GhIssue> = serde_json::from_str(&body)?;
+            //println!("{:#?}", issues);
+
+            let mut any_outdated = false;
+            let issues = issues.into_iter().filter(|issue| {
+                if let Some(created_at) = issue.created_at.clone() {
+                    if created_at < begin {
+                        println!("<!-- discard too old: {} -->", issue.html_url);
+                        any_outdated = true;
+                        false
+                    } else if created_at >= end {
+                        println!("<!-- discard too new: {} -->", issue.html_url);
+                        false
+                    } else if issue.pull_request.is_some() {
+                        println!("<!-- discard issue is pull: {} -->", issue.html_url);
+                        false
+                    } else {
+                        true
+                    }
+                } else {
+                    println!("<!-- discard unclosed: {} -->", issue.html_url);
+                    false
+                }
+            }).collect();
+
+            let keep_going = if any_outdated {
+                false
+            } else {
+                true
+            };
+
+            Ok((issues, keep_going))
+        }
+        )?;
+
+        all_open_issues.extend(new_issues);
+    }        
+    
+
+    Ok(all_open_issues)
 }
 
 fn get_merged_pulls(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPull>> {
@@ -458,7 +516,7 @@ fn do_gh_rate_limit_bookkeeping(client: &mut GhClient, headers: &HeaderMap) -> R
 }
 
 fn print_project(project: &Project, pulls: &[GhPullWithComments],
-                 pull_stats: PullStats, issue_stats: PullStats, opts: &PullCmdOpts) -> Result<()> {
+                 pull_stats: PullStats, issue_stats: PullStats, open_issue_stats: PullStats, opts: &PullCmdOpts) -> Result<()> {
     let stubname = make_stubname(project);
     let begin = opts.begin.format("%Y-%m-%d").to_string();
     // The end-date used in the human-readable queries is inclusive, where ours is exclusive.
@@ -472,6 +530,7 @@ fn print_project(project: &Project, pulls: &[GhPullWithComments],
 
     let total_merged_prs = pull_stats.stats.iter().fold(0, |a, s| a + s.count);
     let total_closed_issues = issue_stats.stats.iter().fold(0, |a, s| a + s.count);
+    let total_open_issues = open_issue_stats.stats.iter().fold(0, |a, s| a + s.count);
     print!("{} merged PRs (", total_merged_prs);
     for (i, stat) in pull_stats.stats.iter().enumerate() {
         print!("[{}][{}-merged-prs-{}]", i + 1, stubname, i + 1);
@@ -481,6 +540,14 @@ fn print_project(project: &Project, pulls: &[GhPullWithComments],
     }
     print!("), ");
     print!("{} closed issues (", total_closed_issues);
+    for (i, stat) in issue_stats.stats.iter().enumerate() {
+        print!("[{}][{}-closed_issues-{}]", i + 1, stubname, i + 1);
+        if i < issue_stats.stats.len() - 1 {
+            print!(", ");
+        }
+    }
+    println!(")");
+    print!("{} open issues (", total_open_issues);
     for (i, stat) in issue_stats.stats.iter().enumerate() {
         print!("[{}][{}-closed_issues-{}]", i + 1, stubname, i + 1);
         if i < issue_stats.stats.len() - 1 {
@@ -499,6 +566,11 @@ fn print_project(project: &Project, pulls: &[GhPullWithComments],
         let human_query=format!("{}/issues?q=is%3Aissue+is%3Aclosed+closed%3A{}..{}",
                                 stat.repo, begin, end);
         println!("[{}-closed_issues-{}]: {}", stubname, i + 1, human_query);
+    }
+    for (i, stat) in open_issue_stats.stats.iter().enumerate() {
+        let human_query=format!("{}/issues?q=is%3Aissue+is%3Aopen+created%3A{}..{}",
+                                stat.repo, begin, end);
+        println!("[{}-open_issues-{}]: {}", stubname, i + 1, human_query);
     }
     println!();
     
