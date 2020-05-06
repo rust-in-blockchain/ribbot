@@ -25,6 +25,7 @@ name = "Enigma"
 url = "https://github.com/enigmampc"
 repos = [
 "enigmampc/enigma-core",
+"enigmampc/SafeTrace"
 ]
 
 [[projects]]
@@ -67,7 +68,14 @@ repos = [
 name = "Libra"
 url = "https://github.com/libra"
 repos = [
-"https://github.com/libra/libra"
+"libra/libra",
+]
+
+[[projects]]
+name = "Lighthouse"
+url = "https://github.com/sigp/lighthouse"
+repos	= [
+"sigp/lighthouse",
 ]
 
 [[projects]]
