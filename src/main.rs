@@ -225,10 +225,13 @@ fn get_closed_issues(client: &mut GhClient, project: &Project, opts: &PullCmdOpt
 
             let mut any_outdated = false;
             let issues = issues.into_iter().filter(|issue| {
+                if issue.updated_at < begin && !any_outdated {
+                    println!("<!-- found old issue {}, {:?}; last page -->", issue.html_url, issue.updated_at);
+                    any_outdated = true;
+                }
                 if let Some(closed_at) = issue.closed_at.clone() {
                     if closed_at < begin {
                         println!("<!-- discard too old: {} -->", issue.html_url);
-                        any_outdated = true;
                         false
                     } else if closed_at >= end {
                         println!("<!-- discard too new: {} -->", issue.html_url);
@@ -278,10 +281,13 @@ fn get_open_issues(client: &mut GhClient, project: &Project, opts: &PullCmdOpts)
 
             let mut any_outdated = false;
             let issues = issues.into_iter().filter(|issue| {
+                if issue.updated_at < begin && !any_outdated {
+                    println!("<!-- found old issue {}, {:?}; last page -->", issue.html_url, issue.updated_at);
+                    any_outdated = true;
+                }
                 if let Some(created_at) = issue.created_at.clone() {
                     if created_at < begin {
                         println!("<!-- discard too old: {} -->", issue.html_url);
-                        any_outdated = true;
                         false
                     } else if created_at >= end {
                         println!("<!-- discard too new: {} -->", issue.html_url);
@@ -332,10 +338,13 @@ fn get_merged_pulls(client: &mut GhClient, project: &Project, opts: &PullCmdOpts
 
             let mut any_outdated = false;
             let pulls = pulls.into_iter().filter(|pr| {
+                if pr.updated_at < begin && !any_outdated {
+                    println!("<!-- found old pull {}, {:?}; last page -->", pr.html_url, pr.updated_at);
+                    any_outdated = true;
+                }
                 if let Some(merged_at) = pr.merged_at.clone() {
                     if merged_at < begin {
                         println!("<!-- discard too old: {} -->", pr.html_url);
-                        any_outdated = true;
                         false
                     } else if merged_at >= end {
                         println!("<!-- discard too new: {} -->", pr.html_url);
@@ -436,6 +445,12 @@ fn do_gh_api_request(client: &mut GhClient, url: &str, oauth_token: &Option<Stri
         let limits = get_rate_limit_values(&headers)?;
 
         println!("<!-- {:?} -->", limits);
+
+
+        //println!("<!-- headers -->");
+        for (k, v) in &headers {
+            //println!("<!-- {}: {:?} -->", k, v);
+        }
 
         client.calls += 1;
         do_gh_rate_limit_bookkeeping(client, &headers)?;
@@ -546,7 +561,7 @@ fn print_project(project: &Project, pulls: &[GhPullWithComments],
             print!(", ");
         }
     }
-    println!(")");
+    println!("), ");
     print!("{} open issues (", total_open_issues);
     for (i, stat) in issue_stats.stats.iter().enumerate() {
         print!("[{}][{}-closed_issues-{}]", i + 1, stubname, i + 1);
