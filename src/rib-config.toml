@@ -16,7 +16,10 @@ name = "COMIT"
 url = "https://github.com/comit-network"
 repos = [
 "comit-network/comit-rs",
+"comit-network/comit-js-sdk",
 "comit-network/create-comit-app",
+"comit-network/comit.network",
+"comit-network/a2l-poc",
 "comit-network/RFCs",
 ]
 
