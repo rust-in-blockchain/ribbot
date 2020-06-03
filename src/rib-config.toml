@@ -93,6 +93,14 @@ repos	= [
 ]
 
 [[projects]]
+name = "MobileCoin"
+url = "https://github.com/mobilecoinofficial"
+repos	= [
+"mobilecoinofficial/mobilecoin",
+]
+
+
+[[projects]]
 name = "Near"
 url = "https://github.com/nearprotocol"
 repos = [
