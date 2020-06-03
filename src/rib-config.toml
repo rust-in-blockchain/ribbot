@@ -23,7 +23,7 @@ repos = [
 "comit-network/RFCs",
 ]
 
-[[]]
+[[projects]]
 name = "Crypto.com"
 url = "https://github.com/crypto-com"
 repos = [
