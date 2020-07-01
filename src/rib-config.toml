@@ -1,4 +1,16 @@
 [[projects]]
+name = "Bitcoin"
+url = "https://github.com/rust-bitcoin"
+repos = [
+"rust-bitcoin/rust-lightning",
+"rust-bitcoin/murmel",
+"rust-bitcoin/rust-bitcoin",
+"rust-bitcoin/rust-secp256k1",
+"rust-bitcoin/rust-bitcoincore-rpc",
+"rust-bitcoin/rust-lightning-invoice",
+]
+
+[[projects]]
 name = "CodeChain"
 url = "https://github.com/CodeChain-io"
 repos = [
@@ -28,7 +40,7 @@ name = "Crypto.com"
 url = "https://github.com/crypto-com"
 repos = [
 "crypto-com/chain",
-"crypto-com/cro-nodelib",
+"crypto-com/chain-nodelib",
 "crypto-com/sample-chain-wallet",
 "crypto-com/sample-chain-java-example",
 "crypto-com/sample-chain-ios-example",

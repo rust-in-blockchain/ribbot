@@ -5,20 +5,21 @@
 
 #![allow(unused)]
 
+use anyhow::{bail, Context, Result};
+use chrono::{Date, DateTime, Local, NaiveDate, SecondsFormat, TimeZone, Utc};
+use reqwest::blocking::{Client, Response};
+use reqwest::header;
+use reqwest::header::{HeaderMap, USER_AGENT};
+use reqwest::{Method, StatusCode};
+use serde_derive::Deserialize;
+use serde_json::Value;
 use std::collections::HashMap;
 use std::str::FromStr;
-use anyhow::{Result, Context, bail};
-use reqwest::blocking::{Client, Response};
-use reqwest::header::{USER_AGENT, HeaderMap};
-use reqwest::{Method, StatusCode};
 use std::{thread, time};
 use structopt::StructOpt;
-use chrono::{Date, DateTime, Local, Utc, NaiveDate, TimeZone, SecondsFormat};
-use serde_json::Value;
-use serde_derive::Deserialize;
-use reqwest::header;
 
-static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain; Aimeedeer/ribbot; aimeedeer@gmail.com)";
+static RIB_AGENT: &'static str =
+    "ribbot (Rust-in-Blockchain; Aimeedeer/ribbot; aimeedeer@gmail.com)";
 static CONFIG: &'static str = include_str!("rib-config.toml");
 static DELAY_MS: u64 = 10;
 static MAX_PAGES: usize = 10;
@@ -48,7 +49,6 @@ struct PullCmdOpts {
     oauth_token: Option<String>,
 }
 
-
 #[derive(Deserialize)]
 struct Config {
     projects: Vec<Project>,
@@ -63,8 +63,7 @@ struct Project {
 
 fn main() -> Result<()> {
     let options = Options::from_args();
-    let ref config = toml::from_str::<Config>(CONFIG)
-        .context("parsing configuration")?;
+    let ref config = toml::from_str::<Config>(CONFIG).context("parsing configuration")?;
 
     match options.cmd {
         Command::Pulls(opts) => {
@@ -76,7 +75,6 @@ fn main() -> Result<()> {
 }
 
 fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
-    
     let mut client = GhClient {
         client: Client::new(),
         limits: None,
@@ -84,7 +82,6 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
     };
 
     let mut calls = 0;
-    
     for project in &config.projects {
         if let Some(ref only_project) = opts.only_project {
             if project.name != *only_project {
@@ -101,11 +98,21 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
         let pull_stats = make_pull_stats(project, &pulls)?;
         let issue_stats = make_issue_stats(project, &issues)?;
         let open_issue_statas = make_issue_stats(project, &open_issues)?;
-        print_project(project, &pulls, pull_stats, issue_stats, open_issue_statas, opts);
+        print_project(
+            project,
+            &pulls,
+            pull_stats,
+            issue_stats,
+            open_issue_statas,
+            opts,
+        );
 
         let new_calls = client.calls - calls;
         calls = client.calls;
-        println!("<!-- total GitHub calls: {}, new GitHub calls: {} -->", calls, new_calls);
+        println!(
+            "<!-- total GitHub calls: {}, new GitHub calls: {} -->",
+            calls, new_calls
+        );
     }
 
     return Ok(());
@@ -145,43 +152,54 @@ struct GhPullWithComments {
 }
 
 #[derive(Deserialize, Debug)]
-struct GhComments {
-}
+struct GhComments {}
 
-fn get_sorted_merged_pulls_with_comments(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
+fn get_sorted_merged_pulls_with_comments(
+    client: &mut GhClient,
+    project: &Project,
+    opts: &PullCmdOpts,
+) -> Result<Vec<GhPullWithComments>> {
     let mut pulls = get_merged_pulls_with_comments(client, project, opts)?;
-    pulls.sort_by_key(|pull| {
-        usize::max_value() - pull.comments
-    });
+    pulls.sort_by_key(|pull| usize::max_value() - pull.comments);
     Ok(pulls)
 }
 
-fn get_sorted_merged_pulls_without_comments(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
+fn get_sorted_merged_pulls_without_comments(
+    client: &mut GhClient,
+    project: &Project,
+    opts: &PullCmdOpts,
+) -> Result<Vec<GhPullWithComments>> {
     let mut pulls = get_merged_pulls_without_comments(client, project, opts)?;
-    pulls.sort_by_key(|pull| {
-        usize::max_value() - pull.comments
-    });
+    pulls.sort_by_key(|pull| usize::max_value() - pull.comments);
     Ok(pulls)
 }
 
-fn get_merged_pulls_with_comments(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
-    get_merged_pulls(client, project, opts)?.into_iter().map(|pull| {
-        let comments = get_comment_count(client, &pull, opts)?;
-        Ok(GhPullWithComments {
-            pull,
-            comments,
+fn get_merged_pulls_with_comments(
+    client: &mut GhClient,
+    project: &Project,
+    opts: &PullCmdOpts,
+) -> Result<Vec<GhPullWithComments>> {
+    get_merged_pulls(client, project, opts)?
+        .into_iter()
+        .map(|pull| {
+            let comments = get_comment_count(client, &pull, opts)?;
+            Ok(GhPullWithComments { pull, comments })
         })
-    }).collect()
+        .collect()
 }
 
-fn get_merged_pulls_without_comments(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPullWithComments>> {
-    get_merged_pulls(client, project, opts)?.into_iter().map(|pull| {
-        let comments = 0;
-        Ok(GhPullWithComments {
-            pull,
-            comments,
+fn get_merged_pulls_without_comments(
+    client: &mut GhClient,
+    project: &Project,
+    opts: &PullCmdOpts,
+) -> Result<Vec<GhPullWithComments>> {
+    get_merged_pulls(client, project, opts)?
+        .into_iter()
+        .map(|pull| {
+            let comments = 0;
+            Ok(GhPullWithComments { pull, comments })
         })
-    }).collect()
+        .collect()
 }
 
 #[derive(Deserialize, Debug)]
@@ -197,7 +215,7 @@ struct GhIssue {
 }
 
 #[derive(Deserialize, Debug)]
-struct GhIssuePull { }
+struct GhIssuePull {}
 
 fn begin_and_end(opts: &PullCmdOpts) -> (DateTime<Utc>, DateTime<Utc>) {
     let begin = opts.begin.and_hms(0, 0, 0);
@@ -207,7 +225,11 @@ fn begin_and_end(opts: &PullCmdOpts) -> (DateTime<Utc>, DateTime<Utc>) {
     (begin, end)
 }
 
-fn get_closed_issues(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhIssue>> {
+fn get_closed_issues(
+    client: &mut GhClient,
+    project: &Project,
+    opts: &PullCmdOpts,
+) -> Result<Vec<GhIssue>> {
     let (begin, end) = begin_and_end(opts);
 
     let mut all_issues = vec![];
@@ -218,41 +240,42 @@ fn get_closed_issues(client: &mut GhClient, project: &Project, opts: &PullCmdOpt
 
         let since = begin.to_rfc3339_opts(SecondsFormat::Millis, true);
         let url = format!("https://api.github.com/repos/{}/issues?state=closed&sort=updated&direction=desc&since={}", repo, since);
-        
         let new_issues = do_gh_api_paged_request(client, &url, &opts.oauth_token, |body| {
             let issues: Vec<GhIssue> = serde_json::from_str(&body)?;
             //println!("{:#?}", pulls);
 
             let mut any_outdated = false;
-            let issues = issues.into_iter().filter(|issue| {
-                if issue.updated_at < begin && !any_outdated {
-                    println!("<!-- found old issue {}, {:?}; last page -->", issue.html_url, issue.updated_at);
-                    any_outdated = true;
-                }
-                if let Some(closed_at) = issue.closed_at.clone() {
-                    if closed_at < begin {
-                        println!("<!-- discard too old: {} -->", issue.html_url);
-                        false
-                    } else if closed_at >= end {
-                        println!("<!-- discard too new: {} -->", issue.html_url);
-                        false
-                    } else if issue.pull_request.is_some() {
-                        println!("<!-- discard issue is pull: {} -->", issue.html_url);
-                        false
-                    } else {
-                        true
+            let issues = issues
+                .into_iter()
+                .filter(|issue| {
+                    if issue.updated_at < begin && !any_outdated {
+                        println!(
+                            "<!-- found old issue {}, {:?}; last page -->",
+                            issue.html_url, issue.updated_at
+                        );
+                        any_outdated = true;
                     }
-                } else {
-                    println!("<!-- discard unclosed: {} -->", issue.html_url);
-                    false
-                }
-            }).collect();
+                    if let Some(closed_at) = issue.closed_at.clone() {
+                        if closed_at < begin {
+                            println!("<!-- discard too old: {} -->", issue.html_url);
+                            false
+                        } else if closed_at >= end {
+                            println!("<!-- discard too new: {} -->", issue.html_url);
+                            false
+                        } else if issue.pull_request.is_some() {
+                            println!("<!-- discard issue is pull: {} -->", issue.html_url);
+                            false
+                        } else {
+                            true
+                        }
+                    } else {
+                        println!("<!-- discard unclosed: {} -->", issue.html_url);
+                        false
+                    }
+                })
+                .collect();
 
-            let keep_going = if any_outdated {
-                false
-            } else {
-                true
-            };
+            let keep_going = if any_outdated { false } else { true };
 
             Ok((issues, keep_going))
         })?;
@@ -263,7 +286,11 @@ fn get_closed_issues(client: &mut GhClient, project: &Project, opts: &PullCmdOpt
     Ok(all_issues)
 }
 
-fn get_open_issues(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhIssue>> {
+fn get_open_issues(
+    client: &mut GhClient,
+    project: &Project,
+    opts: &PullCmdOpts,
+) -> Result<Vec<GhIssue>> {
     let (begin, end) = begin_and_end(opts);
 
     let mut all_open_issues = vec![];
@@ -274,95 +301,102 @@ fn get_open_issues(client: &mut GhClient, project: &Project, opts: &PullCmdOpts)
 
         let since = begin.to_rfc3339_opts(SecondsFormat::Millis, true);
         let url = format!("https://api.github.com/repos/{}/issues?state=open&sort=updated&direction=desc&since={}", repo, since);
-        
         let new_issues = do_gh_api_paged_request(client, &url, &opts.oauth_token, |body| {
             let issues: Vec<GhIssue> = serde_json::from_str(&body)?;
             //println!("{:#?}", issues);
 
             let mut any_outdated = false;
-            let issues = issues.into_iter().filter(|issue| {
-                if issue.updated_at < begin && !any_outdated {
-                    println!("<!-- found old issue {}, {:?}; last page -->", issue.html_url, issue.updated_at);
-                    any_outdated = true;
-                }
-                if let Some(created_at) = issue.created_at.clone() {
-                    if created_at < begin {
-                        println!("<!-- discard too old: {} -->", issue.html_url);
-                        false
-                    } else if created_at >= end {
-                        println!("<!-- discard too new: {} -->", issue.html_url);
-                        false
-                    } else if issue.pull_request.is_some() {
-                        println!("<!-- discard issue is pull: {} -->", issue.html_url);
-                        false
-                    } else {
-                        true
+            let issues = issues
+                .into_iter()
+                .filter(|issue| {
+                    if issue.updated_at < begin && !any_outdated {
+                        println!(
+                            "<!-- found old issue {}, {:?}; last page -->",
+                            issue.html_url, issue.updated_at
+                        );
+                        any_outdated = true;
                     }
-                } else {
-                    println!("<!-- discard unclosed: {} -->", issue.html_url);
-                    false
-                }
-            }).collect();
+                    if let Some(created_at) = issue.created_at.clone() {
+                        if created_at < begin {
+                            println!("<!-- discard too old: {} -->", issue.html_url);
+                            false
+                        } else if created_at >= end {
+                            println!("<!-- discard too new: {} -->", issue.html_url);
+                            false
+                        } else if issue.pull_request.is_some() {
+                            println!("<!-- discard issue is pull: {} -->", issue.html_url);
+                            false
+                        } else {
+                            true
+                        }
+                    } else {
+                        println!("<!-- discard unclosed: {} -->", issue.html_url);
+                        false
+                    }
+                })
+                .collect();
 
-            let keep_going = if any_outdated {
-                false
-            } else {
-                true
-            };
+            let keep_going = if any_outdated { false } else { true };
 
             Ok((issues, keep_going))
-        }
-        )?;
+        })?;
 
         all_open_issues.extend(new_issues);
-    }        
-    
+    }
 
     Ok(all_open_issues)
 }
 
-fn get_merged_pulls(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<Vec<GhPull>> {
+fn get_merged_pulls(
+    client: &mut GhClient,
+    project: &Project,
+    opts: &PullCmdOpts,
+) -> Result<Vec<GhPull>> {
     let (begin, end) = begin_and_end(opts);
 
     let mut all_pulls = vec![];
-    
     println!("<!-- fetching pulls for project {} -->", project.name);
     for repo in &project.repos {
         println!("<!-- fetching pulls for repo {} -->", repo);
 
-        let url = format!("https://api.github.com/repos/{}/pulls?state=closed&sort=updated&direction=desc", repo);
+        let url = format!(
+            "https://api.github.com/repos/{}/pulls?state=closed&sort=updated&direction=desc",
+            repo
+        );
 
         let new_pulls = do_gh_api_paged_request(client, &url, &opts.oauth_token, |body| {
             let pulls: Vec<GhPull> = serde_json::from_str(&body)?;
             //println!("{:#?}", pulls);
 
             let mut any_outdated = false;
-            let pulls = pulls.into_iter().filter(|pr| {
-                if pr.updated_at < begin && !any_outdated {
-                    println!("<!-- found old pull {}, {:?}; last page -->", pr.html_url, pr.updated_at);
-                    any_outdated = true;
-                }
-                if let Some(merged_at) = pr.merged_at.clone() {
-                    if merged_at < begin {
-                        println!("<!-- discard too old: {} -->", pr.html_url);
-                        false
-                    } else if merged_at >= end {
-                        println!("<!-- discard too new: {} -->", pr.html_url);
-                        false
-                    } else {
-                        true
+            let pulls = pulls
+                .into_iter()
+                .filter(|pr| {
+                    if pr.updated_at < begin && !any_outdated {
+                        println!(
+                            "<!-- found old pull {}, {:?}; last page -->",
+                            pr.html_url, pr.updated_at
+                        );
+                        any_outdated = true;
                     }
-                } else {
-                    println!("<!-- discard unmerged: {} -->", pr.html_url);
-                    false
-                }
-            }).collect();
+                    if let Some(merged_at) = pr.merged_at.clone() {
+                        if merged_at < begin {
+                            println!("<!-- discard too old: {} -->", pr.html_url);
+                            false
+                        } else if merged_at >= end {
+                            println!("<!-- discard too new: {} -->", pr.html_url);
+                            false
+                        } else {
+                            true
+                        }
+                    } else {
+                        println!("<!-- discard unmerged: {} -->", pr.html_url);
+                        false
+                    }
+                })
+                .collect();
 
-            let keep_going = if any_outdated {
-                false
-            } else {
-                true
-            };
+            let keep_going = if any_outdated { false } else { true };
 
             Ok((pulls, keep_going))
         })?;
@@ -376,17 +410,25 @@ fn get_merged_pulls(client: &mut GhClient, project: &Project, opts: &PullCmdOpts
 fn get_comment_count(client: &mut GhClient, pull: &GhPull, opts: &PullCmdOpts) -> Result<usize> {
     println!("<!-- fetching comments for {} -->", pull.html_url);
 
-    let comments = do_gh_api_paged_request(client, &pull.review_comments_url, &opts.oauth_token, |body| {
-        let comments: Vec<GhComments> = serde_json::from_str(&body)?;
-        Ok((comments, true))
-    })?;
+    let comments = do_gh_api_paged_request(
+        client,
+        &pull.review_comments_url,
+        &opts.oauth_token,
+        |body| {
+            let comments: Vec<GhComments> = serde_json::from_str(&body)?;
+            Ok((comments, true))
+        },
+    )?;
 
     Ok(comments.len())
 }
 
-fn do_gh_api_paged_request<T>(client: &mut GhClient, url: &str,
-                              oauth_token: &Option<String>,
-                              f: impl Fn(String) -> Result<(Vec<T>, bool)>) -> Result<Vec<T>> {
+fn do_gh_api_paged_request<T>(
+    client: &mut GhClient,
+    url: &str,
+    oauth_token: &Option<String>,
+    f: impl Fn(String) -> Result<(Vec<T>, bool)>,
+) -> Result<Vec<T>> {
     let mut url = url.to_string();
 
     let mut all_results = vec![];
@@ -427,11 +469,14 @@ struct GhClient {
     calls: u64,
 }
 
-fn do_gh_api_request(client: &mut GhClient, url: &str, oauth_token: &Option<String>) -> Result<(String, HeaderMap)> {
+fn do_gh_api_request(
+    client: &mut GhClient,
+    url: &str,
+    oauth_token: &Option<String>,
+) -> Result<(String, HeaderMap)> {
     do_gh_rate_limit(client)?;
 
     loop {
-
         let builder = client.client.request(Method::GET, url);
         let builder = builder.header(USER_AGENT, RIB_AGENT);
         let builder = if let Some(ref oauth_token) = *oauth_token {
@@ -445,7 +490,6 @@ fn do_gh_api_request(client: &mut GhClient, url: &str, oauth_token: &Option<Stri
         let limits = get_rate_limit_values(&headers)?;
 
         println!("<!-- {:?} -->", limits);
-
 
         //println!("<!-- headers -->");
         for (k, v) in &headers {
@@ -463,7 +507,7 @@ fn do_gh_api_request(client: &mut GhClient, url: &str, oauth_token: &Option<Stri
                 //println!("{}", serde_json::to_string_pretty(&json_body[0])?);
 
                 return Ok((body, headers));
-            },
+            }
             StatusCode::FORBIDDEN => {
                 // Probably rate limited
                 let rate_limited = limits.remaining == 0;
@@ -494,18 +538,30 @@ struct RateLimitValues {
 }
 
 fn get_rate_limit_values(headers: &HeaderMap) -> Result<RateLimitValues> {
-    let limit: u64 = headers.get("X-RateLimit-Limit")
-        .expect("X-RateLimit-Limit").to_str()?.parse()?;
-    let remaining: u64 = headers.get("X-RateLimit-Remaining")
-        .expect("X-RateLimit-Remaining").to_str()?.parse()?;
-    let reset: u64 = headers.get("X-RateLimit-Reset")
-        .expect("X-RateLimit-Reset").to_str()?.parse()?;
+    let limit: u64 = headers
+        .get("X-RateLimit-Limit")
+        .expect("X-RateLimit-Limit")
+        .to_str()?
+        .parse()?;
+    let remaining: u64 = headers
+        .get("X-RateLimit-Remaining")
+        .expect("X-RateLimit-Remaining")
+        .to_str()?
+        .parse()?;
+    let reset: u64 = headers
+        .get("X-RateLimit-Reset")
+        .expect("X-RateLimit-Reset")
+        .to_str()?
+        .parse()?;
     // FIXME 'as' conversion
     let reset = Utc.timestamp(reset as i64, 0);
     let reset_local: DateTime<Local> = reset.into();
 
     Ok(RateLimitValues {
-        limit, remaining, reset, reset_local
+        limit,
+        remaining,
+        reset,
+        reset_local,
     })
 }
 
@@ -515,14 +571,13 @@ fn do_gh_rate_limit(client: &mut GhClient) -> Result<()> {
             do_gh_rate_limit_delay(&limits);
         }
     }
-    
     Ok(())
 }
 
 fn do_gh_rate_limit_delay(limits: &RateLimitValues) {
     println!("<!-- rate limited, sleeping until {:?}", limits.reset_local);
     delay_until(limits.reset);
-}    
+}
 
 fn do_gh_rate_limit_bookkeeping(client: &mut GhClient, headers: &HeaderMap) -> Result<()> {
     let limits = get_rate_limit_values(headers)?;
@@ -530,8 +585,14 @@ fn do_gh_rate_limit_bookkeeping(client: &mut GhClient, headers: &HeaderMap) -> R
     Ok(())
 }
 
-fn print_project(project: &Project, pulls: &[GhPullWithComments],
-                 pull_stats: PullStats, issue_stats: PullStats, open_issue_stats: PullStats, opts: &PullCmdOpts) -> Result<()> {
+fn print_project(
+    project: &Project,
+    pulls: &[GhPullWithComments],
+    pull_stats: PullStats,
+    issue_stats: PullStats,
+    open_issue_stats: PullStats,
+    opts: &PullCmdOpts,
+) -> Result<()> {
     let stubname = make_stubname(project);
     let begin = opts.begin.format("%Y-%m-%d").to_string();
     // The end-date used in the human-readable queries is inclusive, where ours is exclusive.
@@ -539,7 +600,6 @@ fn print_project(project: &Project, pulls: &[GhPullWithComments],
     let end = opts.end - chrono::Duration::days(1);
     let end = end.format("%Y-%m-%d").to_string();
 
-    println!();
     println!("#### [**{}**]({})", project.name, project.url);
     println!();
 
@@ -563,8 +623,8 @@ fn print_project(project: &Project, pulls: &[GhPullWithComments],
     }
     println!("), ");
     print!("{} open issues (", total_open_issues);
-    for (i, stat) in issue_stats.stats.iter().enumerate() {
-        print!("[{}][{}-closed_issues-{}]", i + 1, stubname, i + 1);
+    for (i, stat) in open_issue_stats.stats.iter().enumerate() {
+        print!("[{}][{}-open_issues-{}]", i + 1, stubname, i + 1);
         if i < issue_stats.stats.len() - 1 {
             print!(", ");
         }
@@ -573,28 +633,34 @@ fn print_project(project: &Project, pulls: &[GhPullWithComments],
 
     println!();
     for (i, stat) in pull_stats.stats.iter().enumerate() {
-        let human_query=format!("{}/pulls?q=is%3Apr+is%3Aclosed+merged%3A{}..{}",
-                                stat.repo, begin, end);
+        let human_query = format!(
+            "{}/pulls?q=is%3Apr+is%3Aclosed+merged%3A{}..{}",
+            stat.repo, begin, end
+        );
         println!("[{}-merged-prs-{}]: {}", stubname, i + 1, human_query);
     }
     for (i, stat) in issue_stats.stats.iter().enumerate() {
-        let human_query=format!("{}/issues?q=is%3Aissue+is%3Aclosed+closed%3A{}..{}",
-                                stat.repo, begin, end);
+        let human_query = format!(
+            "{}/issues?q=is%3Aissue+is%3Aclosed+closed%3A{}..{}",
+            stat.repo, begin, end
+        );
         println!("[{}-closed_issues-{}]: {}", stubname, i + 1, human_query);
     }
     for (i, stat) in open_issue_stats.stats.iter().enumerate() {
-        let human_query=format!("{}/issues?q=is%3Aissue+is%3Aopen+created%3A{}..{}",
-                                stat.repo, begin, end);
+        let human_query = format!(
+            "{}/issues?q=is%3Aissue+is%3Aopen+created%3A{}..{}",
+            stat.repo, begin, end
+        );
         println!("[{}-open_issues-{}]: {}", stubname, i + 1, human_query);
     }
     println!();
-    
     for pull in pulls {
         let comments = pull.comments;
         let pull = &pull.pull;
-        println!("- PR: [{}]({}) by [@{}](https://github.com/{})",
-                 pull.title, pull.html_url,
-                 pull.user.login, pull.user.login);
+        println!(
+            "- PR: [{}]({}) by [@{}](https://github.com/{})",
+            pull.title, pull.html_url, pull.user.login, pull.user.login
+        );
         if comments > 0 {
             println!("  <!-- ^ comments: {} -->", comments);
         }
@@ -651,7 +717,7 @@ fn trim_ends(s: &str, front: u8, back: u8) -> Result<&str> {
     if s.len() < 2 || s.as_bytes()[0] != front || s.as_bytes()[s.len() - 1] != back {
         bail!("bad trim");
     }
-    Ok(&s[1 .. s.len() - 1 ])
+    Ok(&s[1..s.len() - 1])
 }
 
 fn parse_naive_date(s: &str) -> Result<NaiveDate> {
