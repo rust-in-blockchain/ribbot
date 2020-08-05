@@ -11,19 +11,6 @@ repos = [
 ]
 
 [[projects]]
-name = "CodeChain"
-url = "https://github.com/CodeChain-io"
-repos = [
-"CodeChain-io/codechain",
-"CodeChain-io/foundry",
-"CodeChain-io/foundry-rpc-js",
-"CodeChain-io/foundry-primitives-js",
-"CodeChain-io/foundry-keystore-js",
-"CodeChain-io/foundry-keystore-cli",
-"CodeChain-io/foundry-sandbox",
-]
-
-[[projects]]
 name = "COMIT"
 url = "https://github.com/comit-network"
 repos = [
@@ -47,10 +34,10 @@ repos = [
 ]
 
 [[projects]]
-name = "Enigma"
+name = "Secret Network"
 url = "https://github.com/enigmampc"
 repos = [
-"enigmampc/enigma-core",
+"enigmampc/SecretNetwork",
 "enigmampc/SafeTrace"
 ]
 
@@ -126,15 +113,6 @@ repos = [
 "nervosnetwork/ckb",
 "nervosnetwork/ckb-vm",
 "nervosnetwork/rfcs",
-]
-
-[[projects]]
-name = "Oasis"
-url = "https://github.com/oasislabs"
-repos = [
-"oasislabs/oasis-runtime",
-"oasislabs/oasis-rs",
-"oasislabs/tutorials",
 ]
 
 [[projects]]

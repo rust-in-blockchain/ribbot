@@ -97,13 +97,13 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
         let open_issues = get_open_issues(&mut client, project, opts)?;
         let pull_stats = make_pull_stats(project, &pulls)?;
         let issue_stats = make_issue_stats(project, &issues)?;
-        let open_issue_statas = make_issue_stats(project, &open_issues)?;
+        let open_issue_stats = make_issue_stats(project, &open_issues)?;
         print_project(
             project,
             &pulls,
             pull_stats,
             issue_stats,
-            open_issue_statas,
+            open_issue_stats,
             opts,
         );
 
@@ -625,7 +625,7 @@ fn print_project(
     print!("{} open issues (", total_open_issues);
     for (i, stat) in open_issue_stats.stats.iter().enumerate() {
         print!("[{}][{}-open_issues-{}]", i + 1, stubname, i + 1);
-        if i < issue_stats.stats.len() - 1 {
+        if i < open_issue_stats.stats.len() - 1 {
             print!(", ");
         }
     }
