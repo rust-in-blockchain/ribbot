@@ -34,14 +34,6 @@ repos = [
 ]
 
 [[projects]]
-name = "Secret Network"
-url = "https://github.com/enigmampc"
-repos = [
-"enigmampc/SecretNetwork",
-"enigmampc/SafeTrace"
-]
-
-[[projects]]
 name = "Golem"
 url = "https://github.com/golemfactory"
 repos = [
@@ -116,6 +108,15 @@ repos = [
 ]
 
 [[projects]]
+name = "Oasis"
+url = "https://github.com/oasislabs"
+repos = [
+"oasislabs/oasis-runtime",
+"oasislabs/oasis-rs",
+"oasislabs/tutorials",
+]
+
+[[projects]]
 name = "Parity"
 url = "https://github.com/paritytech"
 repos = [
@@ -124,6 +125,14 @@ repos = [
 "paritytech/wasmi",
 "paritytech/parity-bitcoin",
 "paritytech/parity-zcash",
+]
+
+[[projects]]
+name = "Secret Network"
+url = "https://github.com/enigmampc"
+repos = [
+"enigmampc/SecretNetwork",
+"enigmampc/SafeTrace"
 ]
 
 [[projects]]
