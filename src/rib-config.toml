@@ -113,7 +113,6 @@ url = "https://github.com/oasislabs"
 repos = [
 "oasislabs/oasis-runtime",
 "oasislabs/oasis-rs",
-"oasislabs/tutorials",
 ]
 
 [[projects]]
