@@ -1,154 +1,143 @@
-[[projects]]
-name = "Bitcoin"
-url = "https://github.com/rust-bitcoin"
-repos = [
-"rust-bitcoin/rust-lightning",
-"rust-bitcoin/murmel",
-"rust-bitcoin/rust-bitcoin",
-"rust-bitcoin/rust-secp256k1",
-"rust-bitcoin/rust-bitcoincore-rpc",
-"rust-bitcoin/rust-lightning-invoice",
-]
 
-[[projects]]
-name = "COMIT"
-url = "https://github.com/comit-network"
-repos = [
-"comit-network/comit-rs",
-"comit-network/comit-js-sdk",
-"comit-network/create-comit-app",
-"comit-network/comit.network",
-"comit-network/a2l-poc",
-"comit-network/RFCs",
-]
+    [[projects]]
+    name = "Aleo"
+    url = "https://github.com/AleoHQ"
+    repos = [
+    "AleoHQ/aleo",
+    "AleoHQ/snarkOS",
+    "AleoHQ/leo",
+    ]
 
-[[projects]]
-name = "Crypto.com"
-url = "https://github.com/crypto-com"
-repos = [
-"crypto-com/chain",
-"crypto-com/chain-nodelib",
-"crypto-com/sample-chain-wallet",
-"crypto-com/sample-chain-java-example",
-"crypto-com/sample-chain-ios-example",
-]
+    [[projects]]
+    name = "COMIT"
+    url = "https://github.com/comit-network"
+    repos = [
+    "comit-network/comit-rs",
+    "comit-network/comit-js-sdk",
+    "comit-network/create-comit-app",
+    "comit-network/comit.network",
+    "comit-network/a2l-poc",
+    "comit-network/RFCs",
+    ]
 
-[[projects]]
-name = "Golem"
-url = "https://github.com/golemfactory"
-repos = [
-"golemfactory/gwasm-runner",
-"golemfactory/golem",
-"golemfactory/mandelbrot",
-"golemfactory/sp-wasm",
-"golemfactory/gudot",
-"golemfactory/g-flite",
-"golemfactory/golem-client",
-"golemfactory/gMorph",
-"golemfactory/hello-gwasm-runner",
-]
+    [[projects]]
+    name = "Conflux"
+    url = "https://github.com/Conflux-Chain"
+    repos = [
+    "Conflux-Chain/conflux-rust",
+    ]
 
-[[projects]]
-name = "Grin"
-url = "https://github.com/mimblewimble/grin"
-repos = [
-"mimblewimble/grin",
-]
+    [[projects]]
+    name = "Crypto.com"
+    url = "https://github.com/crypto-com"
+    repos = [
+    "crypto-com/chain",
+    "crypto-com/chain-nodelib",
+    "crypto-com/sample-chain-wallet",
+    "crypto-com/sample-chain-java-example",
+    "crypto-com/sample-chain-ios-example",
+    ]
 
-[[projects]]
-name = "Holochain"
-url = "https://github.com/holochain"
-repos = [
-"holochain/holochain-rust",
-]
+    [[projects]]
+    name = "Elrond"
+    url = "https://github.com/ElrondNetwork"
+    repos = [
+        "ElrondNetwork/sc-delegation-rs",
+        "ElrondNetwork/sc-band-bridge-rs",
+        "ElrondNetwork/mandos-rs",
+        "ElrondNetwork/elrond-wasm-rs",
+        "ElrondNetwork/sc-dns-rs",
+    ]
 
-[[projects]]
-name = "Interledger"
-url = "https://github.com/interledger-rs"
-repos = [
-"interledger-rs/interledger-rs",
-]
+    [[projects]]
+    name = "Holochain"
+    url = "https://github.com/holochain"
+    repos = [
+    "holochain/holochain-rust",
+    ]
 
-[[projects]]
-name = "Libra"
-url = "https://github.com/libra"
-repos = [
-"libra/libra",
-]
+    [[projects]]
+    name = "Libra"
+    url = "https://github.com/libra"
+    repos = [
+    "libra/libra",
+    ]
 
-[[projects]]
-name = "Lighthouse"
-url = "https://github.com/sigp/lighthouse"
-repos	= [
-"sigp/lighthouse",
-]
+    [[projects]]
+    name = "Lighthouse"
+    url = "https://github.com/sigp/lighthouse"
+    repos	= [
+    "sigp/lighthouse",
+    ]
 
-[[projects]]
-name = "MobileCoin"
-url = "https://github.com/mobilecoinofficial"
-repos	= [
-"mobilecoinofficial/mobilecoin",
-]
+    [[projects]]
+    name = "MobileCoin"
+    url = "https://github.com/mobilecoinofficial"
+    repos	= [
+    "mobilecoinofficial/mobilecoin",
+    ]
 
 
-[[projects]]
-name = "Near"
-url = "https://github.com/nearprotocol"
-repos = [
-"nearprotocol/nearcore",
-]
+    [[projects]]
+    name = "Near"
+    url = "https://github.com/nearprotocol"
+    repos = [
+    "nearprotocol/nearcore",
+    ]
 
-[[projects]]
-name = "Nervos"
-url = "https://github.com/nervosnetwork"
-repos = [
-"nervosnetwork/ckb",
-"nervosnetwork/ckb-vm",
-"nervosnetwork/rfcs",
-]
+    [[projects]]
+    name = "Nervos"
+    url = "https://github.com/nervosnetwork"
+    repos = [
+    "nervosnetwork/ckb",
+    "nervosnetwork/ckb-vm",
+    "nervosnetwork/rfcs",
+    ]
 
-[[projects]]
-name = "Oasis"
-url = "https://github.com/oasislabs"
-repos = [
-"oasislabs/oasis-runtime",
-"oasislabs/oasis-rs",
-]
+    [[projects]]
+    name = "Oasis"
+    url = "https://github.com/oasislabs"
+    repos = [
+    "oasislabs/oasis-ethwasi-runtime",
+    "oasislabs/oasis-rs",
+    "oasislabs/oasis-cli",
+    "oasislabs/oasis-chain", 
+    ]
 
-[[projects]]
-name = "Parity"
-url = "https://github.com/paritytech"
-repos = [
-"paritytech/substrate",
-"paritytech/polkadot",
-"paritytech/wasmi",
-"paritytech/parity-bitcoin",
-"paritytech/parity-zcash",
-]
+    [[projects]]
+    name = "Parity"
+    url = "https://github.com/paritytech"
+    repos = [
+    "paritytech/substrate",
+    "paritytech/polkadot",
+    "paritytech/wasmi",
+    "paritytech/parity-bitcoin",
+    "paritytech/parity-zcash",
+    ]
 
-[[projects]]
-name = "Secret Network"
-url = "https://github.com/enigmampc"
-repos = [
-"enigmampc/SecretNetwork",
-"enigmampc/SafeTrace"
-]
+    [[projects]]
+    name = "Secret Network"
+    url = "https://github.com/enigmampc"
+    repos = [
+    "enigmampc/SecretNetwork",
+    "enigmampc/SafeTrace"
+    ]
 
-[[projects]]
-name = "Solana"
-url = "https://github.com/solana-labs"
-repos = [
-"solana-labs/solana",
-]
+    [[projects]]
+    name = "Solana"
+    url = "https://github.com/solana-labs"
+    repos = [
+    "solana-labs/solana",
+    ]
 
-[[projects]]
-name = "Zcash"
-url = "https://github.com/zcash"
-repos = [
-"ZcashFoundation/zebra",
-"zcash/librustzcash",
-"zcash/zips",
-]
+    [[projects]]
+    name = "Zcash"
+    url = "https://github.com/zcash"
+    repos = [
+    "ZcashFoundation/zebra",
+    "zcash/librustzcash",
+    "zcash/zips",
+    ]
 
 
 
