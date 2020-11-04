@@ -9,6 +9,16 @@
     ]
 
     [[projects]]
+    name = "Rust-Bitcoin"
+    url = "https://github.com/rust-bitcoin"
+    repos = [
+    "rust-bitcoin/rust-bitcoin",
+    "rust-bitcoin/rust-lightning",
+    "rust-bitcoin/rust-miniscript",
+    "rust-bitcoin/bitcoin_hashes",
+    ]
+
+    [[projects]]
     name = "COMIT"
     url = "https://github.com/comit-network"
     repos = [
@@ -31,11 +41,11 @@
     name = "Crypto.com"
     url = "https://github.com/crypto-com"
     repos = [
-    "crypto-com/chain",
+    "crypto-com/thaler",
     "crypto-com/chain-nodelib",
-    "crypto-com/sample-chain-wallet",
-    "crypto-com/sample-chain-java-example",
-    "crypto-com/sample-chain-ios-example",
+    "crypto-com/thaler-sample-wallet",
+    "crypto-com/sample-thaler-java-example",
+    "crypto-com/sample-thaler-ios-example",
     ]
 
     [[projects]]
@@ -72,17 +82,16 @@
 
     [[projects]]
     name = "MobileCoin"
-    url = "https://github.com/mobilecoinofficial"
+    url = "https://github.com/mobilecoinfoundation"
     repos	= [
-    "mobilecoinofficial/mobilecoin",
+    "mobilecoinfoundation/mobilecoin",
     ]
-
 
     [[projects]]
     name = "Near"
-    url = "https://github.com/nearprotocol"
+    url = "https://github.com/near/nearcore"
     repos = [
-    "nearprotocol/nearcore",
+    "near/nearcore",
     ]
 
     [[projects]]
