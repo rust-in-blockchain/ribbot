@@ -7,8 +7,8 @@
 
 use anyhow::{bail, Context, Result};
 use chrono::{Date, DateTime, Local, NaiveDate, SecondsFormat, TimeZone, Utc};
-use reqwest::blocking::{Client, Response};
 use reqwest::header;
+use reqwest::blocking::{Client, Response};
 use reqwest::header::{HeaderMap, USER_AGENT};
 use reqwest::{Method, StatusCode};
 use serde_derive::Deserialize;
@@ -19,7 +19,7 @@ use std::{thread, time};
 use structopt::StructOpt;
 
 static RIB_AGENT: &'static str =
-    "ribbot (Rust-in-Blockchain; Aimeedeer/ribbot; aimeedeer@gmail.com)";
+    "ribbot (Rust-in-Blockchain; Aimeedeer/ribbot; aimeez@protonmail.com)";
 static CONFIG: &'static str = include_str!("rib-config.toml");
 static DELAY_MS: u64 = 10;
 static MAX_PAGES: usize = 10;
