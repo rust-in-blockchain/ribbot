@@ -19,7 +19,7 @@ use std::{thread, time};
 use structopt::StructOpt;
 
 static RIB_AGENT: &'static str =
-    "ribbot (Rust-in-Blockchain; Aimeedeer/ribbot; aimeez@protonmail.com)";
+    "ribbot (Rust-in-Blockchain; Aimeedeer/ribbot; aimeez@pm.me)";
 static CONFIG: &'static str = include_str!("rib-config.toml");
 static DELAY_MS: u64 = 10;
 static MAX_PAGES: usize = 10;
