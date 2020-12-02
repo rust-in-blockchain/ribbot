@@ -116,7 +116,8 @@
     "oasislabs/oasis-ethwasi-runtime",
     "oasislabs/oasis-rs",
     "oasislabs/oasis-cli",
-    "oasislabs/oasis-chain", 
+    "oasislabs/oasis-chain",
+    "oasisprotocol/deoxysii-rust",
     ]
 
     [[projects]]
