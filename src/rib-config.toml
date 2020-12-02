@@ -125,9 +125,11 @@
     repos = [
     "paritytech/substrate",
     "paritytech/polkadot",
+    "paritytech/cargo-contract",
     "paritytech/wasmi",
     "paritytech/parity-bitcoin",
-    "paritytech/parity-zcash",
+    "paritytech/cumulus",
+    "paritytech/ink",
     ]
 
     [[projects]]
