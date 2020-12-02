@@ -15,7 +15,7 @@
     "rust-bitcoin/rust-bitcoin",
     "rust-bitcoin/rust-lightning",
     "rust-bitcoin/rust-miniscript",
-    "rust-bitcoin/bitcoin_hashes",
+    "rust-bitcoin/rust-bitcoincore-rpc",
     ]
 
     [[projects]]
@@ -23,11 +23,9 @@
     url = "https://github.com/comit-network"
     repos = [
     "comit-network/comit-rs",
-    "comit-network/comit-js-sdk",
+    "comit-network/xmr-btc-swap",
     "comit-network/create-comit-app",
-    "comit-network/comit.network",
-    "comit-network/a2l-poc",
-    "comit-network/RFCs",
+    "comit-network/blockchain-contracts",
     ]
 
     [[projects]]
@@ -42,10 +40,6 @@
     url = "https://github.com/crypto-com"
     repos = [
     "crypto-com/thaler",
-    "crypto-com/chain-nodelib",
-    "crypto-com/thaler-sample-wallet",
-    "crypto-com/sample-thaler-java-example",
-    "crypto-com/sample-thaler-ios-example",
     ]
 
     [[projects]]
@@ -64,6 +58,10 @@
     url = "https://github.com/holochain"
     repos = [
     "holochain/holochain-rust",
+    "holochain/holochain",
+    "holochain/elemental-chat",
+    "holochain/holochain-wasmer",
+    "holochain/lair",
     ]
 
     [[projects]]
@@ -71,19 +69,22 @@
     url = "https://github.com/libra"
     repos = [
     "libra/libra",
+    "libra/rosetta-proxy",
     ]
 
     [[projects]]
     name = "Lighthouse"
     url = "https://github.com/sigp/lighthouse"
-    repos	= [
+    repos = [
     "sigp/lighthouse",
+    "sigp/beacon-fuzz",
+    "sigp/discv5",
     ]
 
     [[projects]]
     name = "MobileCoin"
     url = "https://github.com/mobilecoinfoundation"
-    repos	= [
+    repos = [
     "mobilecoinfoundation/mobilecoin",
     ]
 
@@ -92,6 +93,9 @@
     url = "https://github.com/near/nearcore"
     repos = [
     "near/nearcore",
+    "near/borsh",
+    "near/core-contracts",
+    "near/near-evm",
     ]
 
     [[projects]]
@@ -100,7 +104,9 @@
     repos = [
     "nervosnetwork/ckb",
     "nervosnetwork/ckb-vm",
-    "nervosnetwork/rfcs",
+    "nervosnetwork/ckb-cli",
+    "nervosnetwork/capsule",
+    "nervosnetwork/ckb-std",
     ]
 
     [[projects]]
@@ -129,7 +135,8 @@
     url = "https://github.com/enigmampc"
     repos = [
     "enigmampc/SecretNetwork",
-    "enigmampc/SafeTrace"
+    "enigmampc/secret-toolkit",
+    "enigmampc/SafeTrace",
     ]
 
     [[projects]]
@@ -137,6 +144,7 @@
     url = "https://github.com/solana-labs"
     repos = [
     "solana-labs/solana",
+    "solana-labs/solana-program-library",
     ]
 
     [[projects]]
@@ -144,8 +152,8 @@
     url = "https://github.com/zcash"
     repos = [
     "ZcashFoundation/zebra",
+    "zcash/halo2",
     "zcash/librustzcash",
-    "zcash/zips",
     ]
 
 
