@@ -1,164 +1,172 @@
+[[projects]]
+name = "Aleo"
+url = "https://github.com/AleoHQ"
+repos = [
+"AleoHQ/aleo",
+"AleoHQ/snarkOS",
+"AleoHQ/leo",
+]
 
-    [[projects]]
-    name = "Aleo"
-    url = "https://github.com/AleoHQ"
-    repos = [
-    "AleoHQ/aleo",
-    "AleoHQ/snarkOS",
-    "AleoHQ/leo",
-    ]
+[[projects]]
+name = "Rust-Bitcoin"
+url = "https://github.com/rust-bitcoin"
+repos = [
+"rust-bitcoin/rust-bitcoin",
+"rust-bitcoin/rust-lightning",
+"rust-bitcoin/rust-miniscript",
+"rust-bitcoin/rust-bitcoincore-rpc",
+]
 
-    [[projects]]
-    name = "Rust-Bitcoin"
-    url = "https://github.com/rust-bitcoin"
-    repos = [
-    "rust-bitcoin/rust-bitcoin",
-    "rust-bitcoin/rust-lightning",
-    "rust-bitcoin/rust-miniscript",
-    "rust-bitcoin/rust-bitcoincore-rpc",
-    ]
+[[projects]]
+name = "COMIT"
+url = "https://github.com/comit-network"
+repos = [
+"comit-network/comit-rs",
+"comit-network/xmr-btc-swap",
+"comit-network/create-comit-app",
+"comit-network/blockchain-contracts",
+]
 
-    [[projects]]
-    name = "COMIT"
-    url = "https://github.com/comit-network"
-    repos = [
-    "comit-network/comit-rs",
-    "comit-network/xmr-btc-swap",
-    "comit-network/create-comit-app",
-    "comit-network/blockchain-contracts",
-    ]
+[[projects]]
+name = "Conflux"
+url = "https://github.com/Conflux-Chain"
+repos = [
+"Conflux-Chain/conflux-rust",
+]
 
-    [[projects]]
-    name = "Conflux"
-    url = "https://github.com/Conflux-Chain"
-    repos = [
-    "Conflux-Chain/conflux-rust",
-    ]
+[[projects]]
+name = "Crypto.com"
+url = "https://github.com/crypto-com"
+repos = [
+"crypto-com/thaler",
+]
 
-    [[projects]]
-    name = "Crypto.com"
-    url = "https://github.com/crypto-com"
-    repos = [
-    "crypto-com/thaler",
-    ]
+[[projects]]
+name = "Elrond"
+url = "https://github.com/ElrondNetwork"
+repos = [
+"ElrondNetwork/sc-delegation-rs",
+"ElrondNetwork/sc-band-bridge-rs",
+"ElrondNetwork/mandos-rs",
+"ElrondNetwork/elrond-wasm-rs",
+"ElrondNetwork/sc-dns-rs",
+]
 
-    [[projects]]
-    name = "Elrond"
-    url = "https://github.com/ElrondNetwork"
-    repos = [
-        "ElrondNetwork/sc-delegation-rs",
-        "ElrondNetwork/sc-band-bridge-rs",
-        "ElrondNetwork/mandos-rs",
-        "ElrondNetwork/elrond-wasm-rs",
-        "ElrondNetwork/sc-dns-rs",
-    ]
+[[projects]]
+name = "Fluence"
+url = "https://github.com/fluencelabs"
+repos = [
+"fluencelabs/fluence",
+"fluencelabs/fce",
+"fluencelabs/aquamarine",
+"fluencelabs/rust-sdk",
+]
 
-    [[projects]]
-    name = "Holochain"
-    url = "https://github.com/holochain"
-    repos = [
-    "holochain/holochain-rust",
-    "holochain/holochain",
-    "holochain/elemental-chat",
-    "holochain/holochain-wasmer",
-    "holochain/lair",
-    ]
+[[projects]]
+name = "Holochain"
+url = "https://github.com/holochain"
+repos = [
+"holochain/holochain-rust",
+"holochain/holochain",
+"holochain/elemental-chat",
+"holochain/holochain-wasmer",
+"holochain/lair",
+]
 
-    [[projects]]
-    name = "Libra"
-    url = "https://github.com/libra"
-    repos = [
-    "libra/libra",
-    "libra/rosetta-proxy",
-    ]
+[[projects]]
+name = "Libra"
+url = "https://github.com/libra"
+repos = [
+"libra/libra",
+"libra/rosetta-proxy",
+]
 
-    [[projects]]
-    name = "Lighthouse"
-    url = "https://github.com/sigp/lighthouse"
-    repos = [
-    "sigp/lighthouse",
-    "sigp/beacon-fuzz",
-    "sigp/discv5",
-    ]
+[[projects]]
+name = "Lighthouse"
+url = "https://github.com/sigp/lighthouse"
+repos = [
+"sigp/lighthouse",
+"sigp/beacon-fuzz",
+"sigp/discv5",
+]
 
-    [[projects]]
-    name = "MobileCoin"
-    url = "https://github.com/mobilecoinfoundation"
-    repos = [
-    "mobilecoinfoundation/mobilecoin",
-    ]
+[[projects]]
+name = "MobileCoin"
+url = "https://github.com/mobilecoinfoundation"
+repos = [
+"mobilecoinfoundation/mobilecoin",
+]
 
-    [[projects]]
-    name = "Near"
-    url = "https://github.com/near/nearcore"
-    repos = [
-    "near/nearcore",
-    "near/borsh",
-    "near/core-contracts",
-    "near/near-evm",
-    ]
+[[projects]]
+name = "Near"
+url = "https://github.com/near/nearcore"
+repos = [
+"near/nearcore",
+"near/borsh",
+"near/core-contracts",
+"near/near-evm",
+]
 
-    [[projects]]
-    name = "Nervos"
-    url = "https://github.com/nervosnetwork"
-    repos = [
-    "nervosnetwork/ckb",
-    "nervosnetwork/ckb-vm",
-    "nervosnetwork/ckb-cli",
-    "nervosnetwork/capsule",
-    "nervosnetwork/ckb-std",
-    ]
+[[projects]]
+name = "Nervos"
+url = "https://github.com/nervosnetwork"
+repos = [
+"nervosnetwork/ckb",
+"nervosnetwork/ckb-vm",
+"nervosnetwork/ckb-cli",
+"nervosnetwork/capsule",
+"nervosnetwork/ckb-std",
+]
 
-    [[projects]]
-    name = "Oasis"
-    url = "https://github.com/oasislabs"
-    repos = [
-    "oasislabs/oasis-ethwasi-runtime",
-    "oasislabs/oasis-rs",
-    "oasislabs/oasis-cli",
-    "oasislabs/oasis-chain",
-    "oasisprotocol/deoxysii-rust",
-    ]
+[[projects]]
+name = "Oasis"
+url = "https://github.com/oasislabs"
+repos = [
+"oasislabs/oasis-ethwasi-runtime",
+"oasislabs/oasis-rs",
+"oasislabs/oasis-cli",
+"oasislabs/oasis-chain",
+"oasisprotocol/deoxysii-rust",
+]
 
-    [[projects]]
-    name = "Parity"
-    url = "https://github.com/paritytech"
-    repos = [
-    "paritytech/substrate",
-    "paritytech/polkadot",
-    "paritytech/cargo-contract",
-    "paritytech/wasmi",
-    "paritytech/parity-bitcoin",
-    "paritytech/cumulus",
-    "paritytech/ink",
-    ]
+[[projects]]
+name = "Parity"
+url = "https://github.com/paritytech"
+repos = [
+"paritytech/substrate",
+"paritytech/polkadot",
+"paritytech/cargo-contract",
+"paritytech/wasmi",
+"paritytech/parity-bitcoin",
+"paritytech/cumulus",
+"paritytech/ink",
+]
 
-    [[projects]]
-    name = "Secret Network"
-    url = "https://github.com/enigmampc"
-    repos = [
-    "enigmampc/SecretNetwork",
-    "enigmampc/secret-toolkit",
-    "enigmampc/SafeTrace",
-    ]
+[[projects]]
+name = "Secret Network"
+url = "https://github.com/enigmampc"
+repos = [
+"enigmampc/SecretNetwork",
+"enigmampc/secret-toolkit",
+"enigmampc/SafeTrace",
+]
 
-    [[projects]]
-    name = "Solana"
-    url = "https://github.com/solana-labs"
-    repos = [
-    "solana-labs/solana",
-    "solana-labs/solana-program-library",
-    ]
+[[projects]]
+name = "Solana"
+url = "https://github.com/solana-labs"
+repos = [
+"solana-labs/solana",
+"solana-labs/solana-program-library",
+]
 
-    [[projects]]
-    name = "Zcash"
-    url = "https://github.com/zcash"
-    repos = [
-    "ZcashFoundation/zebra",
-    "zcash/halo2",
-    "zcash/librustzcash",
-    ]
-
+[[projects]]
+name = "Zcash"
+url = "https://github.com/zcash"
+repos = [
+"ZcashFoundation/zebra",
+"zcash/halo2",
+"zcash/librustzcash",
+]
 
 
 
