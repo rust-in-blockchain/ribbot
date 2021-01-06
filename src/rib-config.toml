@@ -74,11 +74,12 @@ repos = [
 ]
 
 [[projects]]
-name = "Libra"
-url = "https://github.com/libra"
+name = "Diem"
+url = "https://github.com/diem"
 repos = [
-"libra/libra",
-"libra/rosetta-proxy",
+"diem/diem",
+"diem/rosetta-proxy",
+"diem/bcs",
 ]
 
 [[projects]]
