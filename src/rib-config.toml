@@ -17,6 +17,18 @@ repos = [
 "rust-bitcoin/rust-bitcoincore-rpc",
 ]
 
+
+[[projects]]
+name = "Rust-Ethereum"
+url = "https://github.com/rust-ethereum"
+repos = [
+"rust-ethereum/ethabi",
+"rust-ethereum/enr",
+"rust-ethereum/devp2p",
+"rust-ethereum/dnsdisc",
+]
+
+
 [[projects]]
 name = "COMIT"
 url = "https://github.com/comit-network"
@@ -106,6 +118,7 @@ repos = [
 "near/borsh",
 "near/core-contracts",
 "near/near-evm",
+"near/near-sdk-rs",
 ]
 
 [[projects]]
