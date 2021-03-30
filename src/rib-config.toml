@@ -1,3 +1,5 @@
+# Projects are listed alphabetically.
+
 [[projects]]
 name = "Aleo"
 url = "https://github.com/AleoHQ"
@@ -8,13 +10,16 @@ repos = [
 ]
 
 [[projects]]
-name = "Rust-Bitcoin"
-url = "https://github.com/rust-bitcoin"
+name = "CodeChain"
+url = "https://github.com/CodeChain-io"
 repos = [
-"rust-bitcoin/rust-bitcoin",
-"rust-bitcoin/rust-lightning",
-"rust-bitcoin/rust-miniscript",
-"rust-bitcoin/rust-bitcoincore-rpc",
+"CodeChain-io/codechain",
+"CodeChain-io/foundry",
+"CodeChain-io/foundry-rpc-js",
+"CodeChain-io/foundry-primitives-js",
+"CodeChain-io/foundry-keystore-js",
+"CodeChain-io/foundry-keystore-cli",
+"CodeChain-io/foundry-sandbox",
 ]
 
 
@@ -40,6 +45,16 @@ repos = [
 ]
 
 [[projects]]
+name = "Concordium"
+url = "https://github.com/Concordium"
+repos = [
+"Concordium/concordium-node",
+"Concordium/concordium-base",
+"Concordium/concordium-contracts-common",
+"Concordium/concordium-rust-smart-contracts",
+]
+
+[[projects]]
 name = "Conflux"
 url = "https://github.com/Conflux-Chain"
 repos = [
@@ -47,10 +62,19 @@ repos = [
 ]
 
 [[projects]]
-name = "Crypto.com"
+name = "Crypto.com Chain"
 url = "https://github.com/crypto-com"
 repos = [
 "crypto-com/thaler",
+]
+
+[[projects]]
+name = "Diem"
+url = "https://github.com/diem"
+repos = [
+"diem/diem",
+"diem/rosetta-proxy",
+"diem/bcs",
 ]
 
 [[projects]]
@@ -75,6 +99,21 @@ repos = [
 ]
 
 [[projects]]
+name = "Golem"
+url = "https://github.com/golemfactory"
+repos = [
+"golemfactory/yagna",
+"golemfactory/ya-client",
+]
+
+[[projects]]
+name = "Grin"
+url = "https://github.com/mimblewimble/grin"
+repos = [
+"mimblewimble/grin",
+]
+
+[[projects]]
 name = "Holochain"
 url = "https://github.com/holochain"
 repos = [
@@ -86,12 +125,10 @@ repos = [
 ]
 
 [[projects]]
-name = "Diem"
-url = "https://github.com/diem"
+name = "Interledger"
+url = "https://github.com/interledger-rs"
 repos = [
-"diem/diem",
-"diem/rosetta-proxy",
-"diem/bcs",
+"interledger-rs/interledger-rs",
 ]
 
 [[projects]]
@@ -111,7 +148,7 @@ repos = [
 ]
 
 [[projects]]
-name = "Near"
+name = "NEAR"
 url = "https://github.com/near/nearcore"
 repos = [
 "near/nearcore",
@@ -154,6 +191,26 @@ repos = [
 "paritytech/parity-bitcoin",
 "paritytech/cumulus",
 "paritytech/ink",
+]
+
+[[projects]]
+name = "Rust Bitcoin"
+url = "https://github.com/rust-bitcoin"
+repos = [
+"rust-bitcoin/rust-bitcoin",
+"rust-bitcoin/rust-lightning",
+"rust-bitcoin/rust-miniscript",
+"rust-bitcoin/rust-bitcoincore-rpc",
+]
+
+[[projects]]
+name = "Rust Ethereum"
+url = "https://github.com/rust-bitcoin"
+repos = [
+"rust-ethereum/ethabi",
+"rust-ethereum/enr",
+"rust-ethereum/devp2p",
+"rust-ethereum/dnsdisc",
 ]
 
 [[projects]]
