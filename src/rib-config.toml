@@ -221,8 +221,8 @@ repos = [
 name = "Spacemesh"
 url = "https://github.com/spacemeshos"
 repos = [
-"https://github.com/spacemeshos/go-spacemesh",
-"https://github.com/spacemeshos/svm",
+"spacemeshos/go-spacemesh",
+"spacemeshos/svm",
 ]
 
 [[projects]]
@@ -238,7 +238,7 @@ repos = [
 name = "zkSync"
 url = "https://github.com/matter-labs/zksync"
 repos = [
-"https://github.com/matter-labs/zksync",
+"matter-labs/zksync",
 ]
 
 
