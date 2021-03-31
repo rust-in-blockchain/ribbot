@@ -234,6 +234,13 @@ repos = [
 "zcash/librustzcash",
 ]
 
+[[projects]]
+name = "zkSync"
+url = "https://github.com/matter-labs/zksync"
+repos = [
+"https://github.com/matter-labs/zksync",
+]
+
 
 
 
