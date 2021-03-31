@@ -231,12 +231,27 @@ repos = [
 ]
 
 [[projects]]
+name = "Spacemesh"
+url = "https://github.com/spacemeshos"
+repos = [
+"spacemeshos/go-spacemesh",
+"spacemeshos/svm",
+]
+
+[[projects]]
 name = "Zcash"
 url = "https://github.com/zcash"
 repos = [
 "ZcashFoundation/zebra",
 "zcash/halo2",
 "zcash/librustzcash",
+]
+
+[[projects]]
+name = "zkSync"
+url = "https://github.com/matter-labs/zksync"
+repos = [
+"matter-labs/zksync",
 ]
 
 
