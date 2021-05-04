@@ -94,7 +94,7 @@ url = "https://github.com/fluencelabs"
 repos = [
 "fluencelabs/fluence",
 "fluencelabs/fce",
-"fluencelabs/aquamarine",
+"fluencelabs/air",
 "fluencelabs/rust-sdk",
 ]
 
