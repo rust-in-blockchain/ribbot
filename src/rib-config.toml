@@ -246,6 +246,13 @@ repos = [
 ]
 
 [[projects]]
+name = "TezEdge"
+url = "https://github.com/tezedge"
+repos = [
+"tezedge/tezedge",
+]
+
+[[projects]]
 name = "Zcash"
 url = "https://github.com/zcash"
 repos = [
