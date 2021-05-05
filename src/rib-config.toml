@@ -132,6 +132,13 @@ repos = [
 ]
 
 [[projects]]
+name = "IOTA"
+url = "https://github.com/iotaledger"
+repos = [
+"iotaledger/iota.rs",
+]
+
+[[projects]]
 name = "Lighthouse"
 url = "https://github.com/sigp/lighthouse"
 repos = [
