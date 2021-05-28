@@ -6,6 +6,7 @@ url = "https://github.com/AleoHQ"
 repos = [
 "AleoHQ/aleo",
 "AleoHQ/snarkOS",
+"AleoHQ/snarkVM",
 "AleoHQ/leo",
 ]
 
