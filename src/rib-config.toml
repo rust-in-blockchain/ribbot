@@ -11,20 +11,6 @@ repos = [
 ]
 
 [[projects]]
-name = "CodeChain"
-url = "https://github.com/CodeChain-io"
-repos = [
-"CodeChain-io/codechain",
-"CodeChain-io/foundry",
-"CodeChain-io/foundry-rpc-js",
-"CodeChain-io/foundry-primitives-js",
-"CodeChain-io/foundry-keystore-js",
-"CodeChain-io/foundry-keystore-cli",
-"CodeChain-io/foundry-sandbox",
-]
-
-
-[[projects]]
 name = "COMIT"
 url = "https://github.com/comit-network"
 repos = [
