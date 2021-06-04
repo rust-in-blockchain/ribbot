@@ -600,7 +600,7 @@ fn print_project(
     let end = opts.end - chrono::Duration::days(1);
     let end = end.format("%Y-%m-%d").to_string();
 
-    println!("#### [**{}**]({})", project.name, project.url);
+    println!("#### [{}]({})", project.name, project.url);
     println!();
 
     let total_merged_prs = pull_stats.stats.iter().fold(0, |a, s| a + s.count);
