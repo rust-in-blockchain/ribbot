@@ -11,6 +11,13 @@ repos = [
 ]
 
 [[projects]]
+name = "ChainSafe"
+url = "https://github.com/ChainSafe"
+repos = [
+"ChainSafe/forest"
+]
+
+[[projects]]
 name = "COMIT"
 url = "https://github.com/comit-network"
 repos = [
