@@ -147,6 +147,7 @@ repos = [
 name = "MobileCoin"
 url = "https://github.com/mobilecoinfoundation"
 repos = [
+"mobilecoinfoundation/fog",
 "mobilecoinfoundation/mobilecoin",
 ]
 
