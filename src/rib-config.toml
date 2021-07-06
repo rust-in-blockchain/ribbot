@@ -52,6 +52,19 @@ repos = [
 ]
 
 [[projects]]
+name = "Dfinity"
+url = "https://github.com/dfinity"
+repos = [
+"dfinity/agent-rs",
+"dfinity/candid",
+"dfinity/cdk-rs",
+"dfinity/ic",
+"dfinity/ic-types",
+"dfinity/quill",
+"dfinity/vessel",
+]
+
+[[projects]]
 name = "Diem"
 url = "https://github.com/diem"
 repos = [
