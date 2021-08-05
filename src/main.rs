@@ -383,8 +383,8 @@ fn get_merged_pulls(
                             "<!-- found old pull {}, {:?}; last page -->",
                             pr.html_url, pr.updated_at
                         );
-                        any_outdated = true;
                          */
+                        any_outdated = true;
                     }
                     if let Some(merged_at) = pr.merged_at.clone() {
                         if merged_at < begin {
@@ -498,10 +498,12 @@ fn do_gh_api_request(
 
 //        println!("<!-- {:?} -->", limits);
 
-        //println!("<!-- headers -->");
+        /*           
+        println!("<!-- headers -->");
         for (k, v) in &headers {
-            //println!("<!-- {}: {:?} -->", k, v);
+            println!("<!-- {}: {:?} -->", k, v);
         }
+        */
 
         client.calls += 1;
         do_gh_rate_limit_bookkeeping(client, &headers)?;
