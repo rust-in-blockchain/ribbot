@@ -108,12 +108,11 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
 
         let new_calls = client.calls - calls;
         calls = client.calls;
-        /*
+
         println!(
             "<!-- total GitHub calls: {}, new GitHub calls: {} -->",
             calls, new_calls
         );
-         */
     }
 
     return Ok(());
@@ -250,29 +249,27 @@ fn get_closed_issues(
                 .into_iter()
                 .filter(|issue| {
                     if issue.updated_at < begin && !any_outdated {
-                        /*
                         println!(
                             "<!-- found old issue {}, {:?}; last page -->",
                             issue.html_url, issue.updated_at
                         );
-                        */
                         any_outdated = true;
                     }
                     if let Some(closed_at) = issue.closed_at.clone() {
                         if closed_at < begin {
-//                            println!("<!-- discard too old: {} -->", issue.html_url);
+                            println!("<!-- discard too old: {} -->", issue.html_url);
                             false
                         } else if closed_at >= end {
-//                            println!("<!-- discard too new: {} -->", issue.html_url);
+                            println!("<!-- discard too new: {} -->", issue.html_url);
                             false
                         } else if issue.pull_request.is_some() {
-//                            println!("<!-- discard issue is pull: {} -->", issue.html_url);
+                            println!("<!-- discard issue is pull: {} -->", issue.html_url);
                             false
                         } else {
                             true
                         }
                     } else {
-//                        println!("<!-- discard unclosed: {} -->", issue.html_url);
+                        println!("<!-- discard unclosed: {} -->", issue.html_url);
                         false
                     }
                 })
@@ -306,36 +303,34 @@ fn get_open_issues(
         let url = format!("https://api.github.com/repos/{}/issues?state=open&sort=updated&direction=desc&since={}", repo, since);
         let new_issues = do_gh_api_paged_request(client, &url, &opts.oauth_token, |body| {
             let issues: Vec<GhIssue> = serde_json::from_str(&body)?;
-            //println!("{:#?}", issues);
+            println!("{:#?}", issues);
 
             let mut any_outdated = false;
             let issues = issues
                 .into_iter()
                 .filter(|issue| {
                     if issue.updated_at < begin && !any_outdated {
-                        /*
                         println!(
                             "<!-- found old issue {}, {:?}; last page -->",
                             issue.html_url, issue.updated_at
                         );
-                         */
                         any_outdated = true;
                     }
                     if let Some(created_at) = issue.created_at.clone() {
                         if created_at < begin {
-//                            println!("<!-- discard too old: {} -->", issue.html_url);
+                            println!("<!-- discard too old: {} -->", issue.html_url);
                             false
                         } else if created_at >= end {
-//                            println!("<!-- discard too new: {} -->", issue.html_url);
+                            println!("<!-- discard too new: {} -->", issue.html_url);
                             false
                         } else if issue.pull_request.is_some() {
-//                            println!("<!-- discard issue is pull: {} -->", issue.html_url);
+                            println!("<!-- discard issue is pull: {} -->", issue.html_url);
                             false
                         } else {
                             true
                         }
                     } else {
-//                        println!("<!-- discard unclosed: {} -->", issue.html_url);
+                        println!("<!-- discard unclosed: {} -->", issue.html_url);
                         false
                     }
                 })
@@ -378,26 +373,24 @@ fn get_merged_pulls(
                 .into_iter()
                 .filter(|pr| {
                     if pr.updated_at < begin && !any_outdated {
-                        /*                       
                         println!(
                             "<!-- found old pull {}, {:?}; last page -->",
                             pr.html_url, pr.updated_at
                         );
-                         */
                         any_outdated = true;
                     }
                     if let Some(merged_at) = pr.merged_at.clone() {
                         if merged_at < begin {
-//                          println!("<!-- discard too old: {} -->", pr.html_url);
+                          println!("<!-- discard too old: {} -->", pr.html_url);
                             false
                         } else if merged_at >= end {
-//                            println!("<!-- discard too new: {} -->", pr.html_url);
+                            println!("<!-- discard too new: {} -->", pr.html_url);
                             false
                         } else {
                             true
                         }
                     } else {
-//                        println!("<!-- discard unmerged: {} -->", pr.html_url);
+                        println!("<!-- discard unmerged: {} -->", pr.html_url);
                         false
                     }
                 })
@@ -415,7 +408,7 @@ fn get_merged_pulls(
 }
 
 fn get_comment_count(client: &mut GhClient, pull: &GhPull, opts: &PullCmdOpts) -> Result<usize> {
-//    println!("<!-- fetching comments for {} -->", pull.html_url);
+    println!("<!-- fetching comments for {} -->", pull.html_url);
 
     let comments = do_gh_api_paged_request(
         client,
@@ -441,7 +434,7 @@ fn do_gh_api_paged_request<T>(
     let mut all_results = vec![];
 
     for page in 1.. {
-//        println!("<!-- fetching page {}: {} -->", page, url);
+        println!("<!-- fetching page {}: {} -->", page, url);
 
         let (body, headers) = do_gh_api_request(client, &url, oauth_token)?;
 
@@ -462,7 +455,7 @@ fn do_gh_api_paged_request<T>(
         }
 
         if page >= MAX_PAGES {
-//            println!("<!-- reached max pages -->");
+            println!("<!-- reached max pages -->");
             break;
         }
     }
@@ -496,14 +489,11 @@ fn do_gh_api_request(
         let status = resp.status();
         let limits = get_rate_limit_values(&headers)?;
 
-//        println!("<!-- {:?} -->", limits);
-
-        /*           
-        println!("<!-- headers -->");
-        for (k, v) in &headers {
-            println!("<!-- {}: {:?} -->", k, v);
-        }
-        */
+        // println!("<!-- {:?} -->", limits);
+        // println!("<!-- headers -->");
+        // for (k, v) in &headers {
+        //     println!("<!-- {}: {:?} -->", k, v);
+        // }
 
         client.calls += 1;
         do_gh_rate_limit_bookkeeping(client, &headers)?;
@@ -512,8 +502,8 @@ fn do_gh_api_request(
             StatusCode::OK => {
                 let body = resp.text()?;
 
-                //let json_body = Value::from_str(&body)?;
-                //println!("{}", serde_json::to_string_pretty(&json_body[0])?);
+                // let json_body = Value::from_str(&body)?;
+                // println!("{}", serde_json::to_string_pretty(&json_body[0])?);
 
                 return Ok((body, headers));
             }
@@ -584,7 +574,7 @@ fn do_gh_rate_limit(client: &mut GhClient) -> Result<()> {
 }
 
 fn do_gh_rate_limit_delay(limits: &RateLimitValues) {
-//    println!("<!-- rate limited, sleeping until {:?}", limits.reset_local);
+    println!("<!-- rate limited, sleeping until {:?}", limits.reset_local);
     delay_until(limits.reset);
 }
 
@@ -617,40 +607,35 @@ fn print_project(
     let total_open_issues = open_issue_stats.stats.iter().fold(0, |a, s| a + s.count);
     print!("{} merged PRs (", total_merged_prs);
 
-    /*
     for (i, stat) in pull_stats.stats.iter().enumerate() {
         print!("[{}][{}-merged-prs-{}]", i + 1, stubname, i + 1);
         if i < pull_stats.stats.len() - 1 {
             print!(", ");
         }
     }
-     */
     println!("), ");
+
     print!("{} closed issues (", total_closed_issues);
-    /*
     for (i, stat) in issue_stats.stats.iter().enumerate() {
         print!("[{}][{}-closed_issues-{}]", i + 1, stubname, i + 1);
         if i < issue_stats.stats.len() - 1 {
             print!(", ");
         }
     }
-     */
     println!("), ");
+
     print!("{} open issues (", total_open_issues);
-    /*
     for (i, stat) in open_issue_stats.stats.iter().enumerate() {
         print!("[{}][{}-open_issues-{}]", i + 1, stubname, i + 1);
         if i < open_issue_stats.stats.len() - 1 {
             print!(", ");
         }
     }
-     */
     println!(")");
 
     println!();
 
     // print PR details
-    /*
     for (i, stat) in pull_stats.stats.iter().enumerate() {
         let human_query = format!(
             "{}/pulls?q=is%3Apr+is%3Aclosed+merged%3A{}..{}",
@@ -685,7 +670,7 @@ fn print_project(
         }
     }
     println!();
-    */
+
     Ok(())
 }
 
