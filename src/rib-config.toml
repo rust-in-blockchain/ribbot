@@ -11,6 +11,16 @@ repos = [
 ]
 
 [[projects]]
+name = "Anoma"
+url = "https://github.com/anoma"
+repos = [
+"anoma/anoma",
+"anoma/ferveo",
+"anoma/masp",
+"anoma/plonkup-hash",
+]
+
+[[projects]]
 name = "ChainSafe"
 url = "https://github.com/ChainSafe"
 repos = [
