@@ -487,6 +487,18 @@ fn do_gh_api_request(
         let resp = builder.send()?;
         let headers = resp.headers().clone();
         let status = resp.status();
+
+        match status {
+            StatusCode::BAD_GATEWAY => {
+                // 2021/11/02 - GitHub seems to be having internal server errors
+                // that return 502, and resolve themselves after some seconds.
+                println!("<!-- recieved 502 bad gateway. waiting for retry -->");
+                delay_ms(5000);
+                continue;
+            }
+            _ => { }
+        }
+
         let limits = get_rate_limit_values(&headers)?;
 
         // println!("<!-- {:?} -->", limits);
@@ -729,7 +741,11 @@ fn parse_naive_date(s: &str) -> Result<NaiveDate> {
 }
 
 fn delay() {
-    let one_second = time::Duration::from_millis(DELAY_MS);
+    delay_ms(DELAY_MS);
+}
+
+fn delay_ms(ms: u64) {
+    let one_second = time::Duration::from_millis(ms);
     thread::sleep(one_second);
 }
 
