@@ -24,7 +24,8 @@ repos = [
 name = "ChainSafe"
 url = "https://github.com/ChainSafe"
 repos = [
-"ChainSafe/forest"
+"ChainSafe/forest",
+"ChainSafe/filecoindot",
 ]
 
 [[projects]]
@@ -229,11 +230,11 @@ repos = [
 
 [[projects]]
 name = "Secret Network"
-url = "https://github.com/enigmampc"
+url = "https://github.com/scrtlabs"
 repos = [
-"enigmampc/SecretNetwork",
-"enigmampc/secret-toolkit",
-"enigmampc/SafeTrace",
+"scrtlabs/SecretNetwork",
+"scrtlabs/secret-toolkit",
+"scrtlabs/SafeTrace",
 ]
 
 [[projects]]
