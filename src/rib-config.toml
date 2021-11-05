@@ -255,6 +255,16 @@ repos = [
 ]
 
 [[projects]]
+name = "Subspace Labs"
+url = "https://github.com/subspace"
+repos [
+"subspace/subspace"
+"subspace/subspace-relayer"
+"subspace/subspace-desktop
+"subspace/sloth256-189"
+]
+
+[[projects]]
 name = "TezEdge"
 url = "https://github.com/tezedge"
 repos = [
