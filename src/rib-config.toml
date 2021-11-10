@@ -63,6 +63,13 @@ repos = [
 ]
 
 [[projects]]
+name = "DarkFi"
+url = "https://github.com/darkrenaissance/darkfi"
+repos = [
+"darkrenaissance/darkfi",
+]
+
+[[projects]]
 name = "Dfinity"
 url = "https://github.com/dfinity"
 repos = [
