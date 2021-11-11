@@ -103,6 +103,16 @@ repos = [
 ]
 
 [[projects]]
+name = "Findora"
+url = "https://github.com/FindoraNetwork"
+repos = [
+"FindoraNetwork/platform",
+"FindoraNetwork/zei",
+"FindoraNetwork/merk",
+"FindoraNetwork/storage",
+]
+
+[[projects]]
 name = "Fluence"
 url = "https://github.com/fluencelabs"
 repos = [
