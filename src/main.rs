@@ -16,35 +16,35 @@ use serde_json::Value;
 use std::collections::HashMap;
 use std::str::FromStr;
 use std::{thread, time};
-use structopt::StructOpt;
+use clap::{Parser, Subcommand};
 
 static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain; Aimeedeer/ribbot; aimeez@pm.me)";
 static CONFIG: &'static str = include_str!("rib-config.toml");
 static DELAY_MS: u64 = 10;
 static MAX_PAGES: usize = 10;
 
-#[derive(StructOpt)]
+#[derive(Parser)]
 struct Options {
-    #[structopt(subcommand)]
+    #[clap(subcommand)]
     cmd: Command,
 }
 
-#[derive(StructOpt)]
+#[derive(Subcommand)]
 enum Command {
     Pulls(PullCmdOpts),
 }
 
-#[derive(StructOpt, Clone)]
+#[derive(Parser, Debug)]
 struct PullCmdOpts {
-    #[structopt(long, parse(try_from_str = parse_naive_date))]
+    #[clap(long, parse(try_from_str = parse_naive_date))]
     begin: NaiveDate,
-    #[structopt(long, parse(try_from_str = parse_naive_date))]
+    #[clap(long, parse(try_from_str = parse_naive_date))]
     end: NaiveDate,
-    #[structopt(long)]
+    #[clap(long)]
     no_comments: bool,
-    #[structopt(long)]
+    #[clap(long)]
     only_project: Option<String>,
-    #[structopt(long)]
+    #[clap(long)]
     oauth_token: Option<String>,
 }
 
@@ -61,7 +61,7 @@ struct Project {
 }
 
 fn main() -> Result<()> {
-    let options = Options::from_args();
+    let options = Options::parse();
     let ref config = toml::from_str::<Config>(CONFIG).context("parsing configuration")?;
 
     match options.cmd {
@@ -87,6 +87,7 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
                 continue;
             }
         }
+
         let pulls = if !opts.no_comments {
             get_sorted_merged_pulls_with_comments(&mut client, project, opts)?
         } else {
