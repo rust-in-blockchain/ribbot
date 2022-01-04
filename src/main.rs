@@ -34,7 +34,7 @@ enum Command {
     Pulls(PullCmdOpts),
 }
 
-#[derive(Parser, Debug)]
+#[derive(Parser)]
 struct PullCmdOpts {
     #[clap(long, parse(try_from_str = parse_naive_date))]
     begin: NaiveDate,
