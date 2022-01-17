@@ -123,6 +123,21 @@ repos = [
 ]
 
 [[projects]]
+name = "Fuel"
+url = "https://github.com/FuelLabs"
+repos = [
+"FuelLabs/fuel-asm",
+"FuelLabs/fuel-core",
+"FuelLabs/fuel-merkle",
+"FuelLabs/fuel-storage",
+"FuelLabs/fuel-tx",
+"FuelLabs/fuel-types",
+"FuelLabs/fuel-vm",
+"FuelLabs/fuels-rs",
+"FuelLabs/sway",
+]
+
+[[projects]]
 name = "Golem"
 url = "https://github.com/golemfactory"
 repos = [
