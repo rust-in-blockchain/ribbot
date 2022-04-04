@@ -103,6 +103,17 @@ repos = [
 ]
 
 [[projects]]
+name = "Espresso Systems"
+url = "https://github.com/EspressoSystems"
+repos = [
+"EspressoSystems/jellyfish",
+"EspressoSystems/cape",
+"EspressoSystems/reef",
+"EspressoSystems/seahorse",
+"EspressoSystems/cap",
+]
+
+[[projects]]
 name = "Findora"
 url = "https://github.com/FindoraNetwork"
 repos = [
