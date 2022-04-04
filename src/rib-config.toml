@@ -32,20 +32,26 @@ repos = [
 name = "COMIT"
 url = "https://github.com/comit-network"
 repos = [
-"comit-network/comit-rs",
+"comit-network/maia",
+"comit-network/rendezvous-server",
 "comit-network/xmr-btc-swap",
-"comit-network/create-comit-app",
-"comit-network/blockchain-contracts",
+"comit-network/xtra-productivity",
+"comit-network/waves",
 ]
 
 [[projects]]
 name = "Concordium"
 url = "https://github.com/Concordium"
 repos = [
-"Concordium/concordium-node",
-"Concordium/concordium-base",
-"Concordium/concordium-contracts-common",
 "Concordium/concordium-rust-smart-contracts",
+"Concordium/concordium-wasm-smart-contracts",
+"Concordium/concordium-contracts-common",
+"Concordium/concordium-rust-sdk",
+"Concordium/concordium-base",
+"Concordium/concordium-transaction-logger",
+"Concordium/concordium-euro2ccd-service",
+"Concordium/concordium-use-case-examples",
+"Concordium/concordium-node",
 ]
 
 [[projects]]
@@ -53,13 +59,6 @@ name = "Conflux"
 url = "https://github.com/Conflux-Chain"
 repos = [
 "Conflux-Chain/conflux-rust",
-]
-
-[[projects]]
-name = "Crypto.com Chain"
-url = "https://github.com/crypto-com"
-repos = [
-"crypto-com/thaler",
 ]
 
 [[projects]]
@@ -73,33 +72,31 @@ repos = [
 name = "Dfinity"
 url = "https://github.com/dfinity"
 repos = [
-"dfinity/agent-rs",
-"dfinity/candid",
-"dfinity/cdk-rs",
 "dfinity/ic",
-"dfinity/ic-types",
+"dfinity/sdk",
+"dfinity/agent-rs",
+"dfinity/icx-proxy",
+"dfinity/cdk-rs",
+"dfinity/candid",
 "dfinity/quill",
+"dfinity/experimental-minting-tool",
 "dfinity/vessel",
-]
-
-[[projects]]
-name = "Diem"
-url = "https://github.com/diem"
-repos = [
-"diem/diem",
-"diem/rosetta-proxy",
-"diem/bcs",
+"dfinity/bitcoin-developer-preview",
+"dfinity/ic-types",
 ]
 
 [[projects]]
 name = "Elrond"
 url = "https://github.com/ElrondNetwork"
 repos = [
-"ElrondNetwork/sc-delegation-rs",
-"ElrondNetwork/sc-band-bridge-rs",
-"ElrondNetwork/mandos-rs",
 "ElrondNetwork/elrond-wasm-rs",
-"ElrondNetwork/sc-dns-rs",
+"ElrondNetwork/sc-dex-rs",
+"ElrondNetwork/sc-nft-marketplace",
+"ElrondNetwork/sc-metabonding-rs",
+"ElrondNetwork/sc-bridge-elrond",
+"ElrondNetwork/sc-chainlink-rs",
+"ElrondNetwork/sc-delegation-rs",
+"ElrondNetwork/sc-savings-account-rs",
 ]
 
 [[projects]]
@@ -117,9 +114,14 @@ repos = [
 name = "Findora"
 url = "https://github.com/FindoraNetwork"
 repos = [
-"FindoraNetwork/platform",
 "FindoraNetwork/zei",
-"FindoraNetwork/merk",
+"FindoraNetwork/platform",
+"FindoraNetwork/findora-scanner",
+"FindoraNetwork/bp",
+"FindoraNetwork/findora-exporter",
+"FindoraNetwork/findorad",
+"FindoraNetwork/abcf",
+"FindoraNetwork/bs3",
 "FindoraNetwork/storage",
 ]
 
@@ -127,10 +129,13 @@ repos = [
 name = "Fluence"
 url = "https://github.com/fluencelabs"
 repos = [
-"fluencelabs/fluence",
 "fluencelabs/marine",
 "fluencelabs/aquavm",
-"fluencelabs/marine-rs-sdk",
+"fluencelabs/fluence",
+"fluencelabs/examples",
+"fluencelabs/registry",
+"fluencelabs/trust-graph",
+"fluencelabs/aqua-ipfs",
 ]
 
 [[projects]]
@@ -154,8 +159,14 @@ repos = [
 name = "Golem"
 url = "https://github.com/golemfactory"
 repos = [
+"golemfactory/ya-runtime-http-auth",
 "golemfactory/yagna",
+"golemfactory/ya-service-bus",
 "golemfactory/ya-client",
+"golemfactory/ya-relay",
+"golemfactory/ya-runtime-sdk",
+"golemfactory/ya-runtime-vm",
+"golemfactory/ya-vm-file-server",
 ]
 
 [[projects]]
@@ -163,82 +174,87 @@ name = "Grin"
 url = "https://github.com/mimblewimble/grin"
 repos = [
 "mimblewimble/grin",
+"mimblewimble/grin-wallet",
 ]
 
 [[projects]]
 name = "Holochain"
 url = "https://github.com/holochain"
 repos = [
-"holochain/holochain-rust",
 "holochain/holochain",
-"holochain/elemental-chat",
+"holochain/absquic",
+"holochain/launcher",
+"holochain/holochain-client-rust",
 "holochain/holochain-wasmer",
-"holochain/lair",
-]
-
-[[projects]]
-name = "Interledger"
-url = "https://github.com/interledger-rs"
-repos = [
-"interledger-rs/interledger-rs",
+"holochain/hc-utils",
 ]
 
 [[projects]]
 name = "IOTA"
 url = "https://github.com/iotaledger"
 repos = [
+"iotaledger/bee",
+"iotaledger/wallet.rs",
 "iotaledger/iota.rs",
-]
-
-[[projects]]
-name = "Lighthouse"
-url = "https://github.com/sigp/lighthouse"
-repos = [
-"sigp/lighthouse",
-"sigp/beacon-fuzz",
-"sigp/discv5",
+"iotaledger/identity.rs",
+"iotaledger/cli-wallet",
+"iotaledger/streams",
+"iotaledger/stronghold.rs",
+"iotaledger/chronicle.rs",
 ]
 
 [[projects]]
 name = "MobileCoin"
 url = "https://github.com/mobilecoinfoundation"
 repos = [
-"mobilecoinfoundation/fog",
 "mobilecoinfoundation/mobilecoin",
+"mobilecoinfoundation/mc-oblivious",
+"mobilecoinfoundation/fog",
 ]
 
 [[projects]]
 name = "NEAR"
 url = "https://github.com/near/nearcore"
 repos = [
+"near/workspaces-rs",
 "near/nearcore",
-"near/borsh",
-"near/core-contracts",
-"near/near-evm",
+"near/near-cli-rs",
 "near/near-sdk-rs",
+"near/near-jsonrpc-client-rs",
+"near/near-lake",
+"near/near-blake2",
+"near/core-contracts",
+"near/near-lake-framework",
+"near/borsh-rs",
+"near/near-indexer-for-explorer",
+"near/wasmer",
 ]
 
 [[projects]]
 name = "Nervos"
 url = "https://github.com/nervosnetwork"
 repos = [
+"nervosnetwork/axon",
+"nervosnetwork/godwoken",
 "nervosnetwork/ckb",
+"nervosnetwork/godwoken-scripts",
+"nervosnetwork/mercury",
 "nervosnetwork/ckb-vm",
+"nervosnetwork/godwoken-tests",
 "nervosnetwork/ckb-cli",
+"nervosnetwork/molecule",
 "nervosnetwork/capsule",
-"nervosnetwork/ckb-std",
-"nervosnetwork/force-bridge-eth",
+"nervosnetwork/ckb-indexer",
+"nervosnetwork/overlord",
 ]
 
 [[projects]]
 name = "Oasis"
-url = "https://github.com/oasislabs"
+url = "https://github.com/oasisprotocol"
 repos = [
-"oasislabs/oasis-ethwasi-runtime",
-"oasislabs/oasis-rs",
-"oasislabs/oasis-cli",
-"oasislabs/oasis-chain",
-"oasisprotocol/deoxysii-rust",
+"oasisprotocol/oasis-sdk",
+"oasisprotocol/cipher-paratime",
+"oasisprotocol/emerald-paratime",
 ]
 
 [[projects]]
@@ -247,11 +263,19 @@ url = "https://github.com/paritytech"
 repos = [
 "paritytech/substrate",
 "paritytech/polkadot",
-"paritytech/cargo-contract",
-"paritytech/wasmi",
-"paritytech/parity-bitcoin",
 "paritytech/cumulus",
+"paritytech/parity-signer",
+"paritytech/smoldot",
 "paritytech/ink",
+"paritytech/parity-common",
+"paritytech/subxt",
+"paritytech/jsonrpsee",
+"paritytech/frontier",
+"paritytech/cargo-contract",
+"paritytech/substrate-contracts-node",
+"paritytech/ink-playground",
+"paritytech/metadata-portal",
+"paritytech/parity-bridges-common",
 ]
 
 [[projects]]
@@ -277,12 +301,20 @@ repos = [
 ]
 
 [[projects]]
+name = "Lighthouse"
+url = "https://github.com/sigp/lighthouse"
+repos = [
+"sigp/lighthouse",
+"sigp/discv5",
+]
+
+[[projects]]
 name = "Secret Network"
 url = "https://github.com/scrtlabs"
 repos = [
 "scrtlabs/SecretNetwork",
 "scrtlabs/secret-toolkit",
-"scrtlabs/SafeTrace",
+"scrtlabs/snip20-reference-impl",
 ]
 
 [[projects]]
@@ -291,13 +323,13 @@ url = "https://github.com/solana-labs"
 repos = [
 "solana-labs/solana",
 "solana-labs/solana-program-library",
+"solana-labs/solana-accountsdb-plugin-postgres",
 ]
 
 [[projects]]
 name = "Spacemesh"
 url = "https://github.com/spacemeshos"
 repos = [
-"spacemeshos/go-spacemesh",
 "spacemeshos/svm",
 ]
 
@@ -306,8 +338,6 @@ name = "Subspace Labs"
 url = "https://github.com/subspace"
 repos = [
 "subspace/subspace",
-"subspace/subspace-desktop",
-"subspace/sloth256-189",
 ]
 
 [[projects]]
@@ -315,6 +345,8 @@ name = "TezEdge"
 url = "https://github.com/tezedge"
 repos = [
 "tezedge/tezedge",
+"tezedge/tezedge-snapshots",
+"tezedge/tezedge-tui",
 ]
 
 [[projects]]
@@ -331,4 +363,5 @@ name = "zkSync"
 url = "https://github.com/matter-labs/zksync"
 repos = [
 "matter-labs/zksync",
+"matter-labs/compiler-solidity",
 ]
