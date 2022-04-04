@@ -46,6 +46,8 @@ struct PullCmdOpts {
     only_project: Option<String>,
     #[clap(long)]
     oauth_token: Option<String>,
+    #[clap(long)]
+    smoke_test: bool,
 }
 
 #[derive(Deserialize)]
@@ -88,7 +90,8 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
 
     let mut calls = 0;
     for section in &config.sections {
-        println!("### {}\n\n", section.name);
+        println!("### {}", section.name);
+        println!("");
 
         for project in &section.projects {
             if let Some(ref only_project) = opts.only_project {
@@ -97,24 +100,28 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
                 }
             }
 
-            let pulls = if !opts.no_comments {
-                get_sorted_merged_pulls_with_comments(&mut client, project, opts)?
+            if !opts.smoke_test {
+                let pulls = if !opts.no_comments {
+                    get_sorted_merged_pulls_with_comments(&mut client, project, opts)?
+                } else {
+                    get_sorted_merged_pulls_without_comments(&mut client, project, opts)?
+                };
+                let issues = get_closed_issues(&mut client, project, opts)?;
+                let open_issues = get_open_issues(&mut client, project, opts)?;
+                let pull_stats = make_pull_stats(project, &pulls)?;
+                let issue_stats = make_issue_stats(project, &issues)?;
+                let open_issue_stats = make_issue_stats(project, &open_issues)?;
+                print_project(
+                    project,
+                    &pulls,
+                    pull_stats,
+                    issue_stats,
+                    open_issue_stats,
+                    opts,
+                );
             } else {
-                get_sorted_merged_pulls_without_comments(&mut client, project, opts)?
-            };
-            let issues = get_closed_issues(&mut client, project, opts)?;
-            let open_issues = get_open_issues(&mut client, project, opts)?;
-            let pull_stats = make_pull_stats(project, &pulls)?;
-            let issue_stats = make_issue_stats(project, &issues)?;
-            let open_issue_stats = make_issue_stats(project, &open_issues)?;
-            print_project(
-                project,
-                &pulls,
-                pull_stats,
-                issue_stats,
-                open_issue_stats,
-                opts,
-            );
+                do_smoke_test(&mut client, project, opts)?;
+            }
 
             let new_calls = client.calls - calls;
             calls = client.calls;
@@ -164,6 +171,39 @@ struct GhPullWithComments {
 
 #[derive(Deserialize, Debug)]
 struct GhComments {}
+
+fn do_smoke_test(
+    client: &mut GhClient,
+    project: &Project,
+    opts: &PullCmdOpts,
+) -> Result<()> {
+    println!("#### [{}]({})", project.name, project.url);
+    println!("");
+
+    for repo in &project.repos {
+        let url = format!(
+            "https://api.github.com/repos/{}/pulls?state=closed&sort=updated&direction=desc",
+            repo
+        );
+
+        let res = do_gh_api_request(
+            client,
+            &url,
+            &opts.oauth_token
+        );
+
+        match res {
+            Ok(_) => {
+                println!("<!-- repo {} good -->", repo);
+            }
+            Err(e) => {
+                println!("<!-- error retrieving {}: {} -->", repo, e);
+            }
+        }
+    }
+
+    Ok(())
+}
 
 fn get_sorted_merged_pulls_with_comments(
     client: &mut GhClient,
