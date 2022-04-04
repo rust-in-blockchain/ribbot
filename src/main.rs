@@ -87,39 +87,43 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
     };
 
     let mut calls = 0;
-    for project in &config.projects {
-        if let Some(ref only_project) = opts.only_project {
-            if project.name != *only_project {
-                continue;
+    for section in &config.sections {
+        println!("### {}\n\n", section.name);
+
+        for project in &section.projects {
+            if let Some(ref only_project) = opts.only_project {
+                if project.name != *only_project {
+                    continue;
+                }
             }
+
+            let pulls = if !opts.no_comments {
+                get_sorted_merged_pulls_with_comments(&mut client, project, opts)?
+            } else {
+                get_sorted_merged_pulls_without_comments(&mut client, project, opts)?
+            };
+            let issues = get_closed_issues(&mut client, project, opts)?;
+            let open_issues = get_open_issues(&mut client, project, opts)?;
+            let pull_stats = make_pull_stats(project, &pulls)?;
+            let issue_stats = make_issue_stats(project, &issues)?;
+            let open_issue_stats = make_issue_stats(project, &open_issues)?;
+            print_project(
+                project,
+                &pulls,
+                pull_stats,
+                issue_stats,
+                open_issue_stats,
+                opts,
+            );
+
+            let new_calls = client.calls - calls;
+            calls = client.calls;
+
+            println!(
+                "<!-- total GitHub calls: {}, new GitHub calls: {} -->",
+                calls, new_calls
+            );
         }
-
-        let pulls = if !opts.no_comments {
-            get_sorted_merged_pulls_with_comments(&mut client, project, opts)?
-        } else {
-            get_sorted_merged_pulls_without_comments(&mut client, project, opts)?
-        };
-        let issues = get_closed_issues(&mut client, project, opts)?;
-        let open_issues = get_open_issues(&mut client, project, opts)?;
-        let pull_stats = make_pull_stats(project, &pulls)?;
-        let issue_stats = make_issue_stats(project, &issues)?;
-        let open_issue_stats = make_issue_stats(project, &open_issues)?;
-        print_project(
-            project,
-            &pulls,
-            pull_stats,
-            issue_stats,
-            open_issue_stats,
-            opts,
-        );
-
-        let new_calls = client.calls - calls;
-        calls = client.calls;
-
-        println!(
-            "<!-- total GitHub calls: {}, new GitHub calls: {} -->",
-            calls, new_calls
-        );
     }
 
     return Ok(());
