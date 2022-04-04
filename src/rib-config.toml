@@ -7,7 +7,7 @@
 [[sections]]
 name = "General"
 
-[[projects]]
+[[sections.projects]]
 name = "Aleo"
 url = "https://github.com/AleoHQ"
 repos = [
@@ -17,7 +17,7 @@ repos = [
 "AleoHQ/leo",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Anoma"
 url = "https://github.com/anoma"
 repos = [
@@ -27,7 +27,7 @@ repos = [
 "anoma/plonkup-hash",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "ChainSafe"
 url = "https://github.com/ChainSafe"
 repos = [
@@ -35,7 +35,7 @@ repos = [
 "ChainSafe/filecoindot",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "COMIT"
 url = "https://github.com/comit-network"
 repos = [
@@ -46,7 +46,7 @@ repos = [
 "comit-network/waves",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Concordium"
 url = "https://github.com/Concordium"
 repos = [
@@ -61,21 +61,21 @@ repos = [
 "Concordium/concordium-node",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Conflux"
 url = "https://github.com/Conflux-Chain"
 repos = [
 "Conflux-Chain/conflux-rust",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "DarkFi"
 url = "https://github.com/darkrenaissance/darkfi"
 repos = [
 "darkrenaissance/darkfi",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Dfinity"
 url = "https://github.com/dfinity"
 repos = [
@@ -92,7 +92,7 @@ repos = [
 "dfinity/ic-types",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Elrond"
 url = "https://github.com/ElrondNetwork"
 repos = [
@@ -106,7 +106,7 @@ repos = [
 "ElrondNetwork/sc-savings-account-rs",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Espresso Systems"
 url = "https://github.com/EspressoSystems"
 repos = [
@@ -117,7 +117,7 @@ repos = [
 "EspressoSystems/cap",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Findora"
 url = "https://github.com/FindoraNetwork"
 repos = [
@@ -132,7 +132,7 @@ repos = [
 "FindoraNetwork/storage",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Fluence"
 url = "https://github.com/fluencelabs"
 repos = [
@@ -145,7 +145,7 @@ repos = [
 "fluencelabs/aqua-ipfs",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Fuel"
 url = "https://github.com/FuelLabs"
 repos = [
@@ -162,7 +162,7 @@ repos = [
 "FuelLabs/sway",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Golem"
 url = "https://github.com/golemfactory"
 repos = [
@@ -176,7 +176,7 @@ repos = [
 "golemfactory/ya-vm-file-server",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Grin"
 url = "https://github.com/mimblewimble/grin"
 repos = [
@@ -184,7 +184,7 @@ repos = [
 "mimblewimble/grin-wallet",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Holochain"
 url = "https://github.com/holochain"
 repos = [
@@ -196,7 +196,7 @@ repos = [
 "holochain/hc-utils",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "IOTA"
 url = "https://github.com/iotaledger"
 repos = [
@@ -210,7 +210,7 @@ repos = [
 "iotaledger/chronicle.rs",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "MobileCoin"
 url = "https://github.com/mobilecoinfoundation"
 repos = [
@@ -219,7 +219,7 @@ repos = [
 "mobilecoinfoundation/fog",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "NEAR"
 url = "https://github.com/near/nearcore"
 repos = [
@@ -237,7 +237,7 @@ repos = [
 "near/wasmer",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Nervos"
 url = "https://github.com/nervosnetwork"
 repos = [
@@ -255,7 +255,7 @@ repos = [
 "nervosnetwork/overlord",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Oasis"
 url = "https://github.com/oasisprotocol"
 repos = [
@@ -264,7 +264,7 @@ repos = [
 "oasisprotocol/emerald-paratime",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Parity"
 url = "https://github.com/paritytech"
 repos = [
@@ -285,7 +285,7 @@ repos = [
 "paritytech/parity-bridges-common",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Secret Network"
 url = "https://github.com/scrtlabs"
 repos = [
@@ -294,7 +294,7 @@ repos = [
 "scrtlabs/snip20-reference-impl",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Solana"
 url = "https://github.com/solana-labs"
 repos = [
@@ -303,21 +303,21 @@ repos = [
 "solana-labs/solana-accountsdb-plugin-postgres",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Spacemesh"
 url = "https://github.com/spacemeshos"
 repos = [
 "spacemeshos/svm",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Subspace Labs"
 url = "https://github.com/subspace"
 repos = [
 "subspace/subspace",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "TezEdge"
 url = "https://github.com/tezedge"
 repos = [
@@ -326,7 +326,7 @@ repos = [
 "tezedge/tezedge-tui",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Zcash"
 url = "https://github.com/zcash"
 repos = [
@@ -341,32 +341,32 @@ repos = [
 [[sections]]
 name = "Bitcoin"
 
-[[projects]]
+[[sections.projects]]
 name = "BDK"
 url = "https://github.com/bitcoindevkit"
 repos = [
 "bitcoindevkit/bdk",
 "bitcoindevkit/bdk-cli",
 "bitcoindevkit/bdk-ffi",
-"bitcoindevkit/bdk-hwi",
+"bitcoindevkit/rust-hwi",
 "bitcoindevkit/rust-electrum-client",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Bitmask"
 url = "https://github.com/diba-io/bitmask-core"
 repos = [
 "diba-io/bitmask-core",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Electrs"
 url = "https://github.com/romanz"
 repos = [
 "romanz/electrs",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Internet2"
 url = "https://github.com/internet2-wg"
 repos = [
@@ -376,7 +376,7 @@ repos = [
 "internet2-wg/stenc",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "LDK"
 url = "https://github.com/lightningdevkit"
 repos = [
@@ -385,7 +385,7 @@ repos = [
 "lightningdevkit/ldk-c-bindings",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "LNP/BP"
 url = "https://github.com/LNP-BP"
 repos = [
@@ -401,7 +401,7 @@ repos = [
 "LNP-BP/lnp-sdk",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "LNP WG"
 url = "https://github.com/LNP-WG"
 repos = [
@@ -410,14 +410,14 @@ repos = [
 "LNP-WG/lightning_encoding",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Nakamoto"
 url = "https://github.com/cloudhead/nakamoto"
 repos = [
 "cloudhead/nakamoto",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Nomic"
 url = "https://github.com/nomic-io"
 repos = [
@@ -428,7 +428,7 @@ repos = [
 "nomic-io/ed",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "RGB"
 url = "https://github.com/rgb-wg"
 repos = [
@@ -437,7 +437,7 @@ repos = [
 "rgb-wg/rust-rgb20",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Rust Bitcoin"
 url = "https://github.com/rust-bitcoin"
 repos = [
@@ -446,21 +446,21 @@ repos = [
 "rust-bitcoin/rust-bitcoincore-rpc",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Rust Simplicity"
 url = "https://github.com/ElementsProject/rust-simplicity"
 repos = [
 "ElementsProject/rust-simplicity",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Sapio"
 url = "https://github.com/sapio-lang"
 repos = [
 "sapio-lang/sapio",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Talaia"
 url = "https://github.com/talaia-labs"
 repos = [
@@ -473,14 +473,14 @@ repos = [
 [[sections]]
 name = "Ethereum"
 
-[[projects]]
+[[sections.projects]]
 name = "Ethers-rs"
 url = "https://github.com/gakonst/ethers-rs"
 repos = [
 "gakonst/ethers-rs",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Lighthouse"
 url = "https://github.com/sigp/lighthouse"
 repos = [
@@ -488,7 +488,7 @@ repos = [
 "sigp/discv5",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Rust Ethereum"
 url = "https://github.com/rust-bitcoin"
 repos = [
@@ -498,14 +498,14 @@ repos = [
 "rust-ethereum/dnsdisc",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "Rust Web3"
 url = "https://github.com/tomusdrw/rust-web3"
 repos = [
 "tomusdrw/rust-web3",
 ]
 
-[[projects]]
+[[sections.projects]]
 name = "zkSync"
 url = "https://github.com/matter-labs/zksync"
 repos = [

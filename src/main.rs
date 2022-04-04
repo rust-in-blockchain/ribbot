@@ -130,6 +130,8 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
                 "<!-- total GitHub calls: {}, new GitHub calls: {} -->",
                 calls, new_calls
             );
+            println!("");
+
         }
     }
 
@@ -182,7 +184,7 @@ fn do_smoke_test(
 
     for repo in &project.repos {
         let url = format!(
-            "https://api.github.com/repos/{}/pulls?state=closed&sort=updated&direction=desc",
+            "https://api.github.com/repos/{}/pulls",
             repo
         );
 
