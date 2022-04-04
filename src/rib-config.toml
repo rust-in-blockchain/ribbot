@@ -1,4 +1,11 @@
-# Projects are listed alphabetically.
+# Projects are listed alphabetically, but bitcoin- and ethereum-related projects
+# have their own sections at the end.
+
+# Non-Bitcoin / non-Ethereum
+
+
+[[sections]]
+name = "General"
 
 [[projects]]
 name = "Aleo"
@@ -279,36 +286,6 @@ repos = [
 ]
 
 [[projects]]
-name = "Rust Bitcoin"
-url = "https://github.com/rust-bitcoin"
-repos = [
-"rust-bitcoin/rust-bitcoin",
-"rust-bitcoin/rust-miniscript",
-"rust-bitcoin/rust-bitcoincore-rpc",
-"lightningdevkit/rust-lightning",
-"lightningdevkit/ldk-sample",
-"lightningdevkit/ldk-c-bindings",
-]
-
-[[projects]]
-name = "Rust Ethereum"
-url = "https://github.com/rust-bitcoin"
-repos = [
-"rust-ethereum/ethabi",
-"rust-ethereum/enr",
-"rust-ethereum/devp2p",
-"rust-ethereum/dnsdisc",
-]
-
-[[projects]]
-name = "Lighthouse"
-url = "https://github.com/sigp/lighthouse"
-repos = [
-"sigp/lighthouse",
-"sigp/discv5",
-]
-
-[[projects]]
 name = "Secret Network"
 url = "https://github.com/scrtlabs"
 repos = [
@@ -356,6 +333,176 @@ repos = [
 "ZcashFoundation/zebra",
 "zcash/halo2",
 "zcash/librustzcash",
+]
+
+
+# Bitcoin
+
+[[sections]]
+name = "Bitcoin"
+
+[[projects]]
+name = "BDK"
+url = "https://github.com/bitcoindevkit"
+repos = [
+"bitcoindevkit/bdk",
+"bitcoindevkit/bdk-cli",
+"bitcoindevkit/bdk-ffi",
+"bitcoindevkit/bdk-hwi",
+"bitcoindevkit/rust-electrum-client",
+]
+
+[[projects]]
+name = "Bitmask"
+url = "https://github.com/diba-io/bitmask-core"
+repos = [
+"diba-io/bitmask-core",
+]
+
+[[projects]]
+name = "Electrs"
+url = "https://github.com/romanz"
+repos = [
+"romanz/electrs",
+]
+
+[[projects]]
+name = "Internet2"
+url = "https://github.com/internet2-wg"
+repos = [
+"internet2-wg/rust-aluvm",
+"internet2-wg/rust-internet2",
+"internet2-wg/rust-microservices",
+"internet2-wg/stenc",
+]
+
+[[projects]]
+name = "LDK"
+url = "https://github.com/lightningdevkit"
+repos = [
+"lightningdevkit/rust-lightning",
+"lightningdevkit/ldk-sample",
+"lightningdevkit/ldk-c-bindings",
+]
+
+[[projects]]
+name = "LNP/BP"
+url = "https://github.com/LNP-BP"
+repos = [
+"LNP-BP/bp-node",
+"LNP-BP/bp-core",
+"LNP-BP/client_side_validation",
+"LNP-BP/descriptor-wallet",
+"LNP-BP/rust-amplify",
+"LNP-BP/rust-lnpbp",
+"LNP-BP/ln-types",
+"LNP-BP/invoices",
+"LNP-BP/rust-psbt",
+"LNP-BP/lnp-sdk",
+]
+
+[[projects]]
+name = "LNP WG"
+url = "https://github.com/LNP-WG"
+repos = [
+"LNP-WG/lnp-core",
+"LNP-WG/lnp-node",
+"LNP-WG/lightning_encoding",
+]
+
+[[projects]]
+name = "Nakamoto"
+url = "https://github.com/cloudhead/nakamoto"
+repos = [
+"cloudhead/nakamoto",
+]
+
+[[projects]]
+name = "Nomic"
+url = "https://github.com/nomic-io"
+repos = [
+"nomic-io/nomic",
+"nomic-io/merk",
+"nomic-io/orga",
+"nomic-io/abci2",
+"nomic-io/ed",
+]
+
+[[projects]]
+name = "RGB"
+url = "https://github.com/rgb-wg"
+repos = [
+"rgb-wg/rgb-core",
+"rgb-wg/rgb-node",
+"rgb-wg/rust-rgb20",
+]
+
+[[projects]]
+name = "Rust Bitcoin"
+url = "https://github.com/rust-bitcoin"
+repos = [
+"rust-bitcoin/rust-bitcoin",
+"rust-bitcoin/rust-miniscript",
+"rust-bitcoin/rust-bitcoincore-rpc",
+]
+
+[[projects]]
+name = "Rust Simplicity"
+url = "https://github.com/ElementsProject/rust-simplicity"
+repos = [
+"ElementsProject/rust-simplicity",
+]
+
+[[projects]]
+name = "Sapio"
+url = "https://github.com/sapio-lang"
+repos = [
+"sapio-lang/sapio",
+]
+
+[[projects]]
+name = "Talaia"
+url = "https://github.com/talaia-labs"
+repos = [
+"talaia-labs/rust-teos",
+]
+
+
+# Ethereum
+
+[[sections]]
+name = "Ethereum"
+
+[[projects]]
+name = "Ethers-rs"
+url = "https://github.com/gakonst/ethers-rs"
+repos = [
+"gakonst/ethers-rs",
+]
+
+[[projects]]
+name = "Lighthouse"
+url = "https://github.com/sigp/lighthouse"
+repos = [
+"sigp/lighthouse",
+"sigp/discv5",
+]
+
+[[projects]]
+name = "Rust Ethereum"
+url = "https://github.com/rust-bitcoin"
+repos = [
+"rust-ethereum/ethabi",
+"rust-ethereum/enr",
+"rust-ethereum/devp2p",
+"rust-ethereum/dnsdisc",
+]
+
+[[projects]]
+name = "Rust Web3"
+url = "https://github.com/tomusdrw/rust-web3"
+repos = [
+"tomusdrw/rust-web3",
 ]
 
 [[projects]]

@@ -50,6 +50,12 @@ struct PullCmdOpts {
 
 #[derive(Deserialize)]
 struct Config {
+    sections: Vec<Section>,
+}
+
+#[derive(Deserialize)]
+struct Section {
+    name: String,
     projects: Vec<Project>,
 }
 
