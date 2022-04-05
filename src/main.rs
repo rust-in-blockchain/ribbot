@@ -21,7 +21,7 @@ use clap::{Parser, Subcommand};
 static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain; Aimeedeer/ribbot; aimeez@pm.me)";
 static CONFIG: &'static str = include_str!("rib-config.toml");
 static DELAY_MS: u64 = 10;
-static MAX_PAGES: usize = 10;
+static MAX_PAGES: usize = 100;
 
 #[derive(Parser)]
 struct Options {
@@ -356,7 +356,7 @@ fn get_open_issues(
         let url = format!("https://api.github.com/repos/{}/issues?state=open&sort=updated&direction=desc&since={}", repo, since);
         let new_issues = do_gh_api_paged_request(client, &url, &opts.oauth_token, |body| {
             let issues: Vec<GhIssue> = serde_json::from_str(&body)?;
-            println!("{:#?}", issues);
+            //println!("{:#?}", issues);
 
             let mut any_outdated = false;
             let issues = issues
