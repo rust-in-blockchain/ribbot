@@ -31,6 +31,8 @@ repos = [
 name = "ChainSafe"
 url = "https://github.com/ChainSafe"
 repos = [
+"ChainSafe/mina-rs",
+"ChainSafe/api3-rust",
 "ChainSafe/forest",
 "ChainSafe/filecoindot",
 ]
@@ -126,7 +128,6 @@ repos = [
 "FindoraNetwork/findora-scanner",
 "FindoraNetwork/bp",
 "FindoraNetwork/findora-exporter",
-"FindoraNetwork/findorad",
 "FindoraNetwork/abcf",
 "FindoraNetwork/bs3",
 "FindoraNetwork/storage",
@@ -185,6 +186,19 @@ repos = [
 ]
 
 [[sections.projects]]
+name = "Helium"
+url = "https://github.com/helium"
+repos = [
+"helium/gateway-rs",
+"helium/semtech-udp",
+"helium/helium-crypto-rs",
+"helium/ecc608-linux-rs",
+"helium/virtual-lorawan-device",
+"helium/helium-wallet-rs",
+"helium/helium-api-rs",
+]
+
+[[sections.projects]]
 name = "Holochain"
 url = "https://github.com/holochain"
 repos = [
@@ -208,6 +222,20 @@ repos = [
 "iotaledger/streams",
 "iotaledger/stronghold.rs",
 "iotaledger/chronicle.rs",
+]
+
+[[sections.projects]]
+name = "Maidsafe"
+url = "https://github.com/maidsafe"
+repos = [
+"maidsafe/sn_dbc",
+"maidsafe/safe_network",
+"maidsafe/qp2p",
+"maidsafe/blsttc",
+"maidsafe/sn_dbc_examples",
+"maidsafe/sn_consensus",
+"maidsafe/bls_dkg",
+"maidsafe/self_encryption",
 ]
 
 [[sections.projects]]
@@ -389,16 +417,14 @@ repos = [
 name = "LNP/BP"
 url = "https://github.com/LNP-BP"
 repos = [
-"LNP-BP/bp-node",
-"LNP-BP/bp-core",
 "LNP-BP/client_side_validation",
-"LNP-BP/descriptor-wallet",
 "LNP-BP/rust-lnpbp",
-"LNP-BP/ln-types",
 "LNP-BP/invoices",
-"LNP-BP/rust-psbt",
-"LNP-BP/lnp-sdk",
 "rust-amplify/rust-amplify",
+"BP-WG/bp-node",
+"BP-WG/bp-core",
+"BP-WG/descriptor-wallet",
+"BP-WG/rust-psbt",
 ]
 
 [[sections.projects]]
@@ -408,6 +434,7 @@ repos = [
 "LNP-WG/lnp-core",
 "LNP-WG/lnp-node",
 "LNP-WG/lightning_encoding",
+"LNP-WG/ln-types",
 ]
 
 [[sections.projects]]
