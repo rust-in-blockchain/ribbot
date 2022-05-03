@@ -360,7 +360,11 @@ url = "https://github.com/zcash"
 repos = [
 "ZcashFoundation/zebra",
 "zcash/halo2",
+"zcash/incrementalmerkletree",
 "zcash/librustzcash",
+"zcash/orchard",
+"zcash/pasta_curves",
+"zcash/halo2_gadgets",
 ]
 
 
@@ -469,8 +473,15 @@ name = "Rust Bitcoin"
 url = "https://github.com/rust-bitcoin"
 repos = [
 "rust-bitcoin/rust-bitcoin",
+"rust-bitcoin/rust-secp256k1",
 "rust-bitcoin/rust-miniscript",
+"rust-bitcoin/rust-wallet",
 "rust-bitcoin/rust-bitcoincore-rpc",
+"rust-bitcoin/rust-bech32-bitcoin",
+"rust-bitcoin/murmel",
+"rust-bitcoin/rust-bip39",
+"rust-bitcoin/bitcoin_hashes",
+"jean-airoldie/zeromq-src-rs",
 ]
 
 [[sections.projects]]
