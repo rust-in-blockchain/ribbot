@@ -449,6 +449,16 @@ repos = [
 ]
 
 [[sections.projects]]
+name = "MyCitadel"
+url = "https://github.com/orgs/mycitadel"
+repos = [
+"mycitadel/citadel-runtime",
+"mycitadel/libcitadel",
+"mycitadel/mycitadel-desktop",
+"mycitadel/mycitadel-node",
+]
+
+[[sections.projects]]
 name = "Nomic"
 url = "https://github.com/nomic-io"
 repos = [
