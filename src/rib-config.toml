@@ -95,6 +95,20 @@ repos = [
 ]
 
 [[sections.projects]]
+name = "Dusk Network"
+url = "https://github.com/dusk-network"
+repos = [
+"dusk-network/dusk-hamt",
+"dusk-network/dusk-zerocaf",
+"dusk-network/microkelvin",
+"dusk-network/plonk",
+"dusk-network/rusk",
+"dusk-network/rusk-vm",
+"dusk-network/wallet-cli",
+"dusk-network/wallet-core",
+]
+
+[[sections.projects]]
 name = "Elrond"
 url = "https://github.com/ElrondNetwork"
 repos = [
@@ -449,6 +463,16 @@ name = "Nakamoto"
 url = "https://github.com/cloudhead/nakamoto"
 repos = [
 "cloudhead/nakamoto",
+]
+
+[[sections.projects]]
+name = "MyCitadel"
+url = "https://github.com/orgs/mycitadel"
+repos = [
+"mycitadel/citadel-runtime",
+"mycitadel/libcitadel",
+"mycitadel/mycitadel-desktop",
+"mycitadel/mycitadel-node",
 ]
 
 [[sections.projects]]
