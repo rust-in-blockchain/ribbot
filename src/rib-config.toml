@@ -28,6 +28,14 @@ repos = [
 ]
 
 [[sections.projects]]
+name = "Casper"
+url= "https://github.com/casper-network"
+repos = [
+"casper-network/casper-node",
+"casper-network/docs",
+]
+
+[[sections.projects]]
 name = "ChainSafe"
 url = "https://github.com/ChainSafe"
 repos = [
