@@ -28,6 +28,13 @@ repos = [
 ]
 
 [[sections.projects]]
+name = "Aptos"
+url = "https://github.com/aptos-labs"
+repos = [
+"aptos-labs/aptos-core",
+]
+
+[[sections.projects]]
 name = "Casper"
 url= "https://github.com/casper-network"
 repos = [
@@ -368,6 +375,14 @@ name = "Subspace Labs"
 url = "https://github.com/subspace"
 repos = [
 "subspace/subspace",
+]
+
+[[sections.projects]]
+name = "Sui"
+url = "https://github.com/MystenLabs"
+repos = [
+"MystenLabs/sui",
+"MystenLabs/narwhal",
 ]
 
 [[sections.projects]]
