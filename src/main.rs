@@ -18,8 +18,8 @@ use std::collections::HashMap;
 use std::str::FromStr;
 use std::{thread, time};
 
-static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain; Aimeedeer/ribbot; aimeez@pm.me)";
-static CONFIG: &'static str = include_str!("rib-config.toml");
+static RIB_AGENT: &str = "ribbot (Rust-in-Blockchain; Aimeedeer/ribbot; aimeez@pm.me)";
+static CONFIG: &str = include_str!("rib-config.toml");
 static DELAY_MS: u64 = 10;
 static MAX_PAGES: usize = 100;
 
@@ -73,11 +73,11 @@ struct Project {
 
 fn main() -> Result<()> {
     let options = Options::parse();
-    let ref config = toml::from_str::<Config>(CONFIG).context("parsing configuration")?;
+    let config = toml::from_str::<Config>(CONFIG).context("parsing configuration")?;
 
     match options.cmd {
         Command::Pulls(opts) => {
-            fetch_pulls(config, &opts)?;
+            fetch_pulls(&config, &opts)?;
         }
     }
 
@@ -94,7 +94,7 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
     let mut calls = 0;
     for section in &config.sections {
         println!("### {}", section.name);
-        println!("");
+        println!();
 
         for project in &section.projects {
             if let Some(ref only_project) = opts.only_project {
@@ -133,11 +133,11 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
                 "<!-- total GitHub calls: {}, new GitHub calls: {} -->",
                 calls, new_calls
             );
-            println!("");
+            println!();
         }
     }
 
-    return Ok(());
+    Ok(())
 }
 
 #[derive(Deserialize, Debug)]
@@ -178,7 +178,7 @@ struct GhComments {}
 
 fn do_smoke_test(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<()> {
     println!("#### [{}]({})", project.name, project.url);
-    println!("");
+    println!();
 
     for repo in &project.repos {
         let url = format!("https://api.github.com/repos/{}/pulls", repo);
@@ -299,7 +299,7 @@ fn get_closed_issues(
                         );
                         any_outdated = true;
                     }
-                    if let Some(closed_at) = issue.closed_at.clone() {
+                    if let Some(closed_at) = issue.closed_at {
                         if closed_at < begin {
                             println!("<!-- discard too old: {} -->", issue.html_url);
                             false
@@ -323,7 +323,7 @@ fn get_closed_issues(
                 })
                 .collect();
 
-            let keep_going = if any_outdated { false } else { true };
+            let keep_going = !any_outdated;
 
             Ok((issues, keep_going))
         })?;
@@ -364,7 +364,7 @@ fn get_open_issues(
                         );
                         any_outdated = true;
                     }
-                    if let Some(created_at) = issue.created_at.clone() {
+                    if let Some(created_at) = issue.created_at {
                         if created_at < begin {
                             println!("<!-- discard too old: {} -->", issue.html_url);
                             false
@@ -388,7 +388,7 @@ fn get_open_issues(
                 })
                 .collect();
 
-            let keep_going = if any_outdated { false } else { true };
+            let keep_going = !any_outdated;
 
             Ok((issues, keep_going))
         })?;
@@ -431,7 +431,7 @@ fn get_merged_pulls(
                         );
                         any_outdated = true;
                     }
-                    if let Some(merged_at) = pr.merged_at.clone() {
+                    if let Some(merged_at) = pr.merged_at {
                         if merged_at < begin {
                             println!("<!-- discard too old: {} -->", pr.html_url);
                             false
@@ -451,7 +451,7 @@ fn get_merged_pulls(
                 })
                 .collect();
 
-            let keep_going = if any_outdated { false } else { true };
+            let keep_going = !any_outdated;
 
             Ok((pulls, keep_going))
         })?;
@@ -543,15 +543,12 @@ fn do_gh_api_request(
         let headers = resp.headers().clone();
         let status = resp.status();
 
-        match status {
-            StatusCode::BAD_GATEWAY => {
-                // 2021/11/02 - GitHub seems to be having internal server errors
-                // that return 502, and resolve themselves after some seconds.
-                println!("<!-- recieved 502 bad gateway. waiting for retry -->");
-                delay_ms(5000);
-                continue;
-            }
-            _ => {}
+        if status == StatusCode::BAD_GATEWAY {
+            // 2021/11/02 - GitHub seems to be having internal server errors
+            // that return 502, and resolve themselves after some seconds.
+            println!("<!-- recieved 502 bad gateway. waiting for retry -->");
+            delay_ms(5000);
+            continue;
         }
 
         let limits = get_rate_limit_values(&headers)?;
@@ -634,7 +631,7 @@ fn get_rate_limit_values(headers: &HeaderMap) -> Result<RateLimitValues> {
 fn do_gh_rate_limit(client: &mut GhClient) -> Result<()> {
     if let Some(ref limits) = client.limits {
         if limits.remaining == 0 {
-            do_gh_rate_limit_delay(&limits);
+            do_gh_rate_limit_delay(limits);
         }
     }
     Ok(())
@@ -749,8 +746,8 @@ fn print_project(
 fn parse_next(headers: &HeaderMap) -> Result<Option<&str>> {
     if let Some(link_header) = headers.get(header::LINK) {
         let link_header = link_header.to_str()?;
-        for entry in link_header.split(",") {
-            if let Some((url, maybe_rel)) = split_2_trim(&entry, ';') {
+        for entry in link_header.split(',') {
+            if let Some((url, maybe_rel)) = split_2_trim(entry, ';') {
                 if let Some((rel_word, rel_value)) = split_2_trim(maybe_rel, '=') {
                     if rel_word == "rel" {
                         if rel_value == "\"next\"" {
@@ -861,7 +858,7 @@ fn make_issue_stats(project: &Project, issues: &[GhIssue]) -> Result<PullStats> 
 }
 
 fn repo_from_issue(issue: &str) -> String {
-    let parts = issue.split("/").collect::<Vec<_>>();
+    let parts = issue.split('/').collect::<Vec<_>>();
     assert!(parts.len() > 2);
     let new_parts_count = parts.len() - 2;
     let parts = &parts[0..new_parts_count];
@@ -906,5 +903,5 @@ fn repo_name_to_url(repo: &str) -> String {
 
 fn make_stubname(project: &Project) -> String {
     let lower = project.name.to_ascii_lowercase();
-    lower.replace(" ", "_")
+    lower.replace(' ', "_")
 }
