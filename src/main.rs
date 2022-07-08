@@ -7,6 +7,7 @@
 
 use anyhow::{bail, Context, Result};
 use chrono::{Date, DateTime, Local, NaiveDate, SecondsFormat, TimeZone, Utc};
+use clap::{Parser, Subcommand};
 use reqwest::blocking::{Client, Response};
 use reqwest::header;
 use reqwest::header::{HeaderMap, USER_AGENT};
@@ -16,7 +17,6 @@ use serde_json::Value;
 use std::collections::HashMap;
 use std::str::FromStr;
 use std::{thread, time};
-use clap::{Parser, Subcommand};
 
 static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain; Aimeedeer/ribbot; aimeez@pm.me)";
 static CONFIG: &'static str = include_str!("rib-config.toml");
@@ -131,7 +131,6 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
                 calls, new_calls
             );
             println!("");
-
         }
     }
 
@@ -174,25 +173,14 @@ struct GhPullWithComments {
 #[derive(Deserialize, Debug)]
 struct GhComments {}
 
-fn do_smoke_test(
-    client: &mut GhClient,
-    project: &Project,
-    opts: &PullCmdOpts,
-) -> Result<()> {
+fn do_smoke_test(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<()> {
     println!("#### [{}]({})", project.name, project.url);
     println!("");
 
     for repo in &project.repos {
-        let url = format!(
-            "https://api.github.com/repos/{}/pulls",
-            repo
-        );
+        let url = format!("https://api.github.com/repos/{}/pulls", repo);
 
-        let res = do_gh_api_request(
-            client,
-            &url,
-            &opts.oauth_token
-        );
+        let res = do_gh_api_request(client, &url, &opts.oauth_token);
 
         match res {
             Ok(_) => {
@@ -434,7 +422,7 @@ fn get_merged_pulls(
                     }
                     if let Some(merged_at) = pr.merged_at.clone() {
                         if merged_at < begin {
-                          println!("<!-- discard too old: {} -->", pr.html_url);
+                            println!("<!-- discard too old: {} -->", pr.html_url);
                             false
                         } else if merged_at >= end {
                             println!("<!-- discard too new: {} -->", pr.html_url);
@@ -549,7 +537,7 @@ fn do_gh_api_request(
                 delay_ms(5000);
                 continue;
             }
-            _ => { }
+            _ => {}
         }
 
         let limits = get_rate_limit_values(&headers)?;
