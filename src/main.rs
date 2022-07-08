@@ -7,6 +7,7 @@
 
 use anyhow::{bail, Context, Result};
 use chrono::{Date, DateTime, Local, NaiveDate, SecondsFormat, TimeZone, Utc};
+use clap::{Parser, Subcommand};
 use reqwest::blocking::{Client, Response};
 use reqwest::header;
 use reqwest::header::{HeaderMap, USER_AGENT};
@@ -16,7 +17,6 @@ use serde_json::Value;
 use std::collections::HashMap;
 use std::str::FromStr;
 use std::{thread, time};
-use clap::{Parser, Subcommand};
 
 static RIB_AGENT: &'static str = "ribbot (Rust-in-Blockchain; Aimeedeer/ribbot; aimeez@pm.me)";
 static CONFIG: &'static str = include_str!("rib-config.toml");
@@ -40,6 +40,9 @@ struct PullCmdOpts {
     begin: NaiveDate,
     #[clap(long, parse(try_from_str = parse_naive_date))]
     end: NaiveDate,
+    /// If set, include issues/PRs created by dependabot in analysis.
+    #[clap(long)]
+    include_dependabot: bool,
     #[clap(long)]
     no_comments: bool,
     #[clap(long)]
@@ -131,7 +134,6 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
                 calls, new_calls
             );
             println!("");
-
         }
     }
 
@@ -174,25 +176,14 @@ struct GhPullWithComments {
 #[derive(Deserialize, Debug)]
 struct GhComments {}
 
-fn do_smoke_test(
-    client: &mut GhClient,
-    project: &Project,
-    opts: &PullCmdOpts,
-) -> Result<()> {
+fn do_smoke_test(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -> Result<()> {
     println!("#### [{}]({})", project.name, project.url);
     println!("");
 
     for repo in &project.repos {
-        let url = format!(
-            "https://api.github.com/repos/{}/pulls",
-            repo
-        );
+        let url = format!("https://api.github.com/repos/{}/pulls", repo);
 
-        let res = do_gh_api_request(
-            client,
-            &url,
-            &opts.oauth_token
-        );
+        let res = do_gh_api_request(client, &url, &opts.oauth_token);
 
         match res {
             Ok(_) => {
@@ -318,6 +309,10 @@ fn get_closed_issues(
                         } else if issue.pull_request.is_some() {
                             println!("<!-- discard issue is pull: {} -->", issue.html_url);
                             false
+                        } else if !opts.include_dependabot && issue.user.login == "dependabot[bot]"
+                        {
+                            println!("<!-- discard dependabot: {} -->", issue.html_url);
+                            false
                         } else {
                             true
                         }
@@ -379,6 +374,10 @@ fn get_open_issues(
                         } else if issue.pull_request.is_some() {
                             println!("<!-- discard issue is pull: {} -->", issue.html_url);
                             false
+                        } else if !opts.include_dependabot && issue.user.login == "dependabot[bot]"
+                        {
+                            println!("<!-- discard dependabot: {} -->", issue.html_url);
+                            false
                         } else {
                             true
                         }
@@ -434,10 +433,13 @@ fn get_merged_pulls(
                     }
                     if let Some(merged_at) = pr.merged_at.clone() {
                         if merged_at < begin {
-                          println!("<!-- discard too old: {} -->", pr.html_url);
+                            println!("<!-- discard too old: {} -->", pr.html_url);
                             false
                         } else if merged_at >= end {
                             println!("<!-- discard too new: {} -->", pr.html_url);
+                            false
+                        } else if !opts.include_dependabot && pr.user.login == "dependabot[bot]" {
+                            println!("<!-- discard dependabot: {} -->", pr.html_url);
                             false
                         } else {
                             true
@@ -549,7 +551,7 @@ fn do_gh_api_request(
                 delay_ms(5000);
                 continue;
             }
-            _ => { }
+            _ => {}
         }
 
         let limits = get_rate_limit_values(&headers)?;
@@ -700,25 +702,30 @@ fn print_project(
 
     println!();
 
+    let dependabot_query_param = match opts.include_dependabot {
+        true => "",
+        false => " -author:app/dependabot",
+    };
+
     // print PR details
     for (i, stat) in pull_stats.stats.iter().enumerate() {
         let human_query = format!(
-            "{}/pulls?q=is%3Apr+is%3Aclosed+merged%3A{}..{}",
-            stat.repo, begin, end
+            "{}/pulls?q=is%3Apr+is%3Aclosed+merged%3A{}..{}{}",
+            stat.repo, begin, end, dependabot_query_param
         );
         println!("[{}-merged-prs-{}]: {}", stubname, i + 1, human_query);
     }
     for (i, stat) in issue_stats.stats.iter().enumerate() {
         let human_query = format!(
-            "{}/issues?q=is%3Aissue+is%3Aclosed+closed%3A{}..{}",
-            stat.repo, begin, end
+            "{}/issues?q=is%3Aissue+is%3Aclosed+closed%3A{}..{}{}",
+            stat.repo, begin, end, dependabot_query_param
         );
         println!("[{}-closed_issues-{}]: {}", stubname, i + 1, human_query);
     }
     for (i, stat) in open_issue_stats.stats.iter().enumerate() {
         let human_query = format!(
-            "{}/issues?q=is%3Aissue+is%3Aopen+created%3A{}..{}",
-            stat.repo, begin, end
+            "{}/issues?q=is%3Aissue+is%3Aopen+created%3A{}..{}{}",
+            stat.repo, begin, end, dependabot_query_param
         );
         println!("[{}-open_issues-{}]: {}", stubname, i + 1, human_query);
     }
