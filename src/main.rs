@@ -40,6 +40,9 @@ struct PullCmdOpts {
     begin: NaiveDate,
     #[clap(long, parse(try_from_str = parse_naive_date))]
     end: NaiveDate,
+    /// If set, include issues/PRs created by dependabot in analysis.
+    #[clap(long)]
+    include_dependabot: bool,
     #[clap(long)]
     no_comments: bool,
     #[clap(long)]
@@ -306,6 +309,10 @@ fn get_closed_issues(
                         } else if issue.pull_request.is_some() {
                             println!("<!-- discard issue is pull: {} -->", issue.html_url);
                             false
+                        } else if !opts.include_dependabot && issue.user.login == "dependabot[bot]"
+                        {
+                            println!("<!-- discard dependabot: {} -->", issue.html_url);
+                            false
                         } else {
                             true
                         }
@@ -367,6 +374,10 @@ fn get_open_issues(
                         } else if issue.pull_request.is_some() {
                             println!("<!-- discard issue is pull: {} -->", issue.html_url);
                             false
+                        } else if !opts.include_dependabot && issue.user.login == "dependabot[bot]"
+                        {
+                            println!("<!-- discard dependabot: {} -->", issue.html_url);
+                            false
                         } else {
                             true
                         }
@@ -426,6 +437,9 @@ fn get_merged_pulls(
                             false
                         } else if merged_at >= end {
                             println!("<!-- discard too new: {} -->", pr.html_url);
+                            false
+                        } else if !opts.include_dependabot && pr.user.login == "dependabot[bot]" {
+                            println!("<!-- discard dependabot: {} -->", pr.html_url);
                             false
                         } else {
                             true
@@ -688,25 +702,30 @@ fn print_project(
 
     println!();
 
+    let dependabot_query_param = match opts.include_dependabot {
+        true => " -author:app/dependabot",
+        false => "",
+    };
+
     // print PR details
     for (i, stat) in pull_stats.stats.iter().enumerate() {
         let human_query = format!(
-            "{}/pulls?q=is%3Apr+is%3Aclosed+merged%3A{}..{}",
-            stat.repo, begin, end
+            "{}/pulls?q=is%3Apr+is%3Aclosed+merged%3A{}..{}{}",
+            stat.repo, begin, end, dependabot_query_param
         );
         println!("[{}-merged-prs-{}]: {}", stubname, i + 1, human_query);
     }
     for (i, stat) in issue_stats.stats.iter().enumerate() {
         let human_query = format!(
-            "{}/issues?q=is%3Aissue+is%3Aclosed+closed%3A{}..{}",
-            stat.repo, begin, end
+            "{}/issues?q=is%3Aissue+is%3Aclosed+closed%3A{}..{}{}",
+            stat.repo, begin, end, dependabot_query_param
         );
         println!("[{}-closed_issues-{}]: {}", stubname, i + 1, human_query);
     }
     for (i, stat) in open_issue_stats.stats.iter().enumerate() {
         let human_query = format!(
-            "{}/issues?q=is%3Aissue+is%3Aopen+created%3A{}..{}",
-            stat.repo, begin, end
+            "{}/issues?q=is%3Aissue+is%3Aopen+created%3A{}..{}{}",
+            stat.repo, begin, end, dependabot_query_param
         );
         println!("[{}-open_issues-{}]: {}", stubname, i + 1, human_query);
     }
