@@ -176,6 +176,13 @@ repos = [
 ]
 
 [[sections.projects]]
+name = "Foundry"
+url = "https://github.com/foundry-rs"
+repos = [
+"foundry-rs/foundry",
+]
+
+[[sections.projects]]
 name = "Fuel"
 url = "https://github.com/FuelLabs"
 repos = [
