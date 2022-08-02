@@ -677,7 +677,7 @@ fn print_project(
             print!(", ");
         }
     }
-    println!("), ");
+    println!("),");
 
     print!("{} closed issues (", total_closed_issues);
     for (i, stat) in issue_stats.stats.iter().enumerate() {
@@ -686,7 +686,7 @@ fn print_project(
             print!(", ");
         }
     }
-    println!("), ");
+    println!("),");
 
     print!("{} open issues (", total_open_issues);
     for (i, stat) in open_issue_stats.stats.iter().enumerate() {
@@ -700,8 +700,8 @@ fn print_project(
     println!();
 
     let dependabot_query_param = match opts.include_dependabot {
-        true => "",
-        false => " -author:app/dependabot",
+        true => " -author:app/dependabot",
+        false => "",
     };
 
     // print PR details
