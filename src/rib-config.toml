@@ -190,11 +190,11 @@ url = "https://github.com/fluencelabs"
 repos = [
 "fluencelabs/marine",
 "fluencelabs/aquavm",
-"fluencelabs/fluence",
 "fluencelabs/examples",
 "fluencelabs/registry",
 "fluencelabs/trust-graph",
 "fluencelabs/aqua-ipfs",
+"fluencelabs/rust-peer",
 ]
 
 [[sections.projects]]
@@ -325,7 +325,6 @@ repos = [
 name = "Nervos"
 url = "https://github.com/nervosnetwork"
 repos = [
-"nervosnetwork/axon",
 "nervosnetwork/godwoken",
 "nervosnetwork/ckb",
 "nervosnetwork/godwoken-scripts",
