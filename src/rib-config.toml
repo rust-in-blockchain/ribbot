@@ -46,16 +46,6 @@ repos = [
 ]
 
 [[sections.projects]]
-name = "ChainSafe"
-url = "https://github.com/ChainSafe"
-repos = [
-"ChainSafe/mina-rs",
-"ChainSafe/api3-rust",
-"ChainSafe/forest",
-"ChainSafe/filecoindot",
-]
-
-[[sections.projects]]
 name = "COMIT"
 url = "https://github.com/comit-network"
 repos = [
@@ -171,6 +161,8 @@ repos = [
 "filecoin-project/rust-fil-proofs",
 "filecoin-project/rust-gpu-tools",
 "filecoin-project/taupipp",
+"ChainSafe/forest",
+"ChainSafe/filecoindot",
 ]
 
 [[sections.projects]]
@@ -295,6 +287,13 @@ repos = [
 "maidsafe/sn_consensus",
 "maidsafe/bls_dkg",
 "maidsafe/self_encryption",
+]
+
+[[sections.projects]]
+name = "Mina"
+url = "https://github.com/MinaProtocol"
+repos = [
+"ChainSafe/mina-rs",
 ]
 
 [[sections.projects]]
