@@ -64,7 +64,7 @@ To query a specific project, run ribbot with `--only-project <project-name>`.
 The project name must be spelled as in [`rib-config.toml`]:
 
 ```
-$ cargo run -- pulls --begin 2022-09-01 --end 2022-10-01 --oauth-token <your-github-oauth-token> --only-project Aleo --no-comments
+$ cargo run -- pulls --begin 2022-09-01 --end 2022-10-01 --oauth-token <your-github-token> --only-project Aleo --no-comments
 ```
 
 Ribbot filters out activities from `dependabot` as default.
