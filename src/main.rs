@@ -700,8 +700,8 @@ fn print_project(
     println!();
 
     let dependabot_query_param = match opts.include_dependabot {
-        true => " -author:app/dependabot",
-        false => "",
+        true => "",
+        false => " -author:app/dependabot",
     };
 
     // print PR details
