@@ -36,19 +36,25 @@ enum Command {
 
 #[derive(Parser)]
 struct PullCmdOpts {
+    /// e.g. 2022-09-01
     #[clap(long, parse(try_from_str = parse_naive_date))]
     begin: NaiveDate,
+    /// e.g. 2022-10-01
     #[clap(long, parse(try_from_str = parse_naive_date))]
     end: NaiveDate,
     /// If set, include issues/PRs created by dependabot in analysis.
     #[clap(long)]
     include_dependabot: bool,
+    /// If set, don't sort pull by comment count.
     #[clap(long)]
     no_comments: bool,
+    /// Project name must be spelled as in rib-config.toml.
     #[clap(long)]
     only_project: Option<String>,
+    /// GitHub token.
     #[clap(long)]
     oauth_token: Option<String>,
+    /// Check if all the repos are good to query.
     #[clap(long)]
     smoke_test: bool,
 }
