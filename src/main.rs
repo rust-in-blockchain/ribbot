@@ -707,7 +707,7 @@ fn print_project(
 
     let dependabot_query_param = match opts.include_dependabot {
         true => "",
-        false => " -author:app/dependabot",
+        false => "%20-author:app/dependabot",
     };
 
     // print PR details
