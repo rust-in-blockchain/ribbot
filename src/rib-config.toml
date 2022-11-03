@@ -477,6 +477,14 @@ repos = [
 ]
 
 [[sections.projects]]
+name = "Fedimint"
+url = "https://github.com/fedimint"
+repos = [
+"fedimint/fedimint",
+"fedimint/hbbft",
+]
+
+[[sections.projects]]
 name = "Internet2"
 url = "https://github.com/Internet2-WG"
 repos = [
