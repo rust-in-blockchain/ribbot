@@ -463,7 +463,7 @@ repos = [
 ]
 
 [[sections.projects]]
-name = "Bitmask"
+name = "BitMask"
 url = "https://github.com/diba-io/bitmask-core"
 repos = [
 "diba-io/bitmask-core",
