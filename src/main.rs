@@ -6,7 +6,7 @@
 #![allow(unused)]
 
 use anyhow::{bail, Context, Result};
-use chrono::{Date, DateTime, Local, NaiveDate, SecondsFormat, TimeZone, Utc};
+use chrono::{DateTime, Local, LocalResult, NaiveDate, SecondsFormat, TimeZone, Utc};
 use clap::{Parser, Subcommand};
 use reqwest::blocking::{Client, Response};
 use reqwest::header;
@@ -268,9 +268,9 @@ struct GhIssue {
 struct GhIssuePull {}
 
 fn begin_and_end(opts: &PullCmdOpts) -> (DateTime<Utc>, DateTime<Utc>) {
-    let begin = opts.begin.and_hms(0, 0, 0);
+    let begin = opts.begin.and_hms_opt(0, 0, 0).expect("DateTime");
     let begin = DateTime::<Utc>::from_utc(begin, Utc);
-    let end = opts.end.and_hms(0, 0, 0);
+    let end = opts.end.and_hms_opt(0, 0, 0).expect("DateTime");
     let end = DateTime::<Utc>::from_utc(end, Utc);
     (begin, end)
 }
@@ -623,7 +623,7 @@ fn get_rate_limit_values(headers: &HeaderMap) -> Result<RateLimitValues> {
         .to_str()?
         .parse()?;
     // FIXME 'as' conversion
-    let reset = Utc.timestamp(reset as i64, 0);
+    let reset = Utc.timestamp_opt(reset as i64, 0).unwrap();
     let reset_local: DateTime<Local> = reset.into();
 
     Ok(RateLimitValues {
