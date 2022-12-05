@@ -452,6 +452,14 @@ repos = [
 name = "Bitcoin"
 
 [[sections.projects]]
+name = "AluVM"
+url = "https://github.com/AluVM"
+repos = [
+"AluVM/rust-aluvm",
+"AluVM/aluasm",
+]
+
+[[sections.projects]]
 name = "BDK"
 url = "https://github.com/bitcoindevkit"
 repos = [
@@ -470,6 +478,16 @@ repos = [
 ]
 
 [[sections.projects]]
+name = "Cyphernet"
+url = "https://github.com/Cyphernet-WG"
+repos = [
+"Cyphernet-WG/rust-internet2",
+"Cyphernet-WG/rust-microservices",
+"Cyphernet-WG/rust-cyphernet",
+"Cyphernet-WG/rust-netservices",
+]
+
+[[sections.projects]]
 name = "Electrs"
 url = "https://github.com/romanz"
 repos = [
@@ -482,16 +500,6 @@ url = "https://github.com/fedimint"
 repos = [
 "fedimint/fedimint",
 "fedimint/hbbft",
-]
-
-[[sections.projects]]
-name = "Internet2"
-url = "https://github.com/Internet2-WG"
-repos = [
-"Internet2-WG/rust-aluvm",
-"Internet2-WG/rust-internet2",
-"Internet2-WG/rust-microservices",
-"Internet2-WG/stenc",
 ]
 
 [[sections.projects]]
@@ -528,13 +536,6 @@ repos = [
 ]
 
 [[sections.projects]]
-name = "Nakamoto"
-url = "https://github.com/cloudhead/nakamoto"
-repos = [
-"cloudhead/nakamoto",
-]
-
-[[sections.projects]]
 name = "MyCitadel"
 url = "https://github.com/orgs/mycitadel"
 repos = [
@@ -542,6 +543,13 @@ repos = [
 "mycitadel/libcitadel",
 "mycitadel/mycitadel-desktop",
 "mycitadel/mycitadel-node",
+]
+
+[[sections.projects]]
+name = "Nakamoto"
+url = "https://github.com/cloudhead/nakamoto"
+repos = [
+"cloudhead/nakamoto",
 ]
 
 [[sections.projects]]
@@ -648,8 +656,8 @@ repos = [
 
 [[sections.projects]]
 name = "zkSync"
-url = "https://github.com/matter-labs/zksync"
+url = "https://github.com/matter-labs"
 repos = [
 "matter-labs/zksync",
-"matter-labs/compiler-solidity",
+"matter-labs/franklin-crypto",
 ]
