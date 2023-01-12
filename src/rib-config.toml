@@ -642,6 +642,18 @@ repos = [
 ]
 
 [[sections.projects]]
+name = "Mir Protocol"
+url = "https://github.com/mir-protocol"
+repos = [
+"mir-protocol/plonky2",
+"mir-protocol/eth_trie_utils",
+"mir-protocol/evm-tests",
+"mir-protocol/plonky2-semaphore",
+"mir-protocol/r1cs",
+"mir-protocol/r1cs-zkinterface",
+"mir-protocol/r1cs-bellman",
+
+[[sections.projects]]
 name = "Rust Ethereum"
 url = "https://github.com/rust-bitcoin"
 repos = [
@@ -656,6 +668,15 @@ name = "Rust Web3"
 url = "https://github.com/tomusdrw/rust-web3"
 repos = [
 "tomusdrw/rust-web3",
+]
+
+[[sections.projects]]
+name = "Starkware"
+url = "https://github.com/starkware-libs"
+repos = [
+"starkware-libs/cairo",
+"starkware-libs/papyrus",
+"starkware-libs/starknet-api",
 ]
 
 [[sections.projects]]
