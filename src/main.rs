@@ -135,9 +135,7 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
             let new_calls = client.calls - calls;
             calls = client.calls;
 
-            println!(
-                "<!-- total GitHub calls: {calls}, new GitHub calls: {new_calls} -->"
-            );
+            println!("<!-- total GitHub calls: {calls}, new GitHub calls: {new_calls} -->");
             println!();
         }
     }
