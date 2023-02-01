@@ -136,8 +136,7 @@ fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
             calls = client.calls;
 
             println!(
-                "<!-- total GitHub calls: {}, new GitHub calls: {} -->",
-                calls, new_calls
+                "<!-- total GitHub calls: {calls}, new GitHub calls: {new_calls} -->"
             );
             println!();
         }
@@ -187,16 +186,16 @@ fn do_smoke_test(client: &mut GhClient, project: &Project, opts: &PullCmdOpts) -
     println!();
 
     for repo in &project.repos {
-        let url = format!("https://api.github.com/repos/{}/pulls", repo);
+        let url = format!("https://api.github.com/repos/{repo}/pulls");
 
         let res = do_gh_api_request(client, &url, &opts.oauth_token);
 
         match res {
             Ok(_) => {
-                println!("<!-- repo {} good -->", repo);
+                println!("<!-- repo {repo} good -->");
             }
             Err(e) => {
-                println!("<!-- error retrieving {}: {} -->", repo, e);
+                println!("<!-- error retrieving {repo}: {e} -->");
             }
         }
     }
@@ -286,10 +285,10 @@ fn get_closed_issues(
 
     println!("<!-- fetching issues for project {} -->", project.name);
     for repo in &project.repos {
-        println!("<!-- fetching issues for repo {} -->", repo);
+        println!("<!-- fetching issues for repo {repo} -->");
 
         let since = begin.to_rfc3339_opts(SecondsFormat::Millis, true);
-        let url = format!("https://api.github.com/repos/{}/issues?state=closed&sort=updated&direction=desc&since={}", repo, since);
+        let url = format!("https://api.github.com/repos/{repo}/issues?state=closed&sort=updated&direction=desc&since={since}");
         let new_issues = do_gh_api_paged_request(client, &url, &opts.oauth_token, |body| {
             let issues: Vec<GhIssue> = serde_json::from_str(&body)?;
             //println!("{:#?}", pulls);
@@ -351,10 +350,10 @@ fn get_open_issues(
 
     println!("<!-- fetching open issues for project {} -->", project.name);
     for repo in &project.repos {
-        println!("<!-- fetching open issues for repo {} -->", repo);
+        println!("<!-- fetching open issues for repo {repo} -->");
 
         let since = begin.to_rfc3339_opts(SecondsFormat::Millis, true);
-        let url = format!("https://api.github.com/repos/{}/issues?state=open&sort=updated&direction=desc&since={}", repo, since);
+        let url = format!("https://api.github.com/repos/{repo}/issues?state=open&sort=updated&direction=desc&since={since}");
         let new_issues = do_gh_api_paged_request(client, &url, &opts.oauth_token, |body| {
             let issues: Vec<GhIssue> = serde_json::from_str(&body)?;
             //println!("{:#?}", issues);
@@ -415,11 +414,10 @@ fn get_merged_pulls(
     let mut all_pulls = vec![];
     println!("<!-- fetching pulls for project {} -->", project.name);
     for repo in &project.repos {
-        println!("<!-- fetching pulls for repo {} -->", repo);
+        println!("<!-- fetching pulls for repo {repo} -->");
 
         let url = format!(
-            "https://api.github.com/repos/{}/pulls?state=closed&sort=updated&direction=desc",
-            repo
+            "https://api.github.com/repos/{repo}/pulls?state=closed&sort=updated&direction=desc"
         );
 
         let new_pulls = do_gh_api_paged_request(client, &url, &opts.oauth_token, |body| {
@@ -495,7 +493,7 @@ fn do_gh_api_paged_request<T>(
     let mut all_results = vec![];
 
     for page in 1.. {
-        println!("<!-- fetching page {}: {} -->", page, url);
+        println!("<!-- fetching page {page}: {url} -->");
 
         let (body, headers) = do_gh_api_request(client, &url, oauth_token)?;
 
@@ -541,7 +539,7 @@ fn do_gh_api_request(
         let builder = client.client.request(Method::GET, url);
         let builder = builder.header(USER_AGENT, RIB_AGENT);
         let builder = if let Some(ref oauth_token) = *oauth_token {
-            builder.header("Authorization", format!("token {}", oauth_token))
+            builder.header("Authorization", format!("token {oauth_token}"))
         } else {
             builder
         };
@@ -584,12 +582,12 @@ fn do_gh_api_request(
                     do_gh_rate_limit_delay(&limits);
                     continue;
                 } else {
-                    println!("{:#?}", resp);
+                    println!("{resp:#?}");
                     bail!("unexpected forbidden status");
                 }
             }
             _ => {
-                println!("{:#?}", resp);
+                println!("{resp:#?}");
                 bail!("unexpected response");
             }
         }
@@ -675,7 +673,7 @@ fn print_project(
     let total_merged_prs = pull_stats.stats.iter().fold(0, |a, s| a + s.count);
     let total_closed_issues = issue_stats.stats.iter().fold(0, |a, s| a + s.count);
     let total_open_issues = open_issue_stats.stats.iter().fold(0, |a, s| a + s.count);
-    print!("{} merged PRs (", total_merged_prs);
+    print!("{total_merged_prs} merged PRs (");
 
     for (i, stat) in pull_stats.stats.iter().enumerate() {
         print!("[{}][{}-merged-prs-{}]", i + 1, stubname, i + 1);
@@ -685,7 +683,7 @@ fn print_project(
     }
     println!("),");
 
-    print!("{} closed issues (", total_closed_issues);
+    print!("{total_closed_issues} closed issues (");
     for (i, stat) in issue_stats.stats.iter().enumerate() {
         print!("[{}][{}-closed_issues-{}]", i + 1, stubname, i + 1);
         if i < issue_stats.stats.len() - 1 {
@@ -694,7 +692,7 @@ fn print_project(
     }
     println!("),");
 
-    print!("{} open issues (", total_open_issues);
+    print!("{total_open_issues} open issues (");
     for (i, stat) in open_issue_stats.stats.iter().enumerate() {
         print!("[{}][{}-open_issues-{}]", i + 1, stubname, i + 1);
         if i < open_issue_stats.stats.len() - 1 {
@@ -741,7 +739,7 @@ fn print_project(
             pull.title, pull.html_url, pull.user.login, pull.user.login
         );
         if comments > 0 {
-            println!("  <!-- ^ comments: {} -->", comments);
+            println!("  <!-- ^ comments: {comments} -->");
         }
     }
     println!();
@@ -853,7 +851,7 @@ fn make_issue_stats(project: &Project, issues: &[GhIssue]) -> Result<PullStats> 
     }
 
     for k in map.keys() {
-        println!("repo mismatch during issue stats: {}", k);
+        println!("repo mismatch during issue stats: {k}");
     }
 
     if !map.is_empty() {
@@ -893,7 +891,7 @@ fn make_pull_stats(project: &Project, pulls: &[GhPullWithComments]) -> Result<Pu
     }
 
     for k in map.keys() {
-        println!("repo mismatch during pull stats: {}", k);
+        println!("repo mismatch during pull stats: {k}");
     }
 
     if !map.is_empty() {
@@ -904,7 +902,7 @@ fn make_pull_stats(project: &Project, pulls: &[GhPullWithComments]) -> Result<Pu
 }
 
 fn repo_name_to_url(repo: &str) -> String {
-    format!("https://github.com/{}", repo)
+    format!("https://github.com/{repo}")
 }
 
 fn make_stubname(project: &Project) -> String {
