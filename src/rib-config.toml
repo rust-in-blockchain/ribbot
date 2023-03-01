@@ -137,6 +137,7 @@ repos = [
 "EspressoSystems/espresso",
 "EspressoSystems/espresso-systems-common",
 "EspressoSystems/atomicstore",
+"EspressoSystems/hyperplonk",
 ]
 
 [[sections.projects]]
@@ -427,7 +428,7 @@ repos = [
 ]
 
 [[sections.projects]]
-name = "Subspace Labs"
+name = "Subspace Network"
 url = "https://github.com/subspace"
 repos = [
 "subspace/subspace",
