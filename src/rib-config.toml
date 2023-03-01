@@ -609,9 +609,9 @@ repos = [
 
 [[sections.projects]]
 name = "Rust Simplicity"
-url = "https://github.com/ElementsProject/rust-simplicity"
+url = "https://github.com/BlockstreamResearch/rust-simplicity"
 repos = [
-"ElementsProject/rust-simplicity",
+"BlockstreamResearch/rust-simplicity",
 ]
 
 [[sections.projects]]
