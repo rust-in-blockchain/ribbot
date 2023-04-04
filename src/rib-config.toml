@@ -12,14 +12,13 @@ name = "Aleo"
 url = "https://github.com/AleoHQ"
 repos = [
 "AleoHQ/aleo",
+"AleoHQ/aleo_lambda_blockchain",
 "AleoHQ/aleo-std",
 "AleoHQ/aleo-setup-integration-test",
 "AleoHQ/aleo_vm_lambda",
 "AleoHQ/leo",
-"AleoHQ/mpmc-bus",
 "AleoHQ/snarkOS",
 "AleoHQ/snarkVM",
-"AleoHQ/tracing-bridge",
 "AleoHQ/wagyu",
 "AleoHQ/wagyu-zcash-parameters",
 "AleoHQ/welcome",
@@ -152,7 +151,7 @@ repos = [
 "filecoin-project/filecoin-ffi",
 "filecoin-project/filecoin-phase2",
 "filecoin-project/fvm-evm",
-"filecoin-project/neptune",
+"lurk-lab/neptune",
 "filecoin-project/ref-fvm",
 "filecoin-project/rust-filecoin-proofs-api",
 "filecoin-project/rust-fil-ffi-toolkit",
@@ -668,6 +667,13 @@ repos = [
 "mir-protocol/r1cs",
 "mir-protocol/r1cs-zkinterface",
 "mir-protocol/r1cs-bellman",
+]
+
+[[sections.projects]]
+name = "Reth"
+url = "https://github.com/paradigmxyz/reth"
+repos = [
+"paradigmxyz/reth",
 ]
 
 [[sections.projects]]
