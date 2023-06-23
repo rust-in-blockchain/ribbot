@@ -420,6 +420,19 @@ repos = [
 ]
 
 [[sections.projects]]
+name = "Soroban"
+url = "https://github.com/stellar"
+repos = [
+"stellar/rs-soroban-sdk",
+"stellar/rs-soroban-env",
+"stellar/soroban-tools",
+"stellar/soroban-examples",
+"stellar/soroban-docs",
+"stellar/scaffold-soroban",
+"stellar/rpciege-soroban"
+]
+
+[[sections.projects]]
 name = "Spacemesh"
 url = "https://github.com/spacemeshos"
 repos = [
