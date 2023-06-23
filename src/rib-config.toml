@@ -427,7 +427,6 @@ repos = [
 "stellar/rs-soroban-env",
 "stellar/soroban-tools",
 "stellar/soroban-examples",
-"stellar/soroban-docs",
 "stellar/scaffold-soroban",
 "stellar/rpciege-soroban"
 ]
