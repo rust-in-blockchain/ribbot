@@ -4,19 +4,20 @@
  */
 
 #![allow(unused)]
+#![feature(string_remove_matches)]
 
 use anyhow::{bail, Context, Result};
-use chrono::{DateTime, Local, LocalResult, NaiveDate, SecondsFormat, TimeZone, Utc};
+use chrono::{DateTime, Local, LocalResult, Months, NaiveDate, SecondsFormat, TimeZone, Utc};
 use clap::{Parser, Subcommand};
-use reqwest::blocking::{Client, Response};
-use reqwest::header;
-use reqwest::header::{HeaderMap, USER_AGENT};
-use reqwest::{Method, StatusCode};
-use serde_derive::Deserialize;
+use reqwest::{
+    blocking::{Client, Response},
+    header,
+    header::{HeaderMap, USER_AGENT},
+    Method, StatusCode,
+};
+use serde_derive::{Deserialize, Serialize};
 use serde_json::Value;
-use std::collections::HashMap;
-use std::str::FromStr;
-use std::{thread, time};
+use std::{collections::HashMap, fs, io::Read, path::PathBuf, str::FromStr, thread, time};
 
 static RIB_AGENT: &str = "ribbot (Rust-in-Blockchain; Aimeedeer/ribbot; aimeez@pm.me)";
 static CONFIG: &str = include_str!("rib-config.toml");
@@ -59,20 +60,21 @@ struct PullCmdOpts {
     smoke_test: bool,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize, Default, Clone, Debug)]
 struct Config {
     sections: Vec<Section>,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 struct Section {
     name: String,
     projects: Vec<Project>,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 struct Project {
     name: String,
+    is_org: bool,
     url: String,
     repos: Vec<String>,
 }
@@ -83,11 +85,141 @@ fn main() -> Result<()> {
 
     match options.cmd {
         Command::Pulls(opts) => {
-            fetch_pulls(&config, &opts)?;
+            let updated_config_file = update_rib_config(&config, &opts.oauth_token)?;
+
+            let mut f = fs::File::open(updated_config_file)?;
+            let mut buffer = String::new();
+            f.read_to_string(&mut buffer)?;
+
+            let updated_config =
+                toml::from_str::<Config>(&buffer).context("parsing new configuration")?;
+
+            fetch_pulls(&updated_config, &opts)?;
         }
     }
 
     Ok(())
+}
+
+#[derive(Deserialize, Debug)]
+struct GhProjectRepo {
+    name: String,
+    full_name: String,
+    language: Option<String>,
+    created_at: Option<DateTime<Utc>>,
+    updated_at: Option<DateTime<Utc>>,
+    private: bool,
+    fork: bool,
+    archived: bool,
+    disabled: bool,
+}
+
+fn update_rib_config(config: &Config, oauth_token: &Option<String>) -> Result<PathBuf> {
+    println!("** Update config file before fetching projects' update.");
+
+    let mut client = GhClient {
+        client: Client::new(),
+        limits: None,
+        calls: 0,
+    };
+
+    let mut new_config = Config::default();
+
+    for section in &config.sections {
+        let mut new_section = Section {
+            name: section.name.clone(),
+            projects: Vec::<Project>::new(),
+        };
+
+        for project in &section.projects {
+            println!("<!-- fetching repos for project {} -->", project.name);
+
+            if !project.is_org {
+                // keep current repos
+                new_section.projects.push(project.clone());
+            } else {
+                // do github search and update repos
+
+                let project_github_name = &project.url[19..];
+                let url = format!(
+                    "https://api.github.com/orgs/{}/repos?type=sources&sort=updated",
+                    project_github_name
+                );
+
+                // get repos that updated in 12 months
+                let begin = Utc::now().checked_sub_months(Months::new(12)).unwrap();
+
+                let project_repos =
+                    do_gh_api_paged_request(&mut client, &url, oauth_token, |body| {
+                        let project_repos: Vec<GhProjectRepo> = serde_json::from_str(&body)?;
+                        let project_repos = project_repos
+                            .into_iter()
+                            .filter(|repo| {
+                                match (repo.fork, repo.archived, repo.disabled, repo.private) {
+                                    (false, false, false, false) => {
+                                        let mut is_rust_repo = false;
+                                        if let Some(language) = &repo.language {
+                                            if language.contains("Rust")
+                                                && repo.updated_at.unwrap() >= begin
+                                            {
+                                                is_rust_repo = true
+                                            }
+                                        }
+                                        is_rust_repo
+                                    }
+                                    _ => false,
+                                }
+                            })
+                            .collect();
+
+                        Ok((project_repos, true))
+                    })?;
+
+                let mut repos = Vec::<String>::new();
+                for repo in project_repos {
+                    repos.push(repo.full_name);
+                }
+
+                new_section.projects.push(Project {
+                    name: project.name.clone(),
+                    is_org: project.is_org,
+                    url: project.url.clone(),
+                    repos,
+                });
+            }
+        }
+
+        new_config.sections.push(new_section);
+    }
+
+    let config_dir = "config";
+    fs::create_dir_all(&config_dir)?;
+
+    let now = Utc::now();
+    let new_config_file = PathBuf::from(format!(
+        "{}/{}-{}.toml",
+        config_dir,
+        now.date_naive(),
+        now.timestamp()
+    ));
+
+    let temp_file = PathBuf::from(format!("{}/{}.temp", config_dir, rand::random::<u32>()));
+
+    let file = fs::File::create(&temp_file)?;
+    let mut writer = std::io::BufWriter::new(file);
+
+    let new_config_str = toml::to_string_pretty(&new_config).unwrap();
+
+    match fs::write(&temp_file, &new_config_str) {
+        Err(e) => {
+            fs::remove_file(temp_file)?;
+            bail!(e)
+        }
+        Ok(()) => {
+            fs::rename(temp_file, &new_config_file)?;
+            Ok(new_config_file.into())
+        }
+    }
 }
 
 fn fetch_pulls(config: &Config, opts: &PullCmdOpts) -> Result<()> {
