@@ -68,6 +68,15 @@ repos = [
 ]
 
 [[sections.projects]]
+name = "Chainflip"
+is_org = true
+url = "https://github.com/chainflip-io"
+repos = [
+"chainflip-io/chainflip-backend",
+"chainflip-io/rust-zmq",
+]
+
+[[sections.projects]]
 name = "COMIT"
 is_org = true
 url = "https://github.com/comit-network"

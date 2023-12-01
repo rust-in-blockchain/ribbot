@@ -1,0 +1,1268 @@
+[[sections]]
+name = 'General'
+
+[[sections.projects]]
+name = 'Aleo'
+is_org = true
+url = 'https://github.com/AleoHQ'
+repos = [
+    'AleoHQ/snarkOS',
+    'AleoHQ/leo',
+    'AleoHQ/aleo-rust',
+    'AleoHQ/snarkVM',
+    'AleoHQ/service',
+    'AleoHQ/aleo-std',
+    'AleoHQ/aleo-setup-integration-test',
+]
+
+[[sections.projects]]
+name = 'Anoma'
+is_org = true
+url = 'https://github.com/anoma'
+repos = [
+    'anoma/namada',
+    'anoma/masp',
+    'anoma/taiga',
+    'anoma/anoma-archive',
+    'anoma/ferveo',
+    'anoma/zkp-compiler-shootout',
+    'anoma/vamp-ir',
+    'anoma/exhibit_plonkup',
+    'anoma/namada-masp-verification',
+    'anoma/namada-masp-params',
+    'anoma/namada-sdk-starter',
+    'anoma/devtool',
+    'anoma/using-namada-sdk-poc-2',
+    'anoma/masp-mpc',
+    'anoma/verify-beacon',
+    'anoma/building-namada-sdk-to-wasm',
+    'anoma/using-namada-sdk-poc',
+]
+
+[[sections.projects]]
+name = 'Aptos'
+is_org = true
+url = 'https://github.com/aptos-labs'
+repos = [
+    'aptos-labs/aptos-core',
+    'aptos-labs/aptos-indexer-processors',
+    'aptos-labs/move',
+    'aptos-labs/bcs',
+]
+
+[[sections.projects]]
+name = 'Casper'
+is_org = true
+url = 'https://github.com/casper-network'
+repos = [
+    'casper-network/juliet',
+    'casper-network/casper-node',
+    'casper-network/casper-wasm',
+    'casper-network/casper-node-launcher',
+    'casper-network/casper-db-utils',
+]
+
+[[sections.projects]]
+name = 'COMIT'
+is_org = true
+url = 'https://github.com/comit-network'
+repos = [
+    'comit-network/xmr-btc-swap',
+    'comit-network/grin-btc-poc',
+    'comit-network/a2l-poc',
+    'comit-network/thor',
+    'comit-network/waves',
+    'comit-network/maia',
+    'comit-network/rendezvous-server',
+]
+
+[[sections.projects]]
+name = 'Chainflip'
+is_org = true
+url = 'https://github.com/chainflip-io'
+repos = ['chainflip-io/chainflip-backend']
+
+[[sections.projects]]
+name = 'Concordium'
+is_org = true
+url = 'https://github.com/Concordium'
+repos = [
+    'Concordium/concordium-rust-smart-contracts',
+    'Concordium/concordium-article-reentrance',
+    'Concordium/voting-workshop',
+    'Concordium/concordium-umbrella-oracle',
+    'Concordium/concordium-base',
+    'Concordium/concordium-rosetta',
+    'Concordium/concordium-rust-sdk',
+    'Concordium/concordium-transaction-logger',
+    'Concordium/concordium-use-case-examples',
+]
+
+[[sections.projects]]
+name = 'Conflux'
+is_org = true
+url = 'https://github.com/Conflux-Chain'
+repos = [
+    'Conflux-Chain/conflux-rust',
+    'Conflux-Chain/cfx-evm',
+]
+
+[[sections.projects]]
+name = 'DarkFi'
+is_org = false
+url = 'https://github.com/darkrenaissance'
+repos = ['darkrenaissance/darkfi']
+
+[[sections.projects]]
+name = 'Dfinity'
+is_org = true
+url = 'https://github.com/dfinity'
+repos = [
+    'dfinity/ic',
+    'dfinity/agent-rs',
+    'dfinity/exchange-rate-canister',
+    'dfinity/candid',
+    'dfinity/internet-identity',
+    'dfinity/cycles-ledger',
+    'dfinity/dfxvm',
+    'dfinity/nns-dapp',
+    'dfinity/dre',
+    'dfinity/stable-structures',
+    'dfinity/erc20-icp',
+    'dfinity/response-verification',
+    'dfinity/cycles-burner-canister',
+    'dfinity/sdk',
+    'dfinity/test-state-machine-client',
+    'dfinity/cdk-rs',
+    'dfinity/bitcoin-canister',
+    'dfinity/ICRC-1',
+    'dfinity/metrics-proxy',
+    'dfinity/journald-parser',
+    'dfinity/quill',
+    'dfinity/canister-profiling',
+    'dfinity/experimental-minting-tool',
+    'dfinity/motoko.rs',
+    'dfinity/standalone-sig-verifier-web',
+    'dfinity/ic-repl',
+    'dfinity/dfx-extensions',
+    'dfinity/ic-wasm',
+    'dfinity/miracl_core_bls12381',
+    'dfinity/icx-nns',
+    'dfinity/ic-websocket-poc',
+    'dfinity/bitcoin-developer-preview',
+    'dfinity/cns',
+    'dfinity/idl2json',
+    'dfinity/vessel',
+    'dfinity/ic-quickjs-demo',
+    'dfinity/metrics-encoder',
+    'dfinity/bigmap-poc',
+    'dfinity/ic-mo-vm',
+]
+
+[[sections.projects]]
+name = 'Dusk Network'
+is_org = true
+url = 'https://github.com/dusk-network'
+repos = [
+    'dusk-network/merkle',
+    'dusk-network/kadcast',
+    'dusk-network/rusk',
+    'dusk-network/piecrust',
+    'dusk-network/plonk',
+    'dusk-network/moat',
+    'dusk-network/Poseidon252',
+    'dusk-network/schnorr',
+    'dusk-network/phoenix-core',
+    'dusk-network/wallet-core',
+    'dusk-network/wallet-cli',
+    'dusk-network/dusk-pki',
+    'dusk-network/bls12_381-sign',
+    'dusk-network/Hades252',
+]
+
+[[sections.projects]]
+name = 'Espresso Systems'
+is_org = true
+url = 'https://github.com/EspressoSystems'
+repos = [
+    'EspressoSystems/HotShot',
+    'EspressoSystems/hyperplonk',
+    'EspressoSystems/jellyfish',
+    'EspressoSystems/espresso-sequencer',
+    'EspressoSystems/sequencer-example-l2',
+    'EspressoSystems/espresso',
+    'EspressoSystems/cape',
+    'EspressoSystems/espresso-polygon-zkevm-demo',
+    'EspressoSystems/tide-disco',
+    'EspressoSystems/async-compatibility-layer',
+    'EspressoSystems/discord-faucet',
+    'EspressoSystems/hotshot-query-service',
+    'EspressoSystems/tagged-base64',
+    'EspressoSystems/veri-zexe',
+    'EspressoSystems/cap',
+    'EspressoSystems/seahorse',
+    'EspressoSystems/net',
+    'EspressoSystems/arbitrary-wrappers',
+    'EspressoSystems/atomicstore',
+]
+
+[[sections.projects]]
+name = 'Filecoin'
+is_org = true
+url = 'https://github.com/filecoin-project'
+repos = [
+    'filecoin-project/filplus-backend',
+    'filecoin-project/rust-gpu-tools',
+    'filecoin-project/ref-fvm',
+    'filecoin-project/blstrs',
+    'filecoin-project/filecoin-ffi',
+    'filecoin-project/bls-signatures',
+    'filecoin-project/ec-gpu',
+    'filecoin-project/builtin-actors',
+    'filecoin-project/rust-fil-proofs',
+    'filecoin-project/rust-filecoin-proofs-api',
+    'filecoin-project/rust-fil-nse-gpu',
+    'filecoin-project/rust-sha2ni',
+    'filecoin-project/fvm-bench',
+    'filecoin-project/fil-sppark',
+    'filecoin-project/rust-fil-logger',
+    'filecoin-project/filecoin-phase2',
+]
+
+[[sections.projects]]
+name = 'Findora'
+is_org = true
+url = 'https://github.com/FindoraNetwork'
+repos = [
+    'FindoraNetwork/noah',
+    'FindoraNetwork/abcf',
+    'FindoraNetwork/platform',
+    'FindoraNetwork/zkcard-mini-sdk',
+    'FindoraNetwork/rt-evm',
+    'FindoraNetwork/findora-poker',
+    'FindoraNetwork/ark-bulletproofs',
+    'FindoraNetwork/generate_secp256k1_priv_validator_key',
+    'FindoraNetwork/nft-issue-transaction',
+    'FindoraNetwork/zei',
+    'FindoraNetwork/export-setup-parameters',
+    'FindoraNetwork/ark-ed-on-bn254-mixed-radix',
+    'FindoraNetwork/ark-bn254-mixed-radix',
+    'FindoraNetwork/tendermint-sys',
+    'FindoraNetwork/merk',
+    'FindoraNetwork/cli',
+    'FindoraNetwork/eth-utils',
+    'FindoraNetwork/web3-rpc-core',
+    'FindoraNetwork/platform-lib-noah',
+    'FindoraNetwork/platform-lib-sparse-merkle',
+    'FindoraNetwork/platform-lib-credentials',
+    'FindoraNetwork/platform-lib-slidingset',
+    'FindoraNetwork/platform-lib-merkle',
+    'FindoraNetwork/platform-lib-bitmap',
+    'FindoraNetwork/platform-lib-utils',
+    'FindoraNetwork/platform-lib-cryptohash',
+    'FindoraNetwork/curve25519-dalek',
+    'FindoraNetwork/ed',
+    'FindoraNetwork/prikey2keystore',
+]
+
+[[sections.projects]]
+name = 'Fluence'
+is_org = true
+url = 'https://github.com/fluencelabs'
+repos = [
+    'fluencelabs/nox',
+    'fluencelabs/marine-rs-sdk-test',
+    'fluencelabs/fRPC-Substrate',
+    'fluencelabs/marine',
+    'fluencelabs/aqua-ipfs',
+    'fluencelabs/examples',
+    'fluencelabs/marine-rs-sdk',
+    'fluencelabs/aquavm',
+    'fluencelabs/benchmark-service',
+    'fluencelabs/registry',
+    'fluencelabs/decider',
+    'fluencelabs/spell',
+    'fluencelabs/trust-graph',
+]
+
+[[sections.projects]]
+name = 'Fuel'
+is_org = true
+url = 'https://github.com/FuelLabs'
+repos = [
+    'FuelLabs/sway',
+    'FuelLabs/fuels-rs',
+    'FuelLabs/fuel-core',
+    'FuelLabs/fuel-vm',
+    'FuelLabs/sway-applications',
+    'FuelLabs/sway-libs',
+    'FuelLabs/fuelup',
+    'FuelLabs/sway-standards',
+    'FuelLabs/forc-wallet',
+    'FuelLabs/fuel-indexer',
+    'FuelLabs/fuel-block-committer',
+    'FuelLabs/releasy',
+    'FuelLabs/fuel-wasm-examples',
+    'FuelLabs/faucet',
+    'FuelLabs/fuel-bft',
+    'FuelLabs/fuel-canary-watchtower',
+    'FuelLabs/bridge-message-executor',
+    'FuelLabs/fuel-abi-types',
+    'FuelLabs/sway-by-example-lib',
+    'FuelLabs/fuel-debugger',
+    'FuelLabs/forc-explorer',
+]
+
+[[sections.projects]]
+name = 'Golem'
+is_org = true
+url = 'https://github.com/golemfactory'
+repos = [
+    'golemfactory/yagna',
+    'golemfactory/ya-runtime-http-auth',
+    'golemfactory/asnom',
+    'golemfactory/ya-runtime-ai',
+    'golemfactory/gMorph',
+    'golemfactory/devops-ya-relay-e2e-test',
+    'golemfactory/ya-runtime-vm',
+    'golemfactory/ya-runtime-sdk',
+    'golemfactory/ya-runtime-dbg',
+    'golemfactory/ya-service-bus',
+    'golemfactory/cargo-ya-wasi-pkg',
+    'golemfactory/yarapi',
+    'golemfactory/ya-runtime-sgx',
+    'golemfactory/ya-net-p2p',
+    'golemfactory/ya-runtime-emscripten',
+    'golemfactory/ya-runtime-wasi',
+    'golemfactory/ya-client',
+    'golemfactory/gfaas',
+    'golemfactory/gwasm-runner',
+    'golemfactory/simple-transfer',
+    'golemfactory/golem-client',
+    'golemfactory/erc20_payment_lib',
+    'golemfactory/ya-relay',
+    'golemfactory/ProofOfDevice',
+    'golemfactory/ya-self-test-img',
+    'golemfactory/gvmkit-build-rs',
+    'golemfactory/ansible-role-ya-requestor',
+    'golemfactory/golem-core-rs',
+    'golemfactory/ya-runtime-outbound',
+    'golemfactory/g-flite',
+    'golemfactory/ya-vpn-connector',
+    'golemfactory/golem-certificate',
+    'golemfactory/ya-runtime-outbound-gateway',
+    'golemfactory/golem-libp2p',
+]
+
+[[sections.projects]]
+name = 'Grin'
+is_org = true
+url = 'https://github.com/mimblewimble'
+repos = [
+    'mimblewimble/grin',
+    'mimblewimble/grin-miner',
+    'mimblewimble/grin-wallet',
+    'mimblewimble/rust-secp256k1-zkp',
+    'mimblewimble/mwixnet',
+    'mimblewimble/seeder',
+    'mimblewimble/grin-gui',
+]
+
+[[sections.projects]]
+name = 'Helium'
+is_org = true
+url = 'https://github.com/helium'
+repos = [
+    'helium/gateway-rs',
+    'helium/helium-wallet-rs',
+    'helium/oracles',
+    'helium/ecc608-linux-rs',
+    'helium/gateway-mfr-rs',
+    'helium/angry-purple-tiger-rs',
+    'helium/account-compression-anchor-gen',
+    'helium/virtual-lorawan-device',
+    'helium/lorawan-sniffer',
+    'helium/helium-packet-router-ingest',
+    'helium/proto',
+    'helium/helium-data',
+    'helium/gateway-security-rs',
+    'helium/helium-api-rs',
+    'helium/helium-crypto-rs',
+    'helium/semtech-udp',
+    'helium/helium-config-service-cli',
+    'helium/xorf-generator',
+    'helium/helium-ledger-cli',
+    'helium/packet-forwarder-test',
+    'helium/lorawan-h3',
+    'helium/gwmp-mux',
+]
+
+[[sections.projects]]
+name = 'Holochain'
+is_org = true
+url = 'https://github.com/holochain'
+repos = [
+    'holochain/holochain',
+    'holochain/tx5',
+    'holochain/scaffolding',
+    'holochain/holochain-wasmer',
+    'holochain/task-motel-rs',
+    'holochain/nix-cache-check',
+    'holochain/holochain-client-rust',
+    'holochain/lair',
+    'holochain/devhub-dnas',
+    'holochain/deepkey',
+    'holochain/integrity-template',
+    'holochain/sodoken',
+    'holochain/influxive',
+    'holochain/portal-dna',
+    'holochain/spike-influx',
+    'holochain/ametrics',
+    'holochain/hc-tel',
+    'holochain/hc-test-utils',
+    'holochain/ghost_actor',
+    'holochain/hc-utils',
+    'holochain/hc-zome-lib',
+    'holochain/hackathon-happs',
+    'holochain/tx3',
+    'holochain/app-store-dnas',
+    'holochain/holochain-serialization',
+]
+
+[[sections.projects]]
+name = 'IOTA'
+is_org = true
+url = 'https://github.com/iotaledger'
+repos = [
+    'iotaledger/iota.rs',
+    'iotaledger/wallet.rs',
+    'iotaledger/stronghold.rs',
+    'iotaledger/sd-jwt',
+    'iotaledger/identity.rs',
+    'iotaledger/bee',
+    'iotaledger/iota-sdk',
+    'iotaledger/iota-sdk-evm',
+    'iotaledger/iota-sdk-native-bindings',
+    'iotaledger/streams',
+    'iotaledger/inx-chronicle',
+    'iotaledger/chronicle.rs',
+    'iotaledger/crypto.rs',
+    'iotaledger/common-rs',
+    'iotaledger/cli-wallet',
+]
+
+[[sections.projects]]
+name = 'Maidsafe'
+is_org = true
+url = 'https://github.com/maidsafe'
+repos = [
+    'maidsafe/qp2p',
+    'maidsafe/safe_network',
+    'maidsafe/self_encryption',
+    'maidsafe/crdt_tree',
+    'maidsafe/blsttc',
+    'maidsafe/rfcs',
+    'maidsafe/sn-node-manager',
+    'maidsafe/sn-releases',
+    'maidsafe/sn_consensus',
+    'maidsafe/bls_dkg',
+    'maidsafe/temp_safe_network',
+    'maidsafe/bls_bulletproofs',
+    'maidsafe/sn_nodejs',
+    'maidsafe/sn_dbc',
+    'maidsafe/lru_time_cache',
+    'maidsafe/sn-testnet-deploy',
+    'maidsafe/sn_authd',
+    'maidsafe/safeup',
+    'maidsafe/rust_sodium',
+    'maidsafe/sn_sdkg',
+    'maidsafe/sn_launch_tool',
+    'maidsafe/stableset-experiments',
+    'maidsafe/brb_membership',
+    'maidsafe/bls_ringct',
+]
+
+[[sections.projects]]
+name = 'Mina'
+is_org = true
+url = 'https://github.com/openmina'
+repos = [
+    'openmina/openmina',
+    'openmina/openmina-archive',
+    'openmina/mina-network-debugger',
+    'openmina/openmina-poc',
+    'openmina/mina-ci',
+    'openmina/internal-tracing-rs',
+    'openmina/mina-logs-service',
+    'openmina/snark-coordinator-rs',
+    'openmina/redux-rs',
+]
+
+[[sections.projects]]
+name = 'MobileCoin'
+is_org = true
+url = 'https://github.com/mobilecoinfoundation'
+repos = [
+    'mobilecoinfoundation/mobilecoin',
+    'mobilecoinfoundation/sgx',
+    'mobilecoinfoundation/attestation',
+    'mobilecoinfoundation/mc-oblivious',
+    'mobilecoinfoundation/sgx-std',
+    'mobilecoinfoundation/sgx-sigstruct',
+    'mobilecoinfoundation/build-rs',
+    'mobilecoinfoundation/rust-mbedtls',
+    'mobilecoinfoundation/rand',
+    'mobilecoinfoundation/from-random',
+    'mobilecoinfoundation/serial',
+    'mobilecoinfoundation/protobufs',
+    'mobilecoinfoundation/oblivious-aes-gcm',
+]
+
+[[sections.projects]]
+name = 'MultiversX'
+is_org = true
+url = 'https://github.com/multiversx'
+repos = [
+    'multiversx/mx-sdk-rs',
+    'multiversx/mx-exchange-sc',
+    'multiversx/mx-sovereign-sc',
+    'multiversx/mx-subscription-fee-rs',
+    'multiversx/mx-digital-cash-sc',
+    'multiversx/mx-ping-pong-sc',
+    'multiversx/mx-delegation-sc',
+    'multiversx/mx-bridge-eth-sc-rs',
+    'multiversx/mx-liquid-staking-sc',
+    'multiversx/mx-contracts-rs',
+    'multiversx/mx-dns-sc',
+    'multiversx/mx-stablecoin-sc',
+    'multiversx/mx-polynetwork-bridge-sc',
+    'multiversx/mx-nft-marketplace-sc',
+    'multiversx/mx-launchpad-sc',
+    'multiversx/mx-flash-mint-sc',
+    'multiversx/mx-exchange-tools-sc',
+    'multiversx/mx-band-bridge-sc',
+    'multiversx/mx-energy-competition-winners-extraction-sc',
+    'multiversx/mx-busd-sc',
+    'multiversx/mx-bitswing-sc',
+    'multiversx/mx-chainlink-sc',
+    'multiversx/mx-human-sc',
+    'multiversx/mx-distribution-sc',
+    'multiversx/mx-savings-account-sc',
+    'multiversx/mx-nft-collection-minter-sc',
+    'multiversx/mx-lend-sc',
+    'multiversx/mx-reproducible-contract-build-example-sc',
+    'multiversx/mx-metabonding-sc',
+    'multiversx/mx-vm-executor-rs',
+]
+
+[[sections.projects]]
+name = 'NEAR'
+is_org = true
+url = 'https://github.com/near'
+repos = [
+    'near/nearcore',
+    'near/neardevhub-contract',
+    'near/read-rpc',
+    'near/rollup-data-availability',
+    'near/core-contracts',
+    'near/near-sdk-rs',
+    'near/mpc-recovery',
+    'near/near-cli-rs',
+    'near/near-lake-indexer',
+    'near/borsh-rs',
+    'near/pagoda-relayer-rs',
+    'near/bos-loader',
+    'near/cargo-near',
+    'near/cargo-near-new-project-template',
+    'near/near-workspaces-rs',
+    'near/near-abi-client-rs',
+    'near/near-light-client',
+    'near/near-memory-tracker',
+    'near/near-indexer-for-explorer',
+    'near/near-sdk-contract-tools',
+    'near/near-account-id-rs',
+    'near/near-token-rs',
+    'near/near-gas-rs',
+    'near/near-abi-rs',
+    'near/near-lake-framework-rs',
+    'near/near-microindexers',
+    'near/near-enhanced-api-server',
+    'near/wasmer',
+    'near/near-jsonrpc-client-rs',
+    'near/near-linkdrop',
+    'near/dkim-auth',
+    'near/sdk-rs-gas-benchmark',
+    'near/near-sdk-abi',
+    'near/fast-kv-store',
+    'near/nft-bid-market',
+    'near/calibrator',
+    'near/near-blake2',
+]
+
+[[sections.projects]]
+name = 'Nervos'
+is_org = true
+url = 'https://github.com/nervosnetwork'
+repos = [
+    'nervosnetwork/sparse-merkle-tree',
+    'nervosnetwork/ckb',
+    'nervosnetwork/ckb-vm',
+    'nervosnetwork/merkle-mountain-range',
+    'nervosnetwork/faster-hex',
+    'nervosnetwork/force-bridge-btc',
+    'nervosnetwork/merkle-tree',
+    'nervosnetwork/ckb-cli',
+    'nervosnetwork/ckb-light-client',
+    'nervosnetwork/capsule',
+    'nervosnetwork/wasm-secp256k1-test',
+    'nervosnetwork/ckb-sdk-rust',
+    'nervosnetwork/overlord',
+    'nervosnetwork/mercury',
+    'nervosnetwork/ckb-indexer',
+    'nervosnetwork/molecule',
+    'nervosnetwork/ckb-std',
+    'nervosnetwork/ckb-standalone-debugger',
+    'nervosnetwork/ckb-miner',
+    'nervosnetwork/bloom-filters',
+    'nervosnetwork/force-bridge-eth',
+    'nervosnetwork/dapps-on-ckb-workshop-code',
+    'nervosnetwork/ckb-contract-guidelines',
+    'nervosnetwork/golomb-coded-set',
+]
+
+[[sections.projects]]
+name = 'Oasis'
+is_org = true
+url = 'https://github.com/oasisprotocol'
+repos = [
+    'oasisprotocol/keymanager-paratime',
+    'oasisprotocol/cipher-paratime',
+    'oasisprotocol/oasis-sdk',
+    'oasisprotocol/emerald-paratime',
+    'oasisprotocol/deoxysii-rust',
+]
+
+[[sections.projects]]
+name = 'Parity'
+is_org = true
+url = 'https://github.com/paritytech'
+repos = [
+    'paritytech/polkadot-sdk',
+    'paritytech/prdoc',
+    'paritytech/ink',
+    'paritytech/jsonrpsee',
+    'paritytech/cargo-contract',
+    'paritytech/jsonrpc',
+    'paritytech/subport',
+    'paritytech/polkadot-introspector',
+    'paritytech/wasmi',
+    'paritytech/soketto',
+    'paritytech/smoldot',
+    'paritytech/scale-typegen',
+    'paritytech/subxt-explorer',
+    'paritytech/libsecp256k1',
+    'paritytech/cargo-unleash',
+    'paritytech/substrate-archive',
+    'paritytech/verifiable',
+    'paritytech/polkadot-staking-miner',
+    'paritytech/ink-examples',
+    'paritytech/parity-tokio-ipc',
+    'paritytech/trie',
+    'paritytech/frontier',
+    'paritytech/scale-value',
+    'paritytech/subxt',
+    'paritytech/parity-common',
+    'paritytech/parity-bitcoin',
+    'paritytech/parity-db',
+    'paritytech/diener',
+    'paritytech/trappist',
+    'paritytech/substrate-telemetry',
+    'paritytech/pallet-contracts-xcm',
+    'paritytech/extended-parachain-template',
+    'paritytech/substrate-bip39',
+    'paritytech/mixnet',
+    'paritytech/polkadot-stps',
+    'paritytech/scale-info',
+    'paritytech/try-runtime-cli',
+    'paritytech/orchestra',
+    'paritytech/parity-signer',
+    'paritytech/polkadot-interaction-examples-rs',
+    'paritytech/arkworks-substrate',
+    'paritytech/fdlimit',
+    'paritytech/scale-bits',
+    'paritytech/substrate-contracts-node',
+    'paritytech/substrate-template-generator',
+    'paritytech/wasm-instrument',
+    'paritytech/xcm',
+    'paritytech/polkadot-sdk-docs',
+    'paritytech/arkworks-extensions',
+    'paritytech/stateless-blockchain',
+    'paritytech/polkadot-integration-tests',
+    'paritytech/zombienet-sdk',
+    'paritytech/unsigned-varint',
+    'paritytech/ink-waterfall',
+    'paritytech/parity-scale-codec',
+    'paritytech/pvf-executor',
+    'paritytech/parity-bridges-common',
+    'paritytech/frontier-parachain-template',
+    'paritytech/substrate-dex',
+    'paritytech/adz',
+    'paritytech/ss58-registry',
+    'paritytech/reed-solomon-novelpoly',
+    'paritytech/pallet-chaos',
+    'paritytech/parity-publish',
+    'paritytech/smart-bench',
+    'paritytech/rustc-codesize-min',
+    'paritytech/polkapobal',
+    'paritytech/squink-splash-beginner',
+    'paritytech/reref',
+    'paritytech/ink-playground',
+    'paritytech/polkadot-identicon-rust',
+    'paritytech/frame-metadata',
+    'paritytech/parachain-utils',
+    'paritytech/pvf-checker',
+    'paritytech/scale-encode',
+    'paritytech/scale-decode',
+    'paritytech/blockstats',
+    'paritytech/subpub',
+    'paritytech/banana-recovery-rust',
+    'paritytech/chaoscope',
+    'paritytech/artist',
+    'paritytech/memory-lru',
+    'paritytech/substrate-test-runner',
+    'paritytech/secret-store',
+    'paritytech/environmental',
+    'paritytech/finality-grandpa',
+    'paritytech/co2-passport',
+    'paritytech/appsec_ctf_playground',
+    'paritytech/desub',
+    'paritytech/polkadot-developer-data',
+    'paritytech/tide-github',
+]
+
+[[sections.projects]]
+name = 'Radix'
+is_org = true
+url = 'https://github.com/radixdlt'
+repos = [
+    'radixdlt/radixdlt-scrypto',
+    'radixdlt/official-examples',
+    'radixdlt/create-radix-dapp',
+    'radixdlt/scrypto-challenges',
+    'radixdlt/community-scrypto-examples',
+    'radixdlt/scrypto-examples',
+    'radixdlt/radix-engine-toolkit',
+    'radixdlt/babylon-ledger-app',
+    'radixdlt/scrypto101-exercises',
+    'radixdlt/scrypto-demos',
+]
+
+[[sections.projects]]
+name = 'Secret Network'
+is_org = true
+url = 'https://github.com/scrtlabs'
+repos = [
+    'scrtlabs/SecretNetwork',
+    'scrtlabs/secret-toolkit',
+    'scrtlabs/ibc-hooks-snip20-auto-wrap-proxy-contract',
+    'scrtlabs/shielded-voting',
+    'scrtlabs/SecretSwap',
+    'scrtlabs/MillionaireProblemTutorial',
+    'scrtlabs/unstoppable-secrets',
+    'scrtlabs/secret-vault',
+    'scrtlabs/seed-rotation-service',
+    'scrtlabs/snip20-reference-impl',
+    'scrtlabs/ics20-for-axelar',
+    'scrtlabs/examples',
+    'scrtlabs/SafeTrace',
+    'scrtlabs/secret-vrf-challenge-contract',
+    'scrtlabs/SecretSwapAnonEdition',
+    'scrtlabs/random-ibc-example',
+    'scrtlabs/tm-secret-enclave',
+    'scrtlabs/crosschain-contract-demo',
+    'scrtlabs/SecretStablePools',
+]
+
+[[sections.projects]]
+name = 'Solana'
+is_org = true
+url = 'https://github.com/solana-labs'
+repos = [
+    'solana-labs/solana',
+    'solana-labs/solana-program-library',
+    'solana-labs/perpetuals',
+    'solana-labs/solana-accountsdb-plugin-postgres',
+    'solana-labs/dexterity',
+    'solana-labs/launchpad',
+    'solana-labs/secure-wrap-token',
+    'solana-labs/cargo-run-solana-tests',
+    'solana-labs/governance-program-library',
+    'solana-labs/farms',
+    'solana-labs/solana-build',
+]
+
+[[sections.projects]]
+name = 'Soroban'
+is_org = true
+url = 'https://github.com/stellar'
+repos = [
+    'stellar/escape-bytes',
+    'stellar/rs-soroban-sdk',
+    'stellar/soroban-example-dapp',
+    'stellar/rs-soroban-env',
+    'stellar/slingshot',
+    'stellar/soroban-examples',
+    'stellar/xdrgen',
+    'stellar/rs-stellar-xdr',
+    'stellar/soroban-quest',
+    'stellar/soroban-name-service',
+    'stellar/bytes-lit',
+    'stellar/soroflare',
+    'stellar/fca00c-asteroids',
+    'stellar/crate-git-revision',
+]
+
+[[sections.projects]]
+name = 'Spacemesh'
+is_org = true
+url = 'https://github.com/spacemeshos'
+repos = [
+    'spacemeshos/post-rs',
+    'spacemeshos/spacemesh-sdk',
+    'spacemeshos/scrypt-jane-rs',
+]
+
+[[sections.projects]]
+name = 'Subspace Network'
+is_org = true
+url = 'https://github.com/subspace'
+repos = [
+    'subspace/subspace',
+    'subspace/pulsar',
+    'subspace/domain-transaction-producer',
+    'subspace/layerzero_testnet_bridge',
+    'subspace/subspace-sdk',
+    'subspace/spartan-farmer',
+    'subspace/NEARHack-2022',
+]
+
+[[sections.projects]]
+name = 'Sui'
+is_org = true
+url = 'https://github.com/MystenLabs'
+repos = [
+    'MystenLabs/base64pemkey',
+    'MystenLabs/sui',
+    'MystenLabs/mysticeti',
+    'MystenLabs/ed25519-unsafe-libs',
+    'MystenLabs/fastcrypto',
+    'MystenLabs/zklogin-verifier',
+    'MystenLabs/dapol',
+    'MystenLabs/truncator',
+    'MystenLabs/mysten-sim',
+    'MystenLabs/telemetry-subscribers',
+]
+
+[[sections.projects]]
+name = 'TezEdge'
+is_org = true
+url = 'https://github.com/tezedge'
+repos = [
+    'tezedge/tezos-dissector',
+    'tezedge/tezedge-firewall',
+    'tezedge/tezedge-debugger',
+    'tezedge/tezedge',
+    'tezedge/tezedge-client',
+]
+
+[[sections.projects]]
+name = 'Zcash'
+is_org = true
+url = 'https://github.com/zcash'
+repos = [
+    'zcash/halo2',
+    'zcash/librustzcash',
+    'zcash/zcash_note_encryption',
+    'zcash/sapling-mpc',
+    'zcash/sapling-crypto',
+    'zcash/zcash-test-vectors',
+    'zcash/orchard',
+    'zcash/incrementalmerkletree',
+    'zcash/mpc',
+    'zcash/pasta_curves',
+    'zcash/halo2_legacy_pdqsort',
+]
+
+[[sections]]
+name = 'Bitcoin'
+
+[[sections.projects]]
+name = 'AluVM'
+is_org = true
+url = 'https://github.com/AluVM'
+repos = [
+    'AluVM/aluasm',
+    'AluVM/rust-aluvm',
+    'AluVM/alure',
+]
+
+[[sections.projects]]
+name = 'BDK'
+is_org = true
+url = 'https://github.com/bitcoindevkit'
+repos = [
+    'bitcoindevkit/bdk',
+    'bitcoindevkit/coin-select',
+    'bitcoindevkit/rust-hwi',
+    'bitcoindevkit/bdk-ffi',
+    'bitcoindevkit/bdk-cli',
+    'bitcoindevkit/rust-esplora-client',
+    'bitcoindevkit/elephant',
+    'bitcoindevkit/rust-electrum-client',
+    'bitcoindevkit/bdk-reserves',
+]
+
+[[sections.projects]]
+name = 'Bitcoin Protocol'
+is_org = true
+url = 'https://github.com/BP-WG'
+repos = [
+    'BP-WG/descriptor-wallet',
+    'BP-WG/bp-core',
+    'BP-WG/bitcoin_foundation',
+    'BP-WG/bp-node',
+    'BP-WG/bp-wallet',
+    'BP-WG/bp-std',
+    'BP-WG/bitcoin_hwi',
+]
+
+[[sections.projects]]
+name = 'BitMask'
+is_org = false
+url = 'https://github.com/diba-io'
+repos = ['diba-io/bitmask-core']
+
+[[sections.projects]]
+name = 'Bitswap'
+is_org = true
+url = 'https://github.com/BitSwap-BiFi'
+repos = [
+    'BitSwap-BiFi/Bitswap-core',
+    'BitSwap-BiFi/bitswap-sdk',
+]
+
+[[sections.projects]]
+name = 'CivKit'
+is_org = true
+url = 'https://github.com/civkit'
+repos = [
+    'civkit/civkit-node',
+    'civkit/staking-credentials',
+]
+
+[[sections.projects]]
+name = 'Cyphernet'
+is_org = true
+url = 'https://github.com/cyphernet-dao'
+repos = [
+    'cyphernet-dao/rust-internet2',
+    'cyphernet-dao/rust-cyphernet',
+    'cyphernet-dao/rust-netservices',
+    'cyphernet-dao/ssi',
+    'cyphernet-dao/nsh',
+    'cyphernet-dao/rust-microservices',
+]
+
+[[sections.projects]]
+name = 'Electrs'
+is_org = false
+url = 'https://github.com/romanz'
+repos = ['romanz/electrs']
+
+[[sections.projects]]
+name = 'Fedimint'
+is_org = false
+url = 'https://github.com/fedimint'
+repos = [
+    'fedimint/fedimint',
+    'fedimint/fedimint-custom-modules-example',
+]
+
+[[sections.projects]]
+name = 'LDK'
+is_org = true
+url = 'https://github.com/lightningdevkit'
+repos = [
+    'lightningdevkit/rust-lightning',
+    'lightningdevkit/ldk-node',
+    'lightningdevkit/lightning-liquidity',
+    'lightningdevkit/vss-rust-client',
+    'lightningdevkit/ldk-sample',
+    'lightningdevkit/rapid-gossip-sync-server',
+    'lightningdevkit/ldk-c-bindings',
+]
+
+[[sections.projects]]
+name = 'LNP/BP'
+is_org = true
+url = 'https://github.com/LNP-BP'
+repos = [
+    'LNP-BP/client_side_validation',
+    'LNP-BP/rust-lnpbp',
+    'LNP-BP/invoices',
+]
+
+[[sections.projects]]
+name = 'LNP WG'
+is_org = true
+url = 'https://github.com/LNP-WG'
+repos = [
+    'LNP-WG/lnp-node',
+    'LNP-WG/lnp-core',
+    'LNP-WG/lightning_encoding',
+    'LNP-WG/ln-types',
+]
+
+[[sections.projects]]
+name = 'MyCitadel'
+is_org = true
+url = 'https://github.com/mycitadel'
+repos = [
+    'mycitadel/mycitadel-desktop',
+    'mycitadel/mycitadel-node',
+    'mycitadel/citadel-runtime',
+    'mycitadel/libcitadel',
+]
+
+[[sections.projects]]
+name = 'Nakamoto'
+is_org = false
+url = 'https://github.com/cloudhead'
+repos = ['cloudhead/nakamoto']
+
+[[sections.projects]]
+name = 'Nomic'
+is_org = false
+url = 'https://github.com/nomic-io'
+repos = [
+    'nomic-io/nomic',
+    'turbofish-org/merk',
+    'turbofish-org/orga',
+    'turbofish-org/abci2',
+    'turbofish-org/ed',
+    'turbofish-org/node-merk',
+]
+
+[[sections.projects]]
+name = 'RGB'
+is_org = true
+url = 'https://github.com/RGB-WG'
+repos = [
+    'RGB-WG/rgb-schemata',
+    'RGB-WG/rgb',
+    'RGB-WG/rgb-core',
+    'RGB-WG/rgb-std',
+]
+
+[[sections.projects]]
+name = 'Rust Bitcoin'
+is_org = true
+url = 'https://github.com/rust-bitcoin'
+repos = [
+    'rust-bitcoin/rust-bitcoin',
+    'rust-bitcoin/rust-miniscript',
+    'rust-bitcoin/rust-bitcoincore-rpc',
+    'rust-bitcoin/rust-bip39',
+    'rust-bitcoin/bitcoind',
+    'rust-bitcoin/rust-bech32-bitcoin',
+    'rust-bitcoin/rust-bech32',
+    'rust-bitcoin/rust-wallet',
+    'rust-bitcoin/murmel',
+    'rust-bitcoin/hex-conservative',
+    'rust-bitcoin/rust-bip47',
+    'rust-bitcoin/constants',
+    'rust-bitcoin/hammersbald',
+]
+
+[[sections.projects]]
+name = 'Rust Payjoin'
+is_org = false
+url = 'https://github.com/payjoin/rust-payjoin'
+repos = ['payjoin/rust-payjoin']
+
+[[sections.projects]]
+name = 'Rust Simplicity'
+is_org = false
+url = 'https://github.com/BlockstreamResearch'
+repos = ['BlockstreamResearch/rust-simplicity']
+
+[[sections.projects]]
+name = 'Sapio'
+is_org = false
+url = 'https://github.com/sapio-lang'
+repos = ['sapio-lang/sapio']
+
+[[sections.projects]]
+name = 'Strict types'
+is_org = true
+url = 'https://github.com/strict-types'
+repos = [
+    'strict-types/strict-types',
+    'strict-types/strict-encoding',
+    'strict-types/stenc',
+    'strict-types/encoding_derive_helpers',
+]
+
+[[sections.projects]]
+name = 'Talaia'
+is_org = false
+url = 'https://github.com/talaia-labs'
+repos = ['talaia-labs/rust-teos']
+
+[[sections]]
+name = 'Ethereum'
+
+[[sections.projects]]
+name = 'Ethers-rs'
+is_org = false
+url = 'https://github.com/gakonst'
+repos = ['gakonst/ethers-rs']
+
+[[sections.projects]]
+name = 'Foundry'
+is_org = true
+url = 'https://github.com/foundry-rs'
+repos = [
+    'foundry-rs/starknet-foundry',
+    'foundry-rs/foundry',
+    'foundry-rs/foundry-rust-template',
+    'foundry-rs/compilers',
+    'foundry-rs/block-explorers',
+]
+
+[[sections.projects]]
+name = 'Lighthouse'
+is_org = true
+url = 'https://github.com/sigp'
+repos = [
+    'sigp/discv5',
+    'sigp/lighthouse',
+    'sigp/beacon-fuzz',
+    'sigp/superstruct',
+    'sigp/milagro_bls',
+    'sigp/eleel',
+    'sigp/ethereum_serde_utils',
+    'sigp/ethereum_ssz',
+    'sigp/enr',
+    'sigp/serde_array_query',
+    'sigp/polkafuzz',
+    'sigp/tree_hash',
+    'sigp/ethereum_hashing',
+    'sigp/ssz_types',
+    'sigp/metastruct',
+    'sigp/eth-npg',
+    'sigp/gossipsub-testground',
+    'sigp/milhouse',
+    'sigp/sha2_fixed_64',
+]
+
+[[sections.projects]]
+name = 'Polygon Zero'
+is_org = true
+url = 'https://github.com/0xPolygonZero'
+repos = [
+    '0xPolygonZero/plonky2',
+    '0xPolygonZero/plonky2-ecdsa',
+    '0xPolygonZero/proof-protocol-decoder',
+    '0xPolygonZero/plonky-block-proof-gen',
+    '0xPolygonZero/paladin',
+    '0xPolygonZero/evm-tests',
+    '0xPolygonZero/smt_utils',
+    '0xPolygonZero/r1cs',
+    '0xPolygonZero/r1cs-bellman',
+    '0xPolygonZero/plonky2-semaphore',
+    '0xPolygonZero/plonky-edge-block-trace-parser',
+    '0xPolygonZero/system-zero',
+    '0xPolygonZero/plonky2-u32',
+    '0xPolygonZero/plonky2-insertion',
+    '0xPolygonZero/plonky2-waksman',
+]
+
+[[sections.projects]]
+name = 'Reth'
+is_org = false
+url = 'https://github.com/paradigmxyz'
+repos = ['paradigmxyz/reth']
+
+[[sections.projects]]
+name = 'Rust Ethereum'
+is_org = true
+url = 'https://github.com/rust-ethereum'
+repos = [
+    'rust-ethereum/evm',
+    'rust-ethereum/ethabi',
+    'rust-ethereum/ethereum',
+    'rust-ethereum/ethash',
+]
+
+[[sections.projects]]
+name = 'Rust Web3'
+is_org = false
+url = 'https://github.com/tomusdrw'
+repos = ['tomusdrw/rust-web3']
+
+[[sections.projects]]
+name = 'Starkware'
+is_org = true
+url = 'https://github.com/starkware-libs'
+repos = [
+    'starkware-libs/cairo',
+    'starkware-libs/starknet-api',
+    'starkware-libs/papyrus',
+    'starkware-libs/blockifier',
+]
+
+[[sections.projects]]
+name = 'zkSync Era'
+is_org = true
+url = 'https://github.com/matter-labs'
+repos = [
+    'matter-labs/zksync-era',
+    'matter-labs/zksync',
+    'matter-labs/foundry-zksync',
+    'matter-labs/era-sync_vm',
+    'matter-labs/era-compiler-solidity',
+    'matter-labs/franklin-crypto',
+    'matter-labs/era-boojum-cuda',
+    'matter-labs/era-revm',
+    'matter-labs/era-zk_evm',
+    'matter-labs/demo-circuit',
+    'matter-labs/era-test-node',
+    'matter-labs/zk_os',
+    'matter-labs/era-consensus',
+    'matter-labs/era-boojum',
+    'matter-labs/rescue-poseidon',
+    'matter-labs/era-zkevm_opcode_defs',
+    'matter-labs/zksync-withdrawal-finalizer',
+    'matter-labs/era-zkevm_tester',
+    'matter-labs/era-shivini',
+    'matter-labs/era-zkevm_circuits',
+    'matter-labs/schnorr-musig',
+    'matter-labs/era-heavy-ops-service',
+    'matter-labs/era-zkevm_test_harness',
+    'matter-labs/era-compiler-tester',
+    'matter-labs/era-circuit_testing',
+    'matter-labs/era-cuda',
+    'matter-labs/era-compiler-common',
+    'matter-labs/era-boojum-validator-cli',
+    'matter-labs/risc_v_simulator',
+    'matter-labs/era-zk_evm_abstractions',
+    'matter-labs/snark-wrapper',
+    'matter-labs/vise',
+    'matter-labs/era-zkEVM-assembly',
+    'matter-labs/era-compiler-llvm-context',
+    'matter-labs/era-compiler-vyper',
+    'matter-labs/era-compiler-llvm-builder',
+    'matter-labs/eip1962',
+    'matter-labs/hodor',
+]
