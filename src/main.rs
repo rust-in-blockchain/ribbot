@@ -4,7 +4,6 @@
  */
 
 #![allow(unused)]
-#![feature(string_remove_matches)]
 
 use anyhow::{bail, Context, Result};
 use chrono::{DateTime, Local, LocalResult, Months, NaiveDate, SecondsFormat, TimeZone, Utc};
@@ -140,6 +139,7 @@ fn update_rib_config(config: &Config, oauth_token: &Option<String>) -> Result<Pa
             } else {
                 // do github search and update repos
 
+                assert_eq!(&project.url[..19], "https://github.com/");
                 let project_github_name = &project.url[19..];
                 let url = format!(
                     "https://api.github.com/orgs/{}/repos?type=sources&sort=updated",
