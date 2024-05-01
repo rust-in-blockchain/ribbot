@@ -844,6 +844,14 @@ repos = [
 ]
 
 [[sections.projects]]
+name = "Vara"
+is_org = true
+url = "https://github.com/gear-tech"
+repos = [
+"https://github.com/gear-tech/gear",
+]
+
+[[sections.projects]]
 name = "Zcash"
 is_org = true
 url = "https://github.com/zcash"
