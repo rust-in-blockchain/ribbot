@@ -457,6 +457,7 @@ repos = [
 
 [[sections.projects]]
 name = "Lurk"
+is_org = true
 url = "https://github.com/lurk-lab"
 repos = [
 "lurk-lab/lurk-rs",
